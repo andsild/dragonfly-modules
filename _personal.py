@@ -41,6 +41,9 @@ generic_grammar.load()
 
 def unload():
     global grammar
-    if grammar:
-        grammar.unload()
+    try:
+        if grammar:
+            grammar.unload()
+    except NameError:
+        print "something went wrong"
     grammar = None

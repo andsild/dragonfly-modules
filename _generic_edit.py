@@ -101,7 +101,7 @@ singleModifierMap = {
 letterMap = {
     "(A|alpha)": "a",
     "(B|bravo) ": "b",
-    "(C|charlie) ": "c",
+    "(C|charlie|K)": "c",
     "(D|delta) ": "d",
     "(E|echo|eck) ": "e",
     "(F|foxtrot) ": "f",
@@ -150,7 +150,7 @@ controlKeyMap = {
     "home": "home",
     "end": "end",
     "space": "space",
-    "(enter|return)": "enter",
+    "(enter|return|slap)": "enter",
     "escape": "escape",
     "tab": "tab"
 }
@@ -180,9 +180,9 @@ pressKeyMap.update(functionKeyMap)
 
 formatMap = {
     "(sentence|sense|since) case": ft.sentenceCase,
-    "camel case": ft.camelCase,
-    "pass case": ft.pascalCase,
-    "snake case": ft.snakeCase,
+    "camel": ft.camelCase,
+    "pass": ft.pascalCase,
+    "snake": ft.snakeCase,
     "uppercase": ft.upperCase,
     "lowercase": ft.lowerCase,
     "squash": ft.squash,
@@ -361,23 +361,35 @@ grammarCfg.cmd.map = Item(
         "right [<n>]": Key("right:%(n)d"),
         "right [<n>] slow": Key("right/15:%(n)d"),
         "page up [<n>]": Key("pgup:%(n)d"),
+        "north [<n>]": Key("pgup:%(n)d"),
         "page down [<n>]": Key("pgdown:%(n)d"),
+        "south [<n>]": Key("pgdown:%(n)d"),
         "up <n> (page|pages)": Key("pgup:%(n)d"),
         "down <n> (page|pages)": Key("pgdown:%(n)d"),
         "left <n> (word|words)": Key("c-left/3:%(n)d/10"),
         "right <n> (word|words)": Key("c-right/3:%(n)d/10"),
         "home": Key("home"),
+        "(luke|look)": Key("lessthan"),
+        "(ruke|rook)": Key("greaterthan"),
         "end": Key("end"),
         "doc home": Key("c-home/3"),
+        "ghin buffer": Key("c-home/3"),
         "doc end": Key("c-end/3"),
+        "ex buffer": Key("c-end/3"),
+        "quest": Key("question"),
+        "bang": Key("exclamation"),
         # Functional keys.
+        "yaa": Key("y"),
+
         "space": release + Key("space"),
-        "space [<n>]": release + Key("space:%(n)d"),
+        "(space|ace) [<n>]": release + Key("space:%(n)d"),
         "enter [<n>]": release + Key("enter:%(n)d"),
         "tab [<n>]": Key("tab:%(n)d"),
         "delete [<n>]": Key("del/3:%(n)d"),
+        "chook": Key("del/3:%(n)d"),
         "delete [this] line": Key("home, s-end, del"),  # @IgnorePep8
         "backspace [<n>]": release + Key("backspace:%(n)d"),
+        "chook [<n>]": release + Key("backspace:%(n)d"),
         "application key": release + Key("apps/3"),
         "win key": release + Key("win/3"),
         "paste [that]": Function(paste_command),
@@ -391,22 +403,30 @@ grammarCfg.cmd.map = Item(
         "[(hold|press)] control": Key("ctrl:down/3"),
         "release control": Key("ctrl:up"),
         "release [all]": release,
+        "(sink|think)": Key("semicolon"),
         # Closures.
         "angle brackets": Key("langle, rangle, left/3"),
         "brackets": Key("lbracket, rbracket, left/3"),
         "braces": Key("lbrace, rbrace, left/3"),
         "parens": Key("lparen, rparen, left/3"),
+        "laip": Key("lparen"),
+        "rye": Key("rparen"),
+        "lace": Key("lbrace"),
+        "race": Key("rbrace"),
         "quotes": Key("dquote/3, dquote/3, left/3"),
         "backticks": Key("backtick:2, left"),
         "single quotes": Key("squote, squote, left/3"),
+        "sing": Key("squote"),
         # Shorthand multiple characters.
         "double <char>": Text("%(char)s%(char)s"),
         "triple <char>": Text("%(char)s%(char)s%(char)s"),
         "double escape": Key("escape, escape"),  # Exiting menus.
         # Punctuation and separation characters, for quick editing.
         "colon [<n>]": Key("colon/2:%(n)d"),
+        "Col. [<n>]": Key("colon/2:%(n)d"),
         "semi-colon [<n>]": Key("semicolon/2:%(n)d"),
         "comma [<n>]": Key("comma/2:%(n)d"),
+        "cam ": Key("comma, space"),
         "(dot|period) [<n>]": Key("dot/2:%(n)d"),
         "(dash|hyphen|minus) [<n>]": Key("hyphen/2:%(n)d"),
         "underscore [<n>]": Key("underscore/2:%(n)d"),
@@ -486,7 +506,6 @@ class RepeatRule(CompoundRule):
         for i in range(count):  # @UnusedVariable
             for action in sequence:
                 action.execute()
-        release.execute()
 
 grammar = Grammar("Generic edit")
 grammar.add_rule(RepeatRule())  # Add the top-level rule.

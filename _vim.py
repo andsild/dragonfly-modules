@@ -30,6 +30,26 @@ surroundCharsMap = {
     'braces': "{",
 }
 
+repls = {
+             'quote': 'dquote',
+             'sing': 'squote',
+             "colon": "colon",
+             "lap": 'lparen',
+            }
+
+def range_instert_symbol(text):
+    input_text = str(text).split()
+    lenInput = len(input_text)
+    for ind,word in enumerate(input_text):
+        if word in repls:
+            Key(repls[word]).execute()
+        else:
+            for letter in word:
+                Key(letter).execute()
+            if ind < lenInput-1:
+                Key("space").execute()
+
+
 def goto_line_up(n):
     Key('m, squote').execute()
     for c in str(n):
@@ -92,11 +112,13 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'open [in] tab': Key(goto_normal_mode_keys + "semicolon, t"),
 
     'visual [mode]': Key("v"),
+    'extend [<n>]': Key("rbrace:%(n)d"),
+    'withdraw': Key("lbrace:%(n)d"),
     'visual block': Key("c-v"),
     'inner block': Key("i, b"),
     'paragraph': Key("a, p"),
     'visual line': Key("s-v"),
-    'comment': Key(goto_normal_mode_keys + "g, c, c"),
+    'comment': Key("g, c, c"),
 
     # Moving viewport
     'set number': Key(goto_normal_mode_keys + "comma, period"), 
@@ -115,6 +137,7 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'insert below': Key(goto_normal_mode_keys + "o"),
     'insert above': Key(goto_normal_mode_keys + "O"),
     'undo': Key(goto_normal_mode_keys + "u"),
+    'read': Key(goto_normal_mode_keys + "c-r"),
     'scratch': Key(goto_normal_mode_keys + "u"),
     'escape': Key("escape"),
     'filename': Key(goto_normal_mode_keys + "c-g"),
@@ -128,12 +151,13 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
 
     # Finding text
     'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),
-    'jump <text>': Key(goto_normal_mode_keys + "f") + Text("%(text)s"),
+    'jump <text>': Key(goto_normal_mode_keys + "f") + Function(range_instert_symbol),
     'next': Key(goto_normal_mode_keys + "n"),
     'prev|previous': Key(goto_normal_mode_keys + "N"),
     'clear search': Key(goto_normal_mode_keys + "colon, n, o, h, enter"),
     'change [the] big word': Key(goto_normal_mode_keys + "c, a, W"),
     'change [the] word': Key(goto_normal_mode_keys + "c, a, w"),
+    '(Sea|See) world': Key(goto_normal_mode_keys + "c, a, w"),
     'change inner block': Key(goto_normal_mode_keys + "c, i, b"),
     'yank inner block': Key(goto_normal_mode_keys + "y, i, b"),
     '(del|delete) inner block': Key(goto_normal_mode_keys + "y, i, b"),
@@ -143,8 +167,8 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'change [the] word': Key(goto_normal_mode_keys + "c, a, W"),
     'gargle': Key(goto_normal_mode_keys + "D"),
     'choose': Key("semicolon"),
-    'behind <n>': Key(goto_normal_mode_keys + "e:%(n)d"),
-    'ass <n>': Key(goto_normal_mode_keys + "E:%(n)d"),
+    'behind [<n>]': Key(goto_normal_mode_keys + "e:%(n)d"),
+    'ass [<n>]': Key(goto_normal_mode_keys + "E:%(n)d"),
 
     # Character operations
     'dart': Key("x"),
@@ -164,6 +188,8 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'backward <n>': Key(goto_normal_mode_keys + "%(n)d, b"),
     'start': goto_normal_mode + Text("^"),
     'finish': goto_normal_mode + Text("$"),
+
+    'command mode': goto_normal_mode + Key("colon"),
 
     # Line operations
     'dine': Key(goto_normal_mode_keys + "d:2"),
@@ -219,6 +245,9 @@ class Basics(dragonfly.MappingRule):
         Choice("pressKey", pressKeyMap),
         Choice("surroundChar", surroundCharsMap),
     ]
+    defaults = {
+        "n": 1,  # Default repeat count.
+    }
 
 grammar.add_rule(Basics())
 grammar.load()

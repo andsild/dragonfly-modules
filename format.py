@@ -199,7 +199,8 @@ def format_text(text, formatType=None):
         method = None
         for value in formatType:
             if not result:
-                if formatType == FormatTypes.spokenForm:
+                # if formatType == FormatTypes.spokenForm:
+                if formatType == 9:
                     result = text.words
                 else:
                     result = str(text)
