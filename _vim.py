@@ -56,7 +56,7 @@ def goto_line_up(n):
         Key(c).execute()
     Key("k").execute()
 
-def goto_line_absolute():
+def goto_line_absolute(n):
     for c in str(n):
         Key(c).execute()
     Key("G").execute()

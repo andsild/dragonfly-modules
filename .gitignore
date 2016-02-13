@@ -57,7 +57,3 @@ docs/_build/
 
 # PyBuilder
 target/
-
-aenea/
-core/
-_vocola_main.py

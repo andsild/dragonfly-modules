@@ -44,7 +44,6 @@ def unload():
     try:
         if grammar:
             grammar.unload()
-    except NameError as ne:
+    except NameError:
         print "something went wrong"
-        print "[[" + str(ne) + "]]"
     grammar = None
