@@ -60,6 +60,7 @@ terminal_mapping = aenea.configuration.make_grammar_commands('terminal', {
     'history': Key("c-r"),
     'open': Text("xdg-open "),
     'last parameter': Key("escape, dot"),
+    'view top' : Text("htop") + Key("enter"),
 
     'redo last [command]' : Key("c-u, up, enter"),
 })

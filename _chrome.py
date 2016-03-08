@@ -71,6 +71,10 @@ class Basics(dragonfly.MappingRule):
         IntegerRef('n', 1, 999),
         IntegerRef('n2', 1, 999),
     ]
+    defaults = {
+        "n": 1,  # Default repeat count.
+    }
+
 
 grammar.add_rule(Basics())
 grammar.load()

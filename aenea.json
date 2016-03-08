@@ -1,5 +1,5 @@
 {
-    "host": "192.168.1.141",
+    "host": "192.168.124.1",
     "port": 8240,
     "platform": "proxy",
     "use_multiple_actions": true,

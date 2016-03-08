@@ -190,24 +190,86 @@ FORMAT_TYPES_MAP = {
     FormatTypes.spokenForm: format_spoken_form,
 }
 
-
 def format_text(text, formatType=None):
-    if formatType:
-        if type(formatType) != type([]):
-            formatType = [formatType]
-        result = ""
-        method = None
-        for value in formatType:
-            if not result:
-                # if formatType == FormatTypes.spokenForm:
-                if formatType == 9:
-                    result = text.words
-                else:
-                    result = str(text)
-            method = FORMAT_TYPES_MAP[value]
-            result = method(result)
-        Text("%(text)s").execute({"text": result})
+    from aenea import Text
+    if not formatType:
+        return
 
+    global format_spoken_form
+    global extract_dragon_info
+    global letterMap
+    if not format_spoken_form:
+        def format_spoken_form(text):
+            newText = ""
+            words = extract_dragon_info(text)
+            for word in words:
+                if newText != "":
+                    word = " " + word
+                newText += word
+            return newText
+    if not extract_dragon_info:
+        if not letterMap:
+            letterMap = {
+                "A\\letter": "alpha",
+                "B\\letter": "bravo",
+                "C\\letter": "charlie",
+                "D\\letter": "delta",
+                "E\\letter": "echo",
+                "F\\letter": "foxtrot",
+                "G\\letter": "golf",
+                "H\\letter": "hotel",
+                "I\\letter": "india",
+                "J\\letter": "juliet",
+                "K\\letter": "kilo",
+                "L\\letter": "lima",
+                "M\\letter": "mike",
+                "N\\letter": "november",
+                "O\\letter": "oscar",
+                "P\\letter": "papa",
+                "Q\\letter": "quebec",
+                "R\\letter": "romeo",
+                "S\\letter": "sierra",
+                "T\\letter": "tango",
+                "U\\letter": "uniform",
+                "V\\letter": "victor",
+                "W\\letter": "whiskey",
+                "X\\letter": "x-ray",
+                "Y\\letter": "yankee",
+                "Z\\letter": "zulu",
+            }
+        def extract_dragon_info(text):
+            newWords = []
+            words = str(text).split(" ")
+            for word in words:
+                if word in letterMap.keys():
+                    word = letterMap[word]
+                elif word.rfind("\\") > -1:
+                    pos = word.rfind("\\") + 1
+                    if (len(word) - 1) >= pos:
+                        word = word[pos:]  # Remove written form info.
+                    else:
+                        word = ""
+                newWords.append(word)
+            return newWords
+
+    if type(formatType) != type([]):
+        formatType = [formatType]
+    result = ""
+    method = None
+    for value in formatType:
+        if not result:
+            # if formatType == FormatTypes.spokenForm:o
+
+            if formatType == 9:
+                result = text.words
+            else:
+                result = str(text)
+        try:
+            method = FORMAT_TYPES_MAP[value]
+        except  TypeError:
+            method = format_spoken_form
+        result = format_spoken_form(result)
+        Text("%(text)s").execute({"text": result})
 
 def camel_case_text(text):
     """Formats dictated text to camel case.

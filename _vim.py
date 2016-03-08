@@ -4,6 +4,7 @@
 # Commands for interacting with Vim
 #
 # Author: Tony Grosinger
+# modified by: Anders Sildnes 
 #
 # Licensed under LGPL
 
@@ -30,6 +31,23 @@ surroundCharsMap = {
     'braces': "{",
 }
 
+symbolMap = {
+    'dollar': 'dollar',
+    'comma': ',',
+    'period': 'dot',
+    'laip': 'lparen',
+    'lace': 'lbrace',
+    'lack': 'lbracket',
+    'race': 'rbrace',
+    'rack': 'rbracket',
+    'rye': 'rparen',
+    'colon': 'colon',
+    'sink': 'semi-colon',
+    'quote': 'quote',
+    'single quote': 'single quote',
+    'equals': 'single quote',
+}
+
 repls = {
              'quote': 'dquote',
              'sing': 'squote',
@@ -43,7 +61,9 @@ def range_instert_symbol(text):
     for ind,word in enumerate(input_text):
         if word in repls:
             Key(repls[word]).execute()
-        else:
+        elif word in symbolMap:
+            Key(symbolMap[word]).execute()
+        else :
             for letter in word:
                 Key(letter).execute()
             if ind < lenInput-1:
@@ -64,6 +84,9 @@ def goto_line_absolute(n):
 
 def goto_line(n):
     Key('m, squote').execute()
+    just_goto_line(n)
+
+def just_goto_line(n):
     for c in str(n):
         Key(c).execute()
     Key("j").execute()
@@ -72,7 +95,7 @@ def goto_line(n):
 def yank_lines(n, n2):
     goto_line(n)
     Key("V").execute()
-    goto_line(n2)
+    just_goto_line(n2-n)
     Key("y").execute()
 
 def yank_lines_up(n, n2):
@@ -80,13 +103,13 @@ def yank_lines_up(n, n2):
     min_line=min(n,n2)
     goto_line_up(upper_line)
     Key("V").execute()
-    goto_line(min_line)
+    just_goto_line(upper_line-min_line)
     Key("y").execute()
 
 def delete_lines(n, n2):
     goto_line(n)
     Key("V").execute()
-    goto_line(n2)
+    just_goto_line(n2-n)
     Key("d").execute()
 
 def delete_lines_up(n, n2):
@@ -94,12 +117,11 @@ def delete_lines_up(n, n2):
     min_line=min(n,n2)
     goto_line_up(upper_line)
     Key("V").execute()
-    goto_line(min_line)
+    just_goto_line(upper_line-min_line)
     Key("d").execute()
 
 goto_normal_mode_keys = 'c-backslash, c-n, '
 goto_normal_mode = Key('c-backslash, c-n')
-
 
 basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'vim': Text("vim"),
@@ -120,6 +142,9 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'visual line': Key("s-v"),
     'comment': Key("g, c, c"),
 
+    'surround word [with] <surroundChar>': Key("s, a, W") + Text("%(surroundChar)s"),
+    'stern <surroundChar>': Key("s, a, W") + Text("%(surroundChar)s"),
+
     # Moving viewport
     'set number': Key(goto_normal_mode_keys + "comma, period"), 
     'screen center': Key(goto_normal_mode_keys + "z, period, i"),
@@ -127,9 +152,7 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'screen bottom': Key(goto_normal_mode_keys + "z, b, i"),
 
     # Append to line
-    'noop <n>': goto_normal_mode + Function(goto_line) + Key("A, enter"),
-    'noop': Key(goto_normal_mode_keys + "A, enter"),
-    'nope': Key(goto_normal_mode_keys + "A"),
+    'noop <n>': goto_normal_mode + Function(goto_line) + Key("o"),
     'nope <n>': goto_normal_mode + Function(goto_line) + Key("A"),
 
     'prepend': Key(goto_normal_mode_keys + "I"),
@@ -149,6 +172,11 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'comma': Key("comma"),
     '(rook|Brook|rock)': Key("right, colon, space"),
 
+    'quick (prev|previous)': Key("lbracket, q"),
+    'quick next': Key(goto_normal_mode_keys + "rbracket, q"),
+    'location (prev|previous)': Key(goto_normal_mode_keys + "lbracket, l"),
+    'location next': Key(goto_normal_mode_keys + "rbracket, l"),
+
     # Finding text
     'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),
     'jump <text>': Key(goto_normal_mode_keys + "f") + Function(range_instert_symbol),
@@ -160,13 +188,12 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     '(Sea|See) world': Key(goto_normal_mode_keys + "c, a, w"),
     'change inner block': Key(goto_normal_mode_keys + "c, i, b"),
     'yank inner block': Key(goto_normal_mode_keys + "y, i, b"),
-    '(del|delete) inner block': Key(goto_normal_mode_keys + "y, i, b"),
+    '(del|delete) inner block': Key(goto_normal_mode_keys + "d, i, b"),
     '(pseudo|sudo|pseudo-) save': goto_normal_mode + Text(":w !sudo tee > /dev/null %%") + Key("enter"),
     'remove [the] word': Key(goto_normal_mode_keys + "d, a, w"),
     'remove [the] big word': Key(goto_normal_mode_keys + "d, a, W"),
     'change [the] word': Key(goto_normal_mode_keys + "c, a, W"),
     'gargle': Key(goto_normal_mode_keys + "D"),
-    'choose': Key("semicolon"),
     'behind [<n>]': Key(goto_normal_mode_keys + "e:%(n)d"),
     'ass [<n>]': Key(goto_normal_mode_keys + "E:%(n)d"),
 
@@ -182,12 +209,12 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'remove [the] buffer': Key(goto_normal_mode_keys + "semicolon, d"),
 
     # Word operations
-    'forward':  Key(goto_normal_mode_keys + "w"),
+    'sword <n>': Key(goto_normal_mode_keys + "%(n)d, w"),
     'forward <n>': Key(goto_normal_mode_keys + "%(n)d, w"),
-    'backward': Key(goto_normal_mode_keys + "b"),
     'backward <n>': Key(goto_normal_mode_keys + "%(n)d, b"),
     'start': goto_normal_mode + Text("^"),
     'finish': goto_normal_mode + Text("$"),
+    'quick run': goto_normal_mode + Key("comma, r"),
 
     'command mode': goto_normal_mode + Key("colon"),
 
@@ -195,8 +222,8 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'dine': Key(goto_normal_mode_keys + "d:2"),
     'dine <n>': goto_normal_mode + Function(goto_line) + Key("d:2"),
     'dine up <n>': goto_normal_mode + Function(goto_line_up) + Key("d:2, c-o"),
-    'dine <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines),
-    'dine up <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines_up),
+    'dine <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines) + Key("d:2, c-o"),
+    'dine up <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines_up) + Key("d:2, c-o"),
     'yank': goto_normal_mode + Key("y:2"),
     'yank [down] <n>': goto_normal_mode + Function(goto_line) + Key("y:2, c-o"),
     'yank up <n>': goto_normal_mode + Function(goto_line_up) + Key("y:2, c-o"),
@@ -214,7 +241,6 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'yib': Key(goto_normal_mode_keys + "right, y, i lbrace"),
 
     # Copy and Paste
-    'extract': Key("x"),
     'glue': Key(goto_normal_mode_keys + 'p'),
 
     # Movement
@@ -227,9 +253,9 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'rash': Key(goto_normal_mode_keys + "down, s-a"),
     'back': Key(goto_normal_mode_keys + "c-o"),
 
-    'tab next': Key("g, t"),
-    'tab previous': Key("g, s-t"),
-    'tab new': goto_normal_mode + Text(":tabe | FZFMru") + Key("enter"),
+    'next tab': Key("g, t"),
+    'previous tab': Key("g, s-t"),
+    'new tab': goto_normal_mode + Text(":tabe | FZFMru") + Key("enter"),
 
     # Plug-ins
     'explorer': Key(goto_normal_mode_keys + "colon") + Text("VimFilerExplorer") + Key("enter"),
