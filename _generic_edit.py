@@ -100,74 +100,100 @@ singleModifierMap = {
 }
 
 letterMap = {
-    "(A|alpha|arch)": "a",
-    "(B|bravo) ": "b",
-    "(C|charlie)": "c",
-    "(D|delta) ": "d",
-    "(E|echo) ": "e",
-    "(F|foxtrot) ": "f",
-    "(G|golf) ": "g",
-    "(H|hotel) ": "h",
-    "(I|india|indigo) ": "i",
-    "(J|juliet) ": "j",
-    "(K|kilo) ": "k",
-    "(L|lima) ": "l",
-    "(M|mike) ": "m",
-    "(N|november) ": "n",
-    "(O|oscar) ": "o",
-    "(P|papa|poppa) ": "p",
-    "(Q|quebec|quiche) ": "q",
-    "(R|romeo) ": "r",
-    "(S|sierra|soy) ": "s",
-    "(T|tango) ": "t",
-    "(U|uniform) ": "u",
-    "(V|victor|van) ": "v",
-    "(W|whiskey|wes) ": "w",
-    "(X|x-ray) ": "x",
-    "(Y|yankee) ": "y",
-    "(Z|zulu) ": "z",
+    "(A|alpha|arch)":         "a",
+    "big (A|alpha|arch)":     "A",
+    "(B|bravo) ":             "b",
+    "big (B|bravo) ":         "B",
+    "(C|charlie)":            "c",
+    "big (C|charlie)":        "C",
+    "(D|delta) ":             "d",
+    "big (D|delta) ":         "D",
+    "(E|echo) ":              "e",
+    "big (E|echo) ":          "E",
+    "(F|foxtrot) ":           "f",
+    "big (F|foxtrot) ":       "F",
+    "(G|golf) ":              "g",
+    "big (G|golf) ":          "G",
+    "(H|hotel) ":             "h",
+    "big (H|hotel) ":         "H",
+    "(I|india|indigo) ":      "i",
+    "big (I|india|indigo) ":  "I",
+    "(J|juliet) ":            "j",
+    "big (J|juliet) ":        "J",
+    "(K|kilo) ":              "k",
+    "big (K|kilo) ":          "K",
+    "(L|lima) ":              "l",
+    "big (L|lima) ":          "L",
+    "(M|mike) ":              "m",
+    "big (M|mike) ":          "M",
+    "(N|november) ":          "n",
+    "big (N|november) ":      "N",
+    "(O|oscar) ":             "o",
+    "big (O|oscar) ":         "O",
+    "(P|papa|poppa) ":        "p",
+    "big (P|papa|poppa) ":    "P",
+    "(Q|quebec|quiche) ":     "q",
+    "big (Q|quebec|quiche) ": "Q",
+    "(R|romeo) ":             "r",
+    "big (R|romeo) ":         "R",
+    "(S|sierra|soy) ":        "s",
+    "big (S|sierra|soy) ":    "S",
+    "(T|tango) ":             "t",
+    "big (T|tango) ":         "T",
+    "(U|uniform) ":           "u",
+    "big (U|uniform) ":       "U",
+    "(V|victor|van) ":        "v",
+    "big (V|victor|van) ":    "V",
+    "(W|whiskey|wes) ":       "w",
+    "big (W|whiskey|wes) ":   "W",
+    "(X|x-ray) ":             "x",
+    "big (X|x-ray) ":         "X",
+    "(Y|yankee) ":            "y",
+    "big (Y|yankee) ":        "Y",
+    "(Z|zulu) ":              "z",
+    "big (Z|zulu) ":          "Z",
 }
 
 numberMap = {
-    "zero": "0",
-    "one": "1",
-    "two": "2",
+    "zero":  "0",
+    "one":   "1",
+    "two":   "2",
     "three": "3",
-    "four": "4",
-    "five": "5",
-    "six": "6",
+    "four":  "4",
+    "five":  "5",
+    "six":   "6",
     "seven": "7",
     "eight": "8",
-    "nine": "9",
+    "nine":  "9",
 }
 
 controlKeyMap = {
-    "left": "left",
-    "right": "right",
-    "up": "up",
-    "down": "down",
-    "page up": "pgup",
-    "page down": "pgdown",
-    "home": "home",
-    "end": "end",
-    "space": "space",
+    "left":                "left",
+    "right":               "right",
+    "up":                  "up",
+    "down":                "down",
+    "page up":             "pgup",
+    "page down":           "pgdown",
+    "home":                "home",
+    "end":                 "end",
+    "space":               "space",
     "(enter|return|slap)": "enter",
-    "escape": "escape",
-    "tab": "tab"
+    "escape":              "escape",
+    "tab":                 "tab"
 }
 
 # F1 to F12.
 functionKeyMap = {
-    'F one': 'f1',
-    'F two': 'f2',
-    'F three': 'f3',
-    'F four': 'f4',
-    'F five': 'f5',
-    'F six': 'f6',
-    'F seven': 'f7',
-    'F eight': 'f8',
-    'F nine': 'f9',
-    'F ten': 'f10',
+    'F one':    'f1',
+    'F two':    'f2',
+    'F three':  'f3',
+    'F four':   'f4',
+    'F five':   'f5',
+    'F six':    'f6',
+    'F seven':  'f7',
+    'F eight':  'f8',
+    'F nine':   'f9',
+    'F ten':    'f10',
     'F eleven': 'f11',
     'F twelve': 'f12',
 }
@@ -248,6 +274,8 @@ abbreviationMap = {
     "language": "lng",
     "library": "lib",
     "length": "len",
+    "maximum": "max",
+    "mininum": "min",
     "number": "num",
     "object": "obj",
     "okay": "ok",
@@ -347,11 +375,38 @@ def paste_command():
     release.execute()
     Key("c-v/3").execute()
 
+letters = {
+        "charm":          "c",
+        "big charm":      "C",
+        "(faye|fay)":     "f",
+        "big (faye|fay)": "F",
+        "ice":            "i",
+        "big ice":        "I",
+        "jo":             "j",
+        "big jo":         "J",
+        "(noy|neu)":      "n",
+        "big (noy|neu)":  "N",
+        "ork":            "o",
+        "big ork":        "O",
+        "pooch":          "p",
+        "big pooch":      "P",
+        "real":           "r",
+        "big real":       "R",
+        "(soi|soy)":      "s",
+        "big (soi|soy)":  "S",
+        "(take|teek|teak)":           "t",
+        "big (take|teak|teek)":       "T",
+        "uni":            "u",
+        "big uni":        "U",
+        "trex":           "x",
+        "big trex":       "X",
+        "yaa":            "y",
+        "big yaa":        "Y",
+        "war":            "w",
+        "big war":        "W",
+}
 
-grammarCfg = Config("multi edit")
-grammarCfg.cmd = Section("Language section")
-grammarCfg.cmd.map = Item(
-    {
+grammarItems = {
         # Navigation keys.
         "up [<n>]": Key("up:%(n)d"),
         "up [<n>] slow": Key("up/15:%(n)d"),
@@ -380,31 +435,6 @@ grammarCfg.cmd.map = Item(
         "ex buffer": Key("c-end/3"),
         "quest": Key("question"),
         "bang": Key("exclamation"),
-        # Functional keys.
-        "charm": Key("c"),
-        "big charm": Key("c"),
-        "(faye|fay)": Key("f"),
-        "big (faye|fay)": Key("f"),
-        "ice": Key("i"),
-        "big ice": Key("i"),
-        "Jo": Key("j"),
-        "big Jo": Key("j"),
-        "noy": Key("n"),
-        "big noy": Key("n"),
-        "ork": Key("o"),
-        "big ork": Key("o"),
-        "pooch": Key("p"),
-        "big pooch": Key("p"),
-        "real": Key("r"),
-        "big real": Key("r"),
-        "teek": Key("t"),
-        "big teek": Key("t"),
-        "uni": Key("u"),
-        "big uni": Key("u"),
-        "trex": Key("x"),
-        "big trex": Key("x"),
-        "yaa": Key("y"),
-        "big womp": Key("w"),
         "space": release + Key("space"),
         "(space|ace) [<n>]": release + Key("space:%(n)d"),
         "enter [<n>]": release + Key("enter:%(n)d"),
@@ -477,12 +507,27 @@ grammarCfg.cmd.map = Item(
         "(delete|remove) rest": Key("s-end, del"),
         # Microphone sleep/cancel started dictation.
         "[<text>] (go to sleep|cancel and sleep) [<text2>]": Function(cancel_and_sleep),  # @IgnorePep8
-    },
+
+}
+
+voiceLetters = {}
+
+for voice_command,key in letters.iteritems():
+    voiceLetters[voice_command] = Key(key)
+
+
+grammarItems.update(voiceLetters)
+
+grammarCfg = Config("multi edit")
+grammarCfg.cmd = Section("Language section")
+grammarCfg.cmd.map = Item(
+    grammarItems,
     namespace={
         "Key": Key,
         "Text": Text,
     }
 )
+
 
 
 class KeystrokeRule(MappingRule):

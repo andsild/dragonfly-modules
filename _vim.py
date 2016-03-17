@@ -19,7 +19,7 @@ from aenea import (
 )
 import dragonfly
 
-from _generic_edit import pressKeyMap
+from _generic_edit import pressKeyMap, letters, letterMap
 
 vim_context = aenea.ProxyCustomAppContext(executable="gnome-terminal")
 grammar = dragonfly.Grammar('vim', context=vim_context)
@@ -38,10 +38,12 @@ symbolMap = {
     'laip': 'lparen',
     'lace': 'lbrace',
     'lack': 'lbracket',
+
     'race': 'rbrace',
     'rack': 'rbracket',
     'rye': 'rparen',
     'colon': 'colon',
+
     'sink': 'semi-colon',
     'quote': 'quote',
     'single quote': 'single quote',
@@ -53,21 +55,37 @@ repls = {
              'sing': 'squote',
              "colon": "colon",
              "lap": 'lparen',
-            }
+        }
+repls.update(letters)
+repls.update(letterMap)
 
-def range_instert_symbol(text):
+def range_insert_symbol(text):
     input_text = str(text).split()
     lenInput = len(input_text)
+    boolBig = False
     for ind,word in enumerate(input_text):
-        if word in repls:
-            Key(repls[word]).execute()
-        elif word in symbolMap:
-            Key(symbolMap[word]).execute()
-        else :
-            for letter in word:
-                Key(letter).execute()
-            if ind < lenInput-1:
-                Key("space").execute()
+        word = word.lower()
+        if word == "big":
+            boolBig = True
+            continue
+        foundLetter = False
+        for key,val in repls.iteritems():
+            if word in key:
+                if boolBig:
+                    Key(val.upper()).execute()
+                else:
+                    Key(val).execute()
+                foundLetter = True
+                break
+    if foundLetter:
+        pass
+    elif word in symbolMap:
+        Key(symbolMap[word]).execute()
+    else :
+        for letter in word:
+            Key(letter).execute()
+        if ind < lenInput-1:
+            Key("space").execute()
 
 
 def goto_line_up(n):
@@ -92,33 +110,34 @@ def just_goto_line(n):
     Key("j").execute()
 
 
+def lineJuggle(n1, n2, operation, linePrefix):
+    upper_line=min(n1,n2)
+    min_line=max(n1,n2)
+    if upper_line==0:
+        upper_line="."
+    else:
+        upper_line=linePrefix+str(upper_line)
+    if min_line==0:
+        min_line="."
+    else:
+        min_line=linePrefix+str(min_line)
+
+    goto_normal_mode.execute()
+    Text(":silent " + upper_line +  "," + min_line + str(min_line) + operation).execute()
+    Key("enter").execute()
+
+
 def yank_lines(n, n2):
-    goto_line(n)
-    Key("V").execute()
-    just_goto_line(n2-n)
-    Key("y").execute()
+    lineJuggle(n, n2, "y", "+")
 
 def yank_lines_up(n, n2):
-    upper_line=max(n,n2)
-    min_line=min(n,n2)
-    goto_line_up(upper_line)
-    Key("V").execute()
-    just_goto_line(upper_line-min_line)
-    Key("y").execute()
+    lineJuggle(n, n2, "y", "-")
 
 def delete_lines(n, n2):
-    goto_line(n)
-    Key("V").execute()
-    just_goto_line(n2-n)
-    Key("d").execute()
+    lineJuggle(n, n2, "d", "+")
 
 def delete_lines_up(n, n2):
-    upper_line=max(n,n2)
-    min_line=min(n,n2)
-    goto_line_up(upper_line)
-    Key("V").execute()
-    just_goto_line(upper_line-min_line)
-    Key("d").execute()
+    lineJuggle(n, n2, "d", "-")
 
 goto_normal_mode_keys = 'c-backslash, c-n, '
 goto_normal_mode = Key('c-backslash, c-n')
@@ -179,7 +198,7 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
 
     # Finding text
     'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),
-    'jump <text>': Key(goto_normal_mode_keys + "f") + Function(range_instert_symbol),
+    'jump <text>': Key(goto_normal_mode_keys + "f") + Function(range_insert_symbol),
     'next': Key(goto_normal_mode_keys + "n"),
     'prev|previous': Key(goto_normal_mode_keys + "N"),
     'clear search': Key(goto_normal_mode_keys + "colon, n, o, h, enter"),
@@ -230,18 +249,13 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'yank <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines) + Key("c-o"),
     'yank up <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines_up) + Key("c-o"),
 
-    'select until <pressKey>': Key(goto_normal_mode_keys + "v, t") + Text("%(pressKey)s"),
-    'select including <pressKey>': Key(goto_normal_mode_keys + "v, f") + Text("%(pressKey)s"),
-    'dell until <pressKey>': Key(goto_normal_mode_keys + "d, t") + Text("%(pressKey)s"),
-    'dell including <pressKey>': Key(goto_normal_mode_keys + "d, f") + Text("%(pressKey)s"),
+    'select until <text>': Key(goto_normal_mode_keys + "v, t") + Function(range_insert_symbol),
+    'select including <text>': Key(goto_normal_mode_keys + "v, f") + Function(range_insert_symbol),
+    'dell until <text>': Key(goto_normal_mode_keys + "d, t") + Function(range_insert_symbol),
+    'dell including <text>': Key(goto_normal_mode_keys + "d, f") + Function(range_insert_symbol),
 
     # Fancy operations
-    'clay': Key(goto_normal_mode_keys + "c, i, dqoute"),
-    'yip': Key(goto_normal_mode_keys + "right, y, i, lparen"),
-    'yib': Key(goto_normal_mode_keys + "right, y, i lbrace"),
-
-    # Copy and Paste
-    'glue': Key(goto_normal_mode_keys + 'p'),
+    'clay': Key(goto_normal_mode_keys + "c, i, b"),
 
     # Movement
     'up <n> (lines|line)': Key("%(n)d, k"),
@@ -266,9 +280,8 @@ class Basics(dragonfly.MappingRule):
     mapping = basics_mapping
     extras = [
         Dictation('text'),
-        IntegerRef('n', 1, 999),
-        IntegerRef('n2', 1, 999),
-        Choice("pressKey", pressKeyMap),
+        IntegerRef('n', 0, 999),
+        IntegerRef('n2', 0, 999),
         Choice("surroundChar", surroundCharsMap),
     ]
     defaults = {
