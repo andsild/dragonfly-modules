@@ -9,6 +9,7 @@
 # Licensed under LGPL
 
 import aenea
+import re
 import aenea.configuration
 from aenea.lax import Key, Function
 from aenea import (
@@ -48,6 +49,7 @@ symbolMap = {
     'quote': 'quote',
     'single quote': 'single quote',
     'equals': 'single quote',
+    'space': 'space',
 }
 
 repls = {
@@ -58,34 +60,46 @@ repls = {
         }
 repls.update(letters)
 repls.update(letterMap)
+repls.update(symbolMap)
 
-def range_insert_symbol(text):
+def range_insert_symbol_logic(text):
     input_text = str(text).split()
+    boolBig = "big" == input_text[0]
+    if boolBig:
+        input_text = input_text[1:]
     lenInput = len(input_text)
-    boolBig = False
+    returnWord = ""
     for ind,word in enumerate(input_text):
         word = word.lower()
-        if word == "big":
-            boolBig = True
-            continue
         foundLetter = False
         for key,val in repls.iteritems():
-            if word in key:
+            chars_to_remove = ['|', '(', ')']
+            rx = '[' + re.escape(''.join(chars_to_remove)) + ']'
+            newkey = re.sub(rx, ' ', key).split()
+            if word in newkey:
                 if boolBig:
-                    Key(val.upper()).execute()
+                    returnWord += val.upper()
                 else:
-                    Key(val).execute()
+                    returnWord += val.lower()
                 foundLetter = True
                 break
-    if foundLetter:
-        pass
-    elif word in symbolMap:
-        Key(symbolMap[word]).execute()
-    else :
-        for letter in word:
-            Key(letter).execute()
-        if ind < lenInput-1:
-            Key("space").execute()
+        if not foundLetter:
+            for letter in word:
+                returnWord += letter
+            if ind < lenInput-1:
+                returnWord += ",space"
+        returnWord += ','
+    return returnWord[:-1]
+
+def range_insert_symbol(text):
+    print text
+    print range_insert_symbol_logic(text)
+
+    for words in range_insert_symbol_logic(text).split(','):
+        if words == "space":
+            Key(words).execute()
+        else:
+            Key(','.join(words)).execute()
 
 
 def goto_line_up(n):

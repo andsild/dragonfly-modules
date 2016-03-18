@@ -340,7 +340,7 @@ reservedWord = {
     "say": "say",
     "select": "select",
     "select all": "select all",
-    "abbreviate": "abbreviate",
+    "shorten": "abbreviate",
     "uppercase": "uppercase",
     "lowercase": "lowercase",
     "expand": "expand",
@@ -544,7 +544,7 @@ class KeystrokeRule(MappingRule):
         Choice("modifierSingle", singleModifierMap),
         Choice("pressKey", pressKeyMap),
         Choice("formatType", formatMap),
-        Choice("abbreviation", abbreviationMap),
+        Choice("shorten", abbreviationMap),
         Choice("reservedWord", reservedWord),
     ]
     defaults = {
