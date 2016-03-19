@@ -35,7 +35,7 @@ from dragonfly.actions.typeables import typeables
 if 'semicolon' not in typeables:
     typeables["semicolon"] = keyboard.get_typeable(char=';')
 
-from format import (
+from _format import (
     format_text,
     FormatTypes as ft,
 )
@@ -206,29 +206,29 @@ pressKeyMap.update(functionKeyMap)
 
 
 formatMap = {
-    "(sentence|sense|since) case": ft.sentenceCase,
-    "camel": ft.camelCase,
-    "pass": ft.pascalCase,
-    "snake": ft.snakeCase,
-    "uppercase": ft.upperCase,
-    "lowercase": ft.lowerCase,
-    "squash": ft.squash,
-    "lowercase squash": [ft.squash, ft.lowerCase],
-    "uppercase squash": [ft.squash, ft.upperCase],
-    "squash lowercase": [ft.squash, ft.lowerCase],
-    "squash uppercase": [ft.squash, ft.upperCase],
-    "dashify": ft.dashify,
-    "lowercase dashify": [ft.dashify, ft.lowerCase],
-    "uppercase dashify": [ft.dashify, ft.upperCase],
-    "dashify lowercase": [ft.dashify, ft.lowerCase],
-    "dashify uppercase": [ft.dashify, ft.upperCase],
-    "dotify": ft.dotify,
-    "lowercase dotify": [ft.dotify, ft.lowerCase],
-    "uppercase dotify": [ft.dotify, ft.upperCase],
-    "dotify lowercase": [ft.dotify, ft.lowerCase],
-    "dotify uppercase": [ft.dotify, ft.upperCase],
-    "say": ft.spokenForm,
-    "environment variable": [ft.snakeCase, ft.upperCase],
+    "(sentence|sense|since) case": [ft.sentenceCase],
+    "camel":                       [ft.camelCase],
+    "pass":                        [ft.pascalCase],
+    "snake":                       [ft.snakeCase],
+    "uppercase":                   [ft.upperCase],
+    "lowercase":                   [ft.lowerCase],
+    "squash":                      [ft.squash],
+    "lowercase squash":            [ft.squash, ft.lowerCase],
+    "uppercase squash":            [ft.squash, ft.upperCase],
+    "squash lowercase":            [ft.squash, ft.lowerCase],
+    "squash uppercase":            [ft.squash, ft.upperCase],
+    "dashify":                     [ft.dashify],
+    "lowercase dashify":           [ft.dashify, ft.lowerCase],
+    "uppercase dashify":           [ft.dashify, ft.upperCase],
+    "dashify lowercase":           [ft.dashify, ft.lowerCase],
+    "dashify uppercase":           [ft.dashify, ft.upperCase],
+    "dotify":                      [ft.dotify],
+    "lowercase dotify":            [ft.dotify, ft.lowerCase],
+    "uppercase dotify":            [ft.dotify, ft.upperCase],
+    "dotify lowercase":            [ft.dotify, ft.lowerCase],
+    "dotify uppercase":            [ft.dotify, ft.upperCase],
+    "say":                         [ft.spokenForm],
+    "environment variable":        [ft.snakeCase, ft.upperCase],
 }
 
 
@@ -340,7 +340,7 @@ reservedWord = {
     "say": "say",
     "select": "select",
     "select all": "select all",
-    "shorten": "abbreviate",
+    "short": "abbreviate",
     "uppercase": "uppercase",
     "lowercase": "lowercase",
     "expand": "expand",
@@ -491,14 +491,15 @@ grammarItems = {
         # Ex: "camel case my new variable" -> "myNewVariable"
         # Ex: "snake case my new variable" -> "my_new_variable"
         # Ex: "uppercase squash my new hyphen variable" -> "MYNEW-VARIABLE"
-        "<formatType> <text>": Function(format_text),
+        "<format_type_list> <text>": Function(format_text),
         # For writing words that would otherwise be characters or commands.
         # Ex: "period", tab", "left", "right", "home".
         "say <reservedWord>": Text("%(reservedWord)s"),
         # Abbreviate words commonly used in programming.
         # Ex: arguments -> args, parameters -> params.
-        "abbreviate <abbreviation>": Text("%(abbreviation)s"),
+        "short <short>": Text("%(short)s"),
         # Text corrections.
+
         "(add|fix) missing space": Key("c-left/3, space, c-right/3"),
         "(delete|remove) (double|extra) (space|whitespace)": Key("c-left/3, backspace, c-right/3"),  # @IgnorePep8
         "(delete|remove) (double|extra) (type|char|character)": Key("c-left/3, del, c-right/3"),  # @IgnorePep8
@@ -543,8 +544,8 @@ class KeystrokeRule(MappingRule):
         Choice("modifier2", modifierMap),
         Choice("modifierSingle", singleModifierMap),
         Choice("pressKey", pressKeyMap),
-        Choice("formatType", formatMap),
-        Choice("shorten", abbreviationMap),
+        Choice("format_type_list", formatMap),
+        Choice("short", abbreviationMap),
         Choice("reservedWord", reservedWord),
     ]
     defaults = {

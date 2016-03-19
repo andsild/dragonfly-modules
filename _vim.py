@@ -92,9 +92,6 @@ def range_insert_symbol_logic(text):
     return returnWord[:-1]
 
 def range_insert_symbol(text):
-    print text
-    print range_insert_symbol_logic(text)
-
     for words in range_insert_symbol_logic(text).split(','):
         if words == "space":
             Key(words).execute()
