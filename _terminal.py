@@ -7,21 +7,13 @@
 #
 # Licensed under LGPL
 
-import aenea
-import aenea.configuration
-from aenea.lax import Key, Text
-import dragonfly
-try:
-    import aenea.communications
-except ImportError:
-    print 'Unable to import Aenea client-side modules.'
-    raise
+from dragonfly import Grammar, Key, Text, AppContext, MappingRule
 
 # terminal_context = aenea.ProxyPlatformContext('linux')
-terminal_context = aenea.ProxyCustomAppContext(executable="gnome-terminal")
-grammar = dragonfly.Grammar('terminal', context=terminal_context)
+terminal_context = AppContext(executable="cmd")
+grammar = Grammar('terminal', context=terminal_context)
 
-terminal_mapping = aenea.configuration.make_grammar_commands('terminal', {
+terminal_mapping = {
     # Terminal commands
     # dir is hard to say and recognize. Use something else
     'deer home':                    Text("cd") + Key("enter"),
@@ -63,10 +55,10 @@ terminal_mapping = aenea.configuration.make_grammar_commands('terminal', {
     'view top':                     Text("htop") + Key("enter"),
 
     'redo last [command]':          Key("c-u, up, enter"),
-})
+}
 
 
-class Mapping(dragonfly.MappingRule):
+class Mapping(MappingRule):
     mapping = terminal_mapping
     extras = []
 

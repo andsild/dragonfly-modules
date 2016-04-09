@@ -10,21 +10,12 @@ to allow clicking of links via Telephony character names.
 
 #---------------------------------------------------------------------------
 
-import aenea
-import aenea.configuration
-from aenea.lax import Key, Function
-from aenea import (
-    Dictation,
-    IntegerRef,
-    Text,
-    Choice
-)
-import dragonfly
+from dragonfly import AppContext,Grammar, Dictation, IntegerRef, Text, Choice, Key, Function, MappingRule
 
 from _generic_edit import pressKeyMap
 
-chrome_context = aenea.ProxyCustomAppContext(executable="chrome")
-grammar = dragonfly.Grammar('chrome', context=chrome_context)
+chrome_context = AppContext(executable="chrome")
+grammar = Grammar('chrome', context=chrome_context)
 
 mapping = {
     # Press escape to the blur focus on any input fields
@@ -64,7 +55,7 @@ defaults = {
     'n': 1,
 }
 
-class Basics(dragonfly.MappingRule):
+class Basics(MappingRule):
     mapping = mapping
     extras = [
         Dictation('text'),

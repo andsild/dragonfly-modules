@@ -4,26 +4,24 @@
 # Commands for interacting with Vim
 #
 # Author: Tony Grosinger
-# modified by: Anders Sildnes 
-#
-# Licensed under LGPL
-
-import aenea
+# modified by: Anders Sildnes # # Licensed under LGPL 
 import re
-import aenea.configuration
-from aenea.lax import Key, Function
-from aenea import (
+from dragonfly import (
     Dictation,
+    Grammar,
+    Key,
+    MappingRule,
+    Function,
     IntegerRef,
     Text,
-    Choice
+    Choice,
+    AppContext,
 )
-import dragonfly
 
 from _generic_edit import pressKeyMap, letters, letterMap
 
-vim_context = aenea.ProxyCustomAppContext(executable="gnome-terminal")
-grammar = dragonfly.Grammar('vim', context=vim_context)
+vim_context = AppContext(executable="devenv", title="Microsoft visual studio")
+grammar = Grammar('vim', context=vim_context)
 
 surroundCharsMap = {
     'quotes': '"',
@@ -153,7 +151,7 @@ def delete_lines_up(n, n2):
 goto_normal_mode_keys = 'c-backslash, c-n, '
 goto_normal_mode = Key('c-backslash, c-n')
 
-basics_mapping = aenea.configuration.make_grammar_commands('vim', {
+basics_mapping = {
     'vim': Text("vim"),
 
     # Moving between splits
@@ -176,8 +174,8 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'stern <surroundChar>': Key("s, a, W") + Text("%(surroundChar)s"),
 
     # Moving viewport
-    'set number': Key(goto_normal_mode_keys + "comma, period"), 
-    'screen center': Key(goto_normal_mode_keys + "z, period, i"),
+    'set number': Key(goto_normal_mode_keys + "comma, dot"), 
+    'screen center': Key(goto_normal_mode_keys + "z, dot, i"),
     'screen top': Key(goto_normal_mode_keys + "z, t, i"),
     'screen bottom': Key(goto_normal_mode_keys + "z, b, i"),
 
@@ -208,8 +206,8 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
     'location next': Key(goto_normal_mode_keys + "rbracket, l"),
 
     # Finding text
-    'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),
-    'jump <text>': Key(goto_normal_mode_keys + "f") + Function(range_insert_symbol),
+    #'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),
+    'jump <text>': Key(goto_normal_mode_keys + "slash") + Function(range_insert_symbol),
     'next': Key(goto_normal_mode_keys + "n"),
     'prev|previous': Key(goto_normal_mode_keys + "N"),
     'clear search': Key(goto_normal_mode_keys + "colon, n, o, h, enter"),
@@ -284,10 +282,10 @@ basics_mapping = aenea.configuration.make_grammar_commands('vim', {
 
     # Plug-ins
     'explorer': Key(goto_normal_mode_keys + "colon") + Text("VimFilerExplorer") + Key("enter"),
-    })
+    }
 
 
-class Basics(dragonfly.MappingRule):
+class Basics(MappingRule):
     mapping = basics_mapping
     extras = [
         Dictation('text'),

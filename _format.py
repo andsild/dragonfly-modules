@@ -5,7 +5,7 @@
 #
 # Licensed under LGPL
 
-from aenea import Text
+from dragonfly import Text
 
 class FormatTypes:
     camelCase = 1
