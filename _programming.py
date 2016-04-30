@@ -9,6 +9,8 @@ rules = MappingRule(
         '(death|deaf)': Text('def '),
         'also': Text(' && '),
         'or': Text(' || '),
+        'pass': Text('pass'),
+        'is equal': Text('== '),
     })
 
 

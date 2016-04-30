@@ -19,6 +19,7 @@ from dragonfly import (
 )
 
 from _generic_edit import pressKeyMap, letters, letterMap
+IS_WINDOWS = True
 
 vim_context = AppContext(executable="devenv", title="Microsoft visual studio")
 grammar = Grammar('vim', context=vim_context)
@@ -45,8 +46,10 @@ symbolMap = {
 
     'sink': 'semi-colon',
     'quote': 'quote',
-    'single quote': 'single quote',
-    'equals': 'single quote',
+    #FIXME: two words are hard to parse (need singular for current logic)
+    # 'single quote': 'single quote',
+    'sing': 'squote',
+    'equals': 'equal',
     'space': 'space',
 }
 
@@ -56,9 +59,23 @@ repls = {
              "colon": "colon",
              "lap": 'lparen',
         }
+# When running DNS in windows, DNS will automatically replace some symbols
+# e.g. when saying "underscore", it will input "_"
+windows_special_cases = {
+    '_': 'underscore'
+}
 repls.update(letters)
 repls.update(letterMap)
 repls.update(symbolMap)
+if IS_WINDOWS:
+    repls.update(windows_special_cases)
+
+key = 'escape,'
+if not IS_WINDOWS:
+    key = 'c-backslash, c-n'
+
+goto_normal_mode_keys = key
+goto_normal_mode = Key(key)
 
 def range_insert_symbol_logic(text):
     input_text = str(text).split()
@@ -132,7 +149,10 @@ def lineJuggle(n1, n2, operation, linePrefix):
         min_line=linePrefix+str(min_line)
 
     goto_normal_mode.execute()
-    Text(":silent " + upper_line +  "," + min_line + str(min_line) + operation).execute()
+    start=":"
+    if not IS_WINDOWS:
+        start= start + "silent "
+    Text(start + str(min_line) + operation).execute()
     Key("enter").execute()
 
 
@@ -148,8 +168,19 @@ def delete_lines(n, n2):
 def delete_lines_up(n, n2):
     lineJuggle(n, n2, "d", "-")
 
-goto_normal_mode_keys = 'c-backslash, c-n, '
-goto_normal_mode = Key('c-backslash, c-n')
+def delete_line(n):
+    lineJuggle(n,n, "d", "+")
+def delete_line_zero():
+    lineJuggle(0,0, "d", "+")
+def delete_line_up(n):
+    lineJuggle(n,n, "d", "-")
+def yank_line(n):
+    lineJuggle(n,n, "y", "+")
+def yank_line_zero():
+    lineJuggle(0,0, "y", "+")
+def yank_line_up(n):
+    lineJuggle(n,n, "y", "-")
+
 
 basics_mapping = {
     'vim': Text("vim"),
@@ -207,7 +238,7 @@ basics_mapping = {
 
     # Finding text
     #'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),
-    'jump <text>': Key(goto_normal_mode_keys + "slash") + Function(range_insert_symbol),
+    'jump <text>': Key(goto_normal_mode_keys + "slash, backslash, c") + Function(range_insert_symbol),
     'next': Key(goto_normal_mode_keys + "n"),
     'prev|previous': Key(goto_normal_mode_keys + "N"),
     'clear search': Key(goto_normal_mode_keys + "colon, n, o, h, enter"),
@@ -247,21 +278,23 @@ basics_mapping = {
     'command mode': goto_normal_mode + Key("colon"),
 
     # Line operations
-    'dine': Key(goto_normal_mode_keys + "d:2"),
-    'dine <n>': goto_normal_mode + Function(goto_line) + Key("d:2"),
-    'dine up <n>': goto_normal_mode + Function(goto_line_up) + Key("d:2, c-o"),
-    'dine <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines) + Key("d:2, c-o"),
-    'dine up <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines_up) + Key("d:2, c-o"),
-    'yank': goto_normal_mode + Key("y:2"),
-    'yank [down] <n>': goto_normal_mode + Function(goto_line) + Key("y:2, c-o"),
-    'yank up <n>': goto_normal_mode + Function(goto_line_up) + Key("y:2, c-o"),
-    'yank <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines) + Key("c-o"),
-    'yank up <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines_up) + Key("c-o"),
+    'dine': goto_normal_mode + Function(delete_line_zero),
+    'dine <n>': goto_normal_mode + Function(delete_line),
+    'dine up <n>': goto_normal_mode + Function(delete_line_up),
+    'dine <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines),
+    'dine up <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines_up),
+    'yank ': goto_normal_mode + Function(yank_line_zero),
+    'yank [down] <n>': goto_normal_mode + Function(yank_line),
+    'yank up <n>': goto_normal_mode + Function(yank_line_up),
+    'yank <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines),
+    'yank up <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines_up),
 
     'select until <text>': Key(goto_normal_mode_keys + "v, t") + Function(range_insert_symbol),
     'select including <text>': Key(goto_normal_mode_keys + "v, f") + Function(range_insert_symbol),
     'dell until <text>': Key(goto_normal_mode_keys + "d, t") + Function(range_insert_symbol),
     'dell including <text>': Key(goto_normal_mode_keys + "d, f") + Function(range_insert_symbol),
+    '(see|sea) until <text>': Key(goto_normal_mode_keys + "c, t") + Function(range_insert_symbol),
+    '(see|sea) including <text>': Key(goto_normal_mode_keys + "c, f") + Function(range_insert_symbol),
 
     # Fancy operations
     'clay': Key(goto_normal_mode_keys + "c, i, b"),

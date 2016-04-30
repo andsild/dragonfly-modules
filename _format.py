@@ -37,10 +37,9 @@ def format_text_logic(text, formatType):
         return newText
 
 
-    def format_dashify(text):
+    def format_dashify(text_list):
         newText = ""
-        words = text.strip()
-        for word in words:
+        for word in text_list:
             if newText != "" and newText[-1:].isalnum() and word[-1:].isalnum():
                 word = "-" + word  # Adds dashes between normal words.
             newText += word

@@ -48,7 +48,6 @@ terminal_mapping = {
     '(pseudo|sudo|pseudo-) that':   Text("sudo !! ") + Key("enter"),
 
     # I recommend installing fzf
-    'fuzzy':                        Key("c-t"),
     'history':                      Key("c-r"),
     'open':                         Text("xdg-open "),
     'last parameter':               Key("escape, dot"),

@@ -213,6 +213,7 @@ formatMap = {
     "snake":                       [ft.snakeCase],
     "uppercase":                   [ft.upperCase],
     "lowercase":                   [ft.lowerCase],
+    "mumble case":                   [ft.lowerCase],
     "squash":                      [ft.squash],
     "lowercase squash":            [ft.squash, ft.lowerCase],
     "uppercase squash":            [ft.squash, ft.upperCase],
@@ -469,9 +470,7 @@ grammarItems = {
         "race": Key("rbrace"),
         "lack": Key("lbracket"),
         "rack": Key("rbracket"),
-        "quotes": Key("dquote/3, dquote/3, left/3"),
         "backticks": Key("backtick:2, left"),
-        "single quotes": Key("squote, squote, left/3"),
         "sing": Key("squote"),
         # Shorthand multiple characters.
         "double <char>": Text("%(char)s%(char)s"),
