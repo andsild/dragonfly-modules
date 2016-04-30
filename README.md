@@ -2,8 +2,7 @@
 dragonfly scripts for running on Windows (and some vim support)
 
 # Environment
-I do all of this work on Windows 10 using DNS 14.0 and Natlink 4.1 papa.  
-I do the development using Visual Studio 2015 (hence the .sln and .pyproj files).
+I do all of this work on Windows 10 using DNS 14.0 and Natlink 4.1 papa.  The development is in Visual Studio 2015 (hence the .sln and .pyproj files).
 
 If this is your first time installing dragonfly and Natlink, I recommend https://sourceforge.net/projects/natlink/files/pythonfornatlink/python2.7.zip/download
 to install the needed dependencies (and also some pip packages, see dragonfly readme).  

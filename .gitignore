@@ -61,3 +61,5 @@ target/
 *.opendb
 *.dll
 *.db
+.vs/*
+scratch_pad.py

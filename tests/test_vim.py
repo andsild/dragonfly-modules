@@ -4,7 +4,7 @@ import sys
 import os
 import sure
 
-from _vim import range_insert_symbol_logic
+from grammars._vim import range_insert_symbol_logic
 
 class VimTest(unittest2.TestCase):
     def setUp(self):
