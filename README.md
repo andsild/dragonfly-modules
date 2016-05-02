@@ -13,10 +13,10 @@ Previously I used Linux and a Windows VM, however, the delay of Aenea (https://g
 The jist of the _useful_ code is in the grammars repository.
 You can copy whatever commands you like to your own project. 
 
-I have deviated off the standard path with ``_natlink_hack.py''. This file handles imports for me, rather than letting natlink do it. 
+I have deviated off the standard path with `_natlink_hack.py`. This file handles imports for me, rather than letting natlink do it. 
 The only difference you need to care about is that my files in grammar per default will not install themselves as a grammar.
  To do this, you must add an "unload" method and make an instance of `MappingRule()`. An example is shown here:  
-```
+```python  
 from dragonfly import Grammar
 
 grammar = Grammar('NAME FOR GRAMMAR')
@@ -38,4 +38,4 @@ Alternatively, copy excerpts from my code into your own grammars.
 
 
 ## this is a work in progress	
-feel free to message me or create an issue if you would like to
+feel free to message me or create an issue if you would like to.
