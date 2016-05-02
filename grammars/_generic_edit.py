@@ -579,14 +579,3 @@ class RepeatRule(CompoundRule):
                 action.execute()
 
 rules = RepeatRule()
-#grammar = Grammar("Generic edit")
-#grammar.add_rule(RepeatRule())  # Add the top-level rule.
-#grammar.load()  # Load the grammar.
-
-
-#def unload():
-#    """Unload function which will be called at unload time."""
-#    global grammar
-#    if grammar:
-#        grammar.unload()
-#    grammar = None

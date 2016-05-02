@@ -21,8 +21,8 @@ from dragonfly import (
 from _generic_edit import pressKeyMap, letters, letterMap
 IS_WINDOWS = True
 
-vim_context = AppContext(executable="devenv", title="Microsoft visual studio")
-grammar = Grammar('vim', context=vim_context)
+#vim_context = AppContext(executable="devenv", title="Microsoft visual studio")
+#grammar = Grammar('vim', context=vim_context)
 
 surroundCharsMap = {
     'quotes': '"',
@@ -331,12 +331,3 @@ class VimRule(MappingRule):
     }
 
 rules = VimRule()
-#grammar.add_rule(Basics())
-#grammar.load()
-
-
-#def unload():
-    #global grammar
-    #if grammar:
-        #grammar.unload()
-    #grammar = None

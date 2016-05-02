@@ -15,8 +15,8 @@ from dragonfly import (
 from _generic_edit import pressKeyMap, letters, letterMap
 from _vim import range_insert_symbol
 
-visual_studio_context = AppContext(executable="devenv", title="Microsoft visual studio")
-grammar = Grammar('visualstudio', context=visual_studio_context)
+#visual_studio_context = AppContext(executable="devenv", title="Microsoft visual studio")
+#grammar = Grammar('visualstudio', context=visual_studio_context)
 
 basics_mapping = {
     'fuzzy':   Key("ctrl:down/3, comma, ctrl:up/3"),
@@ -36,12 +36,3 @@ class Basics(MappingRule):
     }
 
 rules = Basics()
-#grammar.add_rule(Basics())
-#grammar.load()
-
-
-#def unload():
-    #global grammar
-    #if grammar:
-        #grammar.unload()
-    #grammar = None

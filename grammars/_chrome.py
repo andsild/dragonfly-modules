@@ -14,7 +14,7 @@ from dragonfly import AppContext,Grammar, Dictation, IntegerRef, Text, Choice, K
 
 from _generic_edit import pressKeyMap
 
-chrome_context = AppContext(executable="chrome")
+#chrome_context = AppContext(executable="chrome")
 
 mapping = {
     # Press escape to the blur focus on any input fields

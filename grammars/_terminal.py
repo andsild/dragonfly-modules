@@ -10,9 +10,8 @@
 
 from dragonfly import Grammar, Key, Text, AppContext, MappingRule
 
-# terminal_context = aenea.ProxyPlatformContext('linux')
-terminal_context = AppContext(executable="cmd")
-grammar = Grammar('terminal', context=terminal_context)
+#terminal_context = AppContext(executable="cmd")
+#grammar = Grammar('terminal', context=terminal_context)
 
 terminal_mapping = {
     # Terminal commands
@@ -63,12 +62,3 @@ class Mapping(MappingRule):
     extras = []
 
 rules = Mapping()
-#grammar.add_rule(Mapping())
-#grammar.load()
-
-
-#def unload():
-    #global grammar
-    #if grammar:
-        #grammar.unload()
-    #grammar = None
