@@ -13,10 +13,11 @@ Previously I used Linux and a Windows VM, however, the delay of Aenea (https://g
 The jist of the _useful_ code is in the grammars repository.
 You can copy whatever commands you like to your own project. 
 
-I have deviated off the standard path with ``_natlink_hack.py''. This file handles imports for me, rather than letting natlink do it. 
-The only difference you need to care about is that my files in grammar per default will not install themselves as a grammar.
- To do this, you must add an "unload" method and make an instance of `MappingRule()`. An example is shown here:  
-```
+I have deviated off the standard path with `_natlink_hack.py`. This file handles imports for me, rather than letting Natlink do it. 
+The only difference is that my grammar files/rules per default will not install themselves as executable dragonfly grammars to DNS or Windows' speech engine.
+ To use the grammars "as normal", you must append the code below to a given file that is prefixed with underscore.
+ E.g. you can copy "grammars/_vim.py" to your computer, and append the code below to the bottom of the file (magic)
+```python  
 from dragonfly import Grammar
 
 grammar = Grammar('NAME FOR GRAMMAR')
@@ -33,9 +34,5 @@ def unload():
 My natlink_hack is not perfect (e.g. it doesn't allow for context switching), but it was written to take me further away from Natlinks' API (for which I am ever grateful for having, but I prefer staying away).
 
 
-Either copy the .py files you want in your Natlink user directory or C:\Natlink\Natlink\MacroSystem.
-Alternatively, copy excerpts from my code into your own grammars.
-
-
 ## this is a work in progress	
-feel free to message me or create an issue if you would like to
+feel free to message me or create an issue if you would like to.
