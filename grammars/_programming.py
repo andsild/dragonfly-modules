@@ -1,7 +1,6 @@
 from dragonfly import (Grammar, AppContext, MappingRule, Key, Text,
                        Dictation, Integer, Function)
 
-#grammar = Grammar("programming mode")
 rules = MappingRule(
     name = 'Programming rules',
     mapping = {
@@ -11,13 +10,4 @@ rules = MappingRule(
         'or': Text(' || '),
         'pass': Text('pass'),
         'is equal': Text('== '),
-        'time': Text("works"),
-        'the fuck': Text("works"),
     })
-#grammar.add_rule(rules)
-#grammar.load()
-
-#def unload():
-    #global grammar
-    #if grammar: grammar.unload()
-    #grammar = None

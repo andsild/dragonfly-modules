@@ -318,7 +318,7 @@ basics_mapping = {
     }
 
 
-class Basics(MappingRule):
+class VimRule(MappingRule):
     mapping = basics_mapping
     extras = [
         Dictation('text'),
@@ -330,12 +330,13 @@ class Basics(MappingRule):
         "n": 1,  # Default repeat count.
     }
 
-grammar.add_rule(Basics())
-grammar.load()
+rules = VimRule()
+#grammar.add_rule(Basics())
+#grammar.load()
 
 
-def unload():
-    global grammar
-    if grammar:
-        grammar.unload()
-    grammar = None
+#def unload():
+    #global grammar
+    #if grammar:
+        #grammar.unload()
+    #grammar = None

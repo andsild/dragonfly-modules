@@ -36,11 +36,10 @@ from dragonfly.actions.typeables import typeables
 if 'semicolon' not in typeables:
     typeables["semicolon"] = keyboard.get_typeable(char=';')
 
-from _format import (
+from utility._format import (
     format_text,
     FormatTypes as ft,
 )
-
 
 release = Key("shift:up, ctrl:up, alt:up")
 
@@ -579,14 +578,15 @@ class RepeatRule(CompoundRule):
             for action in sequence:
                 action.execute()
 
-grammar = Grammar("Generic edit")
-grammar.add_rule(RepeatRule())  # Add the top-level rule.
-grammar.load()  # Load the grammar.
+rules = RepeatRule()
+#grammar = Grammar("Generic edit")
+#grammar.add_rule(RepeatRule())  # Add the top-level rule.
+#grammar.load()  # Load the grammar.
 
 
-def unload():
-    """Unload function which will be called at unload time."""
-    global grammar
-    if grammar:
-        grammar.unload()
-    grammar = None
+#def unload():
+#    """Unload function which will be called at unload time."""
+#    global grammar
+#    if grammar:
+#        grammar.unload()
+#    grammar = None

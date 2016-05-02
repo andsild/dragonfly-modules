@@ -4,6 +4,7 @@
 # Commands for interacting with terminal and desktop environment
 #
 # Author: Tony Grosinger
+# Modified by: Anders Sildnes
 #
 # Licensed under LGPL
 
@@ -61,12 +62,13 @@ class Mapping(MappingRule):
     mapping = terminal_mapping
     extras = []
 
-grammar.add_rule(Mapping())
-grammar.load()
+rules = Mapping()
+#grammar.add_rule(Mapping())
+#grammar.load()
 
 
-def unload():
-    global grammar
-    if grammar:
-        grammar.unload()
-    grammar = None
+#def unload():
+    #global grammar
+    #if grammar:
+        #grammar.unload()
+    #grammar = None

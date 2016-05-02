@@ -15,7 +15,6 @@ from dragonfly import AppContext,Grammar, Dictation, IntegerRef, Text, Choice, K
 from _generic_edit import pressKeyMap
 
 chrome_context = AppContext(executable="chrome")
-grammar = Grammar('chrome', context=chrome_context)
 
 mapping = {
     # Press escape to the blur focus on any input fields
@@ -55,7 +54,7 @@ defaults = {
     'n': 1,
 }
 
-class Basics(MappingRule):
+class ChromeRule(MappingRule):
     mapping = mapping
     extras = [
         Dictation('text'),
@@ -66,13 +65,4 @@ class Basics(MappingRule):
         "n": 1,  # Default repeat count.
     }
 
-
-grammar.add_rule(Basics())
-grammar.load()
-
-
-def unload():
-    global grammar
-    if grammar:
-        grammar.unload()
-    grammar = None
+rules = ChromeRule()

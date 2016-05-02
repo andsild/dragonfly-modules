@@ -35,12 +35,13 @@ class Basics(MappingRule):
         "n": 1,  # Default repeat count.
     }
 
-grammar.add_rule(Basics())
-grammar.load()
+rules = Basics()
+#grammar.add_rule(Basics())
+#grammar.load()
 
 
-def unload():
-    global grammar
-    if grammar:
-        grammar.unload()
-    grammar = None
+#def unload():
+    #global grammar
+    #if grammar:
+        #grammar.unload()
+    #grammar = None
