@@ -4,7 +4,7 @@ import sys
 import os
 import sure
 
-from grammars._format import format_text_logic, FormatTypes
+from utility._format import format_text_logic, FormatTypes
 
 class FormatTest(unittest2.TestCase):
     def setUp(self):
@@ -18,7 +18,7 @@ class FormatTest(unittest2.TestCase):
         testInOut("camel case", "camelCase", [FormatTypes.camelCase])
         testInOut("snake case", "snake_case", [FormatTypes.snakeCase])
         testInOut("pascal case", "PascalCase", [FormatTypes.pascalCase])
-        testInOut("lowercase word", "lowercase word", [FormatTypes.lowerCase])
+        testInOut("LOWERCASE WORD", "lowercase word", [FormatTypes.lowerCase])
         testInOut("uppercase word", "UPPERCASE WORD", [FormatTypes.upperCase])
 
 

@@ -15,7 +15,7 @@ You can copy whatever commands you like to your own project.
 
 I have deviated off the standard path with `_natlink_hack.py`. This file handles imports for me, rather than letting Natlink do it. 
 The only difference is that my grammar files/rules per default will not install themselves as executable dragonfly grammars to DNS or Windows' speech engine.
- To use the grammars "as normal", you must append the code below to a given file that is prefixed with underscore.
+I.e. you have to add them manually (or using natlink_hack.py). To use the grammars "as normal", you must append the code below to a given file that is prefixed with underscore.
  E.g. you can copy "grammars/_vim.py" to your computer, and append the code below to the bottom of the file (magic)
 ```python  
 from dragonfly import Grammar

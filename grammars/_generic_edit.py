@@ -211,7 +211,7 @@ formatMap = {
     "pass":                        [ft.pascalCase],
     "snake":                       [ft.snakeCase],
     "uppercase":                   [ft.upperCase],
-    "lowercase":                   [ft.lowerCase],
+    "dwarf type":                   [ft.lowerCase],
     "mumble case":                   [ft.lowerCase],
     "squash":                      [ft.squash],
     "lowercase squash":            [ft.squash, ft.lowerCase],
@@ -407,6 +407,9 @@ letters = {
         "big war":        "W",
 }
 
+def translate_to_number(n):
+    Text(str(n)).execute()
+
 grammarItems = {
         # Navigation keys.
         "up [<n>]": Key("up:%(n)d"),
@@ -432,6 +435,7 @@ grammarItems = {
         "doc home": Key("c-home/3"),
         "ghin buffer": Key("c-home/3"),
         "ghin end": Key("c-end/3"),
+        "bum <n>": Function(translate_to_number),
         "doc end": Key("c-end/3"),
         "ex buffer": Key("c-end/3"),
         "quest": Key("question"),

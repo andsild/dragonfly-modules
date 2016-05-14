@@ -82,6 +82,9 @@ def range_insert_symbol_logic(text):
     boolBig = "big" == input_text[0]
     if boolBig:
         input_text = input_text[1:]
+    if input_text[0] == "the": 
+        # DNS will often append "the" to words (because it is a linguistic model)
+        input_text = input_text[1:]
     lenInput = len(input_text)
     returnWord = ""
     for ind,word in enumerate(input_text):
@@ -136,25 +139,30 @@ def just_goto_line(n):
     Key("j").execute()
 
 
-def lineJuggle(n1, n2, operation, linePrefix):
+def lineJuggle_logic(n1, n2, operation, linePrefix):
     upper_line=min(n1,n2)
-    min_line=max(n1,n2)
+    lower_line=max(n1,n2)
+    if linePrefix == "+":
+        upper_line, lower_line = lower_line, upper_line
+
     if upper_line==0:
         upper_line="."
     else:
         upper_line=linePrefix+str(upper_line)
-    if min_line==0:
-        min_line="."
+    if lower_line==0:
+        lower_line="."
     else:
-        min_line=linePrefix+str(min_line)
+        lower_line=linePrefix+str(lower_line)
 
-    goto_normal_mode.execute()
     start=":"
     if not IS_WINDOWS:
         start= start + "silent "
-    Text(start + str(min_line) + operation).execute()
-    Key("enter").execute()
+    return start + str(lower_line) + "," + str(upper_line) + operation
 
+def lineJuggle(n1, n2, operation, linePrefix):
+    goto_normal_mode.execute()
+    Text(lineJuggle_logic(n1, n2, operation, linePrefix)).execute()
+    Key("enter").execute()
 
 def yank_lines(n, n2):
     lineJuggle(n, n2, "y", "+")
@@ -230,6 +238,8 @@ basics_mapping = {
     '(vim|vic) tab <n>': Key(goto_normal_mode_keys + "comma, %(n)d"),
     'comma': Key("comma"),
     '(rook|Brook|rock)': Key("right, colon, space"),
+    'ghin front': Key(goto_normal_mode_keys + "zero, w"),
+    'ghin end': Key(goto_normal_mode_keys + "dollar, h"),
 
     'quick (prev|previous)': Key("lbracket, q"),
     'quick next': Key(goto_normal_mode_keys + "rbracket, q"),
@@ -238,7 +248,7 @@ basics_mapping = {
 
     # Finding text
     #'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),
-    'jump <text>': Key(goto_normal_mode_keys + "slash, backslash, c") + Function(range_insert_symbol),
+    'jump <text>': Key("escape, slash, backslash, c") + Function(range_insert_symbol),
     'next': Key(goto_normal_mode_keys + "n"),
     'prev|previous': Key(goto_normal_mode_keys + "N"),
     'clear search': Key(goto_normal_mode_keys + "colon, n, o, h, enter"),
