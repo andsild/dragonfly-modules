@@ -1,0 +1,3 @@
+[submodule "TextToNumber"]
+	path = TextToNumber
+	url = https://github.com/andsild/TextToNumber.git
