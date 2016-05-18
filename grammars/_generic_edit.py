@@ -99,7 +99,7 @@ singleModifierMap = {
     "super": "win",
 }
 
-letterMap = {
+Letter_map = {
     "(A|alpha|arch)":         "a",
     "big (A|alpha|arch)":     "A",
     "(B|bravo) ":             "b",
@@ -199,7 +199,7 @@ functionKeyMap = {
 }
 
 pressKeyMap = {}
-pressKeyMap.update(letterMap)
+pressKeyMap.update(Letter_map)
 pressKeyMap.update(numberMap)
 pressKeyMap.update(controlKeyMap)
 pressKeyMap.update(functionKeyMap)
@@ -211,9 +211,10 @@ formatMap = {
     "pass":                        [ft.pascalCase],
     "snake":                       [ft.snakeCase],
     "uppercase":                   [ft.upperCase],
-    "dwarf type":                   [ft.lowerCase],
+    "dwarf":                   [ft.lowerCase],
     "mumble case":                   [ft.lowerCase],
     "squash":                      [ft.squash],
+    "wash":                      [ft.squash],
     "lowercase squash":            [ft.squash, ft.lowerCase],
     "uppercase squash":            [ft.squash, ft.upperCase],
     "squash lowercase":            [ft.squash, ft.lowerCase],
@@ -376,7 +377,7 @@ def paste_command():
     release.execute()
     Key("c-v/3").execute()
 
-letters = {
+Letters = {
         "charm":          "c",
         "big charm":      "C",
         "(faye|fay)":     "f",
@@ -516,7 +517,7 @@ grammarItems = {
 
 voiceLetters = {}
 
-for voice_command,key in letters.iteritems():
+for voice_command,key in Letters.iteritems():
     voiceLetters[voice_command] = Key(key)
 
 
@@ -542,7 +543,7 @@ class KeystrokeRule(MappingRule):
         Dictation("text"),
         Dictation("text2"),
         Choice("char", specialCharMap),
-        Choice("letters", letterMap),
+        Choice("letters", Letter_map),
         Choice("modifier1", modifierMap),
         Choice("modifier2", modifierMap),
         Choice("modifierSingle", singleModifierMap),
@@ -568,8 +569,8 @@ class RepeatRule(CompoundRule):
     # Here we define this rule's spoken-form and special elements.
     spec = "<sequence> [[[and] repeat [that]] <n> times]"
     extras = [
-        sequence,  # Sequence of actions defined above.
-        IntegerRef("n", 1, 100),  # Times to repeat the sequence.
+        sequence,  
+        IntegerRef("n", 1, 1000), 
     ]
     defaults = {
         "n": 1,  # Default repeat count.

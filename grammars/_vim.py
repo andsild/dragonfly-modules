@@ -5,7 +5,6 @@
 #
 # Author: Tony Grosinger
 # modified by: Anders Sildnes # # Licensed under LGPL 
-import re
 from dragonfly import (
     Dictation,
     Grammar,
@@ -18,7 +17,8 @@ from dragonfly import (
     AppContext,
 )
 
-from _generic_edit import pressKeyMap, letters, letterMap
+from _generic_edit import pressKeyMap
+from utility.text_translate import range_insert_symbol
 IS_WINDOWS = True
 
 #vim_context = AppContext(executable="devenv", title="Microsoft visual studio")
@@ -31,91 +31,12 @@ surroundCharsMap = {
     'braces': "{",
 }
 
-symbolMap = {
-    'dollar': 'dollar',
-    'comma': ',',
-    'period': 'dot',
-    'laip': 'lparen',
-    'lace': 'lbrace',
-    'lack': 'lbracket',
-
-    'race': 'rbrace',
-    'rack': 'rbracket',
-    'rye': 'rparen',
-    'colon': 'colon',
-
-    'sink': 'semi-colon',
-    'quote': 'quote',
-    #FIXME: two words are hard to parse (need singular for current logic)
-    # 'single quote': 'single quote',
-    'sing': 'squote',
-    'equals': 'equal',
-    'space': 'space',
-}
-
-repls = {
-             'quote': 'dquote',
-             'sing': 'squote',
-             "colon": "colon",
-             "lap": 'lparen',
-        }
-# When running DNS in windows, DNS will automatically replace some symbols
-# e.g. when saying "underscore", it will input "_"
-windows_special_cases = {
-    '_': 'underscore'
-}
-repls.update(letters)
-repls.update(letterMap)
-repls.update(symbolMap)
-if IS_WINDOWS:
-    repls.update(windows_special_cases)
-
 key = 'escape,'
 if not IS_WINDOWS:
     key = 'c-backslash, c-n'
 
 goto_normal_mode_keys = key
 goto_normal_mode = Key(key)
-
-def range_insert_symbol_logic(text):
-    input_text = str(text).split()
-    boolBig = "big" == input_text[0]
-    if boolBig:
-        input_text = input_text[1:]
-    if input_text[0] == "the": 
-        # DNS will often append "the" to words (because it is a linguistic model)
-        input_text = input_text[1:]
-    lenInput = len(input_text)
-    returnWord = ""
-    for ind,word in enumerate(input_text):
-        word = word.lower()
-        foundLetter = False
-        for key,val in repls.iteritems():
-            chars_to_remove = ['|', '(', ')']
-            rx = '[' + re.escape(''.join(chars_to_remove)) + ']'
-            newkey = re.sub(rx, ' ', key).split()
-            if word in newkey:
-                if boolBig:
-                    returnWord += val.upper()
-                else:
-                    returnWord += val.lower()
-                foundLetter = True
-                break
-        if not foundLetter:
-            for letter in word:
-                returnWord += letter
-            if ind < lenInput-1:
-                returnWord += ",space"
-        returnWord += ','
-    return returnWord[:-1]
-
-def range_insert_symbol(text):
-    for words in range_insert_symbol_logic(text).split(','):
-        if words == "space":
-            Key(words).execute()
-        else:
-            Key(','.join(words)).execute()
-
 
 def goto_line_up(n):
     Key('m, squote').execute()
@@ -201,29 +122,26 @@ basics_mapping = {
     'open [in] tab': Key(goto_normal_mode_keys + "semicolon, t"),
 
     'visual [mode]': Key("v"),
-    'extend [<n>]': Key("rbrace:%(n)d"),
-    'withdraw': Key("lbrace:%(n)d"),
     'visual block': Key("c-v"),
     'inner block': Key("i, b"),
     'paragraph': Key("a, p"),
     'visual line': Key("s-v"),
-    'comment': Key("g, c, c"),
 
+    'comment': Key("g, c, c"),
     'surround word [with] <surroundChar>': Key("s, a, W") + Text("%(surroundChar)s"),
     'stern <surroundChar>': Key("s, a, W") + Text("%(surroundChar)s"),
 
     # Moving viewport
     'set number': Key(goto_normal_mode_keys + "comma, dot"), 
-    'screen center': Key(goto_normal_mode_keys + "z, dot, i"),
-    'screen top': Key(goto_normal_mode_keys + "z, t, i"),
-    'screen bottom': Key(goto_normal_mode_keys + "z, b, i"),
+    'screen center': Key(goto_normal_mode_keys + "z, dot"),
+    'screen top': Key(goto_normal_mode_keys + "z, t"),
+    'screen bottom': Key(goto_normal_mode_keys + "z, b"),
 
     # Append to line
     'noop <n>': goto_normal_mode + Function(goto_line) + Key("o"),
     'nope <n>': goto_normal_mode + Function(goto_line) + Key("A"),
 
     'prepend': Key(goto_normal_mode_keys + "I"),
-    'insert': Key(goto_normal_mode_keys + "i"),
     'insert below': Key(goto_normal_mode_keys + "o"),
     'insert above': Key(goto_normal_mode_keys + "O"),
     'undo': Key(goto_normal_mode_keys + "u"),
@@ -239,7 +157,7 @@ basics_mapping = {
     'comma': Key("comma"),
     '(rook|Brook|rock)': Key("right, colon, space"),
     'ghin front': Key(goto_normal_mode_keys + "zero, w"),
-    'ghin end': Key(goto_normal_mode_keys + "dollar, h"),
+    'ghin back': Key(goto_normal_mode_keys + "dollar"),
 
     'quick (prev|previous)': Key("lbracket, q"),
     'quick next': Key(goto_normal_mode_keys + "rbracket, q"),
@@ -305,6 +223,7 @@ basics_mapping = {
     'dell including <text>': Key(goto_normal_mode_keys + "d, f") + Function(range_insert_symbol),
     '(see|sea) until <text>': Key(goto_normal_mode_keys + "c, t") + Function(range_insert_symbol),
     '(see|sea) including <text>': Key(goto_normal_mode_keys + "c, f") + Function(range_insert_symbol),
+
 
     # Fancy operations
     'clay': Key(goto_normal_mode_keys + "c, i, b"),

@@ -55,14 +55,8 @@ def format_text_logic(text, formatType):
             newText += word
         return newText
 
-
     def format_squash(text):
-        newText = ""
-        words = text.strip()
-        for word in words:
-            newText = '%s%s' % (newText, word)
-        return newText
-
+        return ''.join(text)
 
     def format_sentence_case(text):
         newText = []

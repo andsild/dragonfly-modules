@@ -12,8 +12,8 @@ from dragonfly import (
 )
 
 
-from _generic_edit import pressKeyMap, letters, letterMap
-from _vim import range_insert_symbol
+from _generic_edit import pressKeyMap, Letters, Letter_map
+from utility.text_translate import range_insert_symbol
 
 #visual_studio_context = AppContext(executable="devenv", title="Microsoft visual studio")
 #grammar = Grammar('visualstudio', context=visual_studio_context)
@@ -26,6 +26,7 @@ basics_mapping = {
     'find <text>': Key("c-f") + Function(range_insert_symbol),
     'run main': Key("ctrl:down/3, f5, ctrl:up/3"),
     'fly away [<n>]': Key("ctrl:down/3, tab:%(n)d") + Key("ctrl:up/3"),
+    'rename [this]': Key("ctrl:down/3, r, ctrl:up/3, r"),
 }
 class Basics(MappingRule):
     mapping = basics_mapping

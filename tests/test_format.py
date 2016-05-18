@@ -20,6 +20,7 @@ class FormatTest(unittest2.TestCase):
         testInOut("pascal case", "PascalCase", [FormatTypes.pascalCase])
         testInOut("LOWERCASE WORD", "lowercase word", [FormatTypes.lowerCase])
         testInOut("uppercase word", "UPPERCASE WORD", [FormatTypes.upperCase])
+        testInOut("squash case", "squashcase", [FormatTypes.squash])
 
 
 def testInOut(input, output, formatTypes):

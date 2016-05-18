@@ -10,4 +10,5 @@ rules = MappingRule(
         'or': Text(' || '),
         'pass': Text('pass'),
         'is equal': Text('== '),
+        'equals': Text(' = '),
     })
