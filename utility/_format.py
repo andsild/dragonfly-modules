@@ -5,8 +5,6 @@
 #
 # Licensed under LGPL
 
-from dragonfly import Text
-
 class FormatTypes:
     camelCase = 1
     pascalCase = 2
@@ -112,13 +110,7 @@ def format_text_logic(text, formatType):
         FormatTypes.spokenForm: format_spoken_form,
     }
 
-
-
     result = text.split()
     for value in formatType: # there can be multiple types
         result = FORMAT_TYPES_MAP[value](result)
     return result
-
-def format_text(text, format_type_list=None):
-    result = format_text_logic(str(text), format_type_list)
-    Text("%(text)s").execute({"text": result})

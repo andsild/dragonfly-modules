@@ -1,5 +1,13 @@
 import re
-from grammars._generic_edit import Letters, Letter_map
+from utility.lettermap import Letters, Letter_map
+from subprocess import Popen, PIPE, STDOUT
+import os
+
+
+subRepoName="TextToNumber"
+currentPath = os.getcwd()
+exeName = os.path.join(currentPath, subRepoName, "dist", "build",  subRepoName, subRepoName + ".exe")
+
 
 Symbol_map = {
     'dollar': 'dollar',
@@ -84,3 +92,8 @@ def range_insert_symbol(text):
             Key(words[2:]).execute()
         else:
             Key(','.join(words)).execute()
+
+def translate_numbers(text):
+    p = Popen([exeName], stdout=PIPE, stdin=PIPE, stderr=STDOUT)    
+    stdout = p.communicate(input=bytearray(text))[0]
+    return str(stdout.decode().rstrip())

@@ -4,7 +4,7 @@ import sys
 import os
 import sure
 
-from grammars._vim import lineJuggle_logic
+from utility.vim_logic import lineJuggle_logic
 
 class VimTest(unittest2.TestCase):
     def setUp(self):

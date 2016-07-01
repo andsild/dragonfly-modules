@@ -37,9 +37,15 @@ if 'semicolon' not in typeables:
     typeables["semicolon"] = keyboard.get_typeable(char=';')
 
 from utility._format import (
-    format_text,
+    format_text_logic,
     FormatTypes as ft,
 )
+from utility.lettermap import *
+
+def format_text(text, format_type_list=None):
+    result = format_text_logic(str(text), format_type_list)
+    Text("%(text)s").execute({"text": result})
+
 
 release = Key("shift:up, ctrl:up, alt:up")
 
@@ -97,61 +103,6 @@ singleModifierMap = {
     "control": "ctrl",
    "shift": "shift",
     "super": "win",
-}
-
-Letter_map = {
-    "(A|alpha|arch)":         "a",
-    "big (A|alpha|arch)":     "A",
-    "(B|bravo) ":             "b",
-    "big (B|bravo) ":         "B",
-    "(C|charlie)":            "c",
-    "big (C|charlie)":        "C",
-    "(D|delta) ":             "d",
-    "big (D|delta) ":         "D",
-    "(E|echo) ":              "e",
-    "big (E|echo) ":          "E",
-    "(F|foxtrot) ":           "f",
-    "big (F|foxtrot) ":       "F",
-    "(G|golf) ":              "g",
-    "big (G|golf) ":          "G",
-    "(H|hotel) ":             "h",
-    "big (H|hotel) ":         "H",
-    "(I|india|indigo) ":      "i",
-    "big (I|india|indigo) ":  "I",
-    "(J|juliet) ":            "j",
-    "big (J|juliet) ":        "J",
-    "(K|kilo) ":              "k",
-    "big (K|kilo) ":          "K",
-    "(L|lima) ":              "l",
-    "big (L|lima) ":          "L",
-    "(M|mike) ":              "m",
-    "big (M|mike) ":          "M",
-    "(N|november) ":          "n",
-    "big (N|november) ":      "N",
-    "(O|oscar) ":             "o",
-    "big (O|oscar) ":         "O",
-    "(P|papa|poppa) ":        "p",
-    "big (P|papa|poppa) ":    "P",
-    "(Q|quebec|quiche) ":     "q",
-    "big (Q|quebec|quiche) ": "Q",
-    "(R|romeo) ":             "r",
-    "big (R|romeo) ":         "R",
-    "(S|sierra|soy) ":        "s",
-    "big (S|sierra|soy) ":    "S",
-    "(T|tango) ":             "t",
-    "big (T|tango) ":         "T",
-    "(U|uniform) ":           "u",
-    "big (U|uniform) ":       "U",
-    "(V|victor|van) ":        "v",
-    "big (V|victor|van) ":    "V",
-    "(W|whiskey|wes) ":       "w",
-    "big (W|whiskey|wes) ":   "W",
-    "(X|x-ray) ":             "x",
-    "big (X|x-ray) ":         "X",
-    "(Y|yankee) ":            "y",
-    "big (Y|yankee) ":        "Y",
-    "(Z|zulu) ":              "z",
-    "big (Z|zulu) ":          "Z",
 }
 
 numberMap = {
@@ -377,36 +328,7 @@ def paste_command():
     release.execute()
     Key("c-v/3").execute()
 
-Letters = {
-        "charm":          "c",
-        "big charm":      "C",
-        "(faye|fay)":     "f",
-        "big (faye|fay)": "F",
-        "ice":            "i",
-        "big ice":        "I",
-        "jo":             "j",
-        "big jo":         "J",
-        "(noy|neu)":      "n",
-        "big (noy|neu)":  "N",
-        "ork":            "o",
-        "big ork":        "O",
-        "pooch":          "p",
-        "big pooch":      "P",
-        "real":           "r",
-        "big real":       "R",
-        "(soi|soy)":      "s",
-        "big (soi|soy)":  "S",
-        "(take|teek|teak)":           "t",
-        "big (take|teak|teek)":       "T",
-        "uni":            "u",
-        "big uni":        "U",
-        "trex":           "x",
-        "big trex":       "X",
-        "yaa":            "y",
-        "big yaa":        "Y",
-        "war":            "w",
-        "big war":        "W",
-}
+
 
 def translate_to_number(n):
     Text(str(n)).execute()
