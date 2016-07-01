@@ -17,6 +17,8 @@ fi
 
 test -e ./${subreponame}/dist/build/${subreponame}/${subreponame}.exe || die "Setup did not work. Try cloning submodule manually and run cabal install (see source code for script)"
 
+pip install -r requirements.txt
+
 
 
 #@ DESCRIPTION: print error msg and exit with a given ret value
