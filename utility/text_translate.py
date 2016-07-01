@@ -46,7 +46,8 @@ if IS_WINDOWS:
     Symbol_map.update(windows_special_cases)
 
 def range_insert_symbol_logic(text):
-    input_text = str(text).split()
+    translated_text = translate_numbers(text)
+    input_text = str(translated_text).split()
     boolBig = "big" == input_text[0]
     if boolBig:
         input_text = input_text[1:]
