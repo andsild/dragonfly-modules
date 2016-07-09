@@ -1,14 +1,11 @@
 import unittest2
 
-import sys
-import reloader
-
 from dragonflymodules.config import GRAMMAR_IMPORTS
 
 class TestGrammarCorrectness(unittest2.TestCase):
     """
        Having to (re)start DNS to find an errormessage is tedious.
-        These tests show the errors even if DNS is not running  (or if it is, even).
+       These tests show the errors even if DNS is not running  (or if it is, even).
 
         Dragonfly tries to initialize a speech engine when it is imported.
         To avoid this (speeding up test execution by a lot)

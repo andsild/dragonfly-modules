@@ -4,7 +4,6 @@ from subprocess import Popen, PIPE, STDOUT
 import os
 from dragonflymodules.config import default_install_dir
 
-
 subRepoName="TextToNumber"
 exeName = os.path.join(default_install_dir, subRepoName, "dist", "build",  subRepoName, subRepoName + ".exe")
 
@@ -40,7 +39,6 @@ windows_special_cases = {
 
 Symbol_map.update(Shorttalk_Letters)
 Symbol_map.update(Phonetic_Letter_map)
-Symbol_map.update(Symbol_map)
 IS_WINDOWS = True
 if IS_WINDOWS:
     Symbol_map.update(windows_special_cases)

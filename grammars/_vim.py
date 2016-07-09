@@ -126,7 +126,7 @@ basics_mapping = {
     'prepend': Key(goto_normal_mode_keys + "I"),
     'insert below': Key(goto_normal_mode_keys + "o"),
     'insert above': Key(goto_normal_mode_keys + "O"),
-    'undo': Key(goto_normal_mode_keys + "u"),
+    'regret': Key(goto_normal_mode_keys + "u"),
     'read': Key(goto_normal_mode_keys + "c-r"),
     'scratch': Key(goto_normal_mode_keys + "u"),
     'escape': Key("escape"),
@@ -145,6 +145,7 @@ basics_mapping = {
     'quick next': Key(goto_normal_mode_keys + "rbracket, q"),
     'location (prev|previous)': Key(goto_normal_mode_keys + "lbracket, l"),
     'location next': Key(goto_normal_mode_keys + "rbracket, l"),
+    
 
     # Finding text
     #'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),

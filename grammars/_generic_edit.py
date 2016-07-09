@@ -285,7 +285,6 @@ reservedWord = {
     "paste": "paste",
     "copy": "copy",
     "cut": "cut",
-    "undo": "undo",
     "release": "release",
     "page up": "page up",
     "page down": "page down",
@@ -333,7 +332,6 @@ def translate_to_number(n):
     Text(str(n)).execute()
 
 grammarItems = {
-        # Navigation keys.
         "up [<n>]": Key("up:%(n)d"),
         "up [<n>] slow": Key("up/15:%(n)d"),
         "down [<n>]": Key("down:%(n)d"),
@@ -461,7 +459,6 @@ class KeystrokeRule(MappingRule):
         Choice("char", specialCharMap),
         Choice("letters", Phonetic_Letter_map),
         Choice("modifier1", modifierMap),
-        Choice("modifier2", modifierMap),
         Choice("modifierSingle", singleModifierMap),
         Choice("pressKey", pressKeyMap),
         Choice("format_type_list", formatMap),

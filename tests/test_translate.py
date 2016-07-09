@@ -4,6 +4,7 @@ import sys
 import os
 import sure
 
+from utility.substitute_phrase import range_insert_symbol
 from utility.text_translate import range_insert_symbol_logic, translate_numbers
 
 class TranslatorTest(unittest2.TestCase):
@@ -16,7 +17,8 @@ class TranslatorTest(unittest2.TestCase):
     def test_translate_word_to_number(self):
         pass
 
-    def test_range_insert(self):
+
+    def test_range_insert_logic(self):
         def assert_input_equal_output(intext, outtext):
             res = range_insert_symbol_logic(intext)
             if ':' in res:
@@ -28,6 +30,7 @@ class TranslatorTest(unittest2.TestCase):
         #FIXME: tricky scenario: how to avoid/acquire two words?  e.g.  "single
                                            #quote"?
         assert_input_equal_output("quote", "quote") 
+        assert_input_equal_output('(', '(')  # special symbols
         assert_input_equal_output("_", "underscore") # windows DNS auto replace
         assert_input_equal_output("alpha", "a") # phonetic
         assert_input_equal_output("words in", "words,space,in") # phonetic
