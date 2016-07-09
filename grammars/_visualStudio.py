@@ -1,19 +1,12 @@
-import re
 from dragonfly import (
     Dictation,
-    Grammar,
     Key,
     MappingRule,
     Function,
     IntegerRef,
-    Text,
-    Choice,
-    AppContext,
 )
 
-
-from _generic_edit import pressKeyMap, Letters, Letter_map
-from utility.text_translate import range_insert_symbol
+from utility.substitute_phrase import range_insert_symbol
 
 #visual_studio_context = AppContext(executable="devenv", title="Microsoft visual studio")
 #grammar = Grammar('visualstudio', context=visual_studio_context)

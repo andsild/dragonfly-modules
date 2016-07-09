@@ -21,7 +21,7 @@ from dragonfly import (
 )
 
 from _generic_edit import pressKeyMap
-from utility.text_translate import range_insert_symbol
+from utility.substitute_phrase import range_insert_symbol
 IS_WINDOWS = True
 
 #vim_context = AppContext(executable="devenv", title="Microsoft visual studio")

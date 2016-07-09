@@ -19,8 +19,10 @@ class TranslatorTest(unittest2.TestCase):
     def test_range_insert(self):
         def assert_input_equal_output(intext, outtext):
             res = range_insert_symbol_logic(intext)
-            mystr = ''.join([x for x in res])
+            if ':' in res:
+                res = res[0:res.index(':')] # remove ':' part (for repetitions)
             outtext.should.be.equal(res)
+        assert_input_equal_output("pooch", "p") # phonetic
         assert_input_equal_output("hello", "hello") # word
         assert_input_equal_output("the main", "main") # trim "the"
         #FIXME: tricky scenario: how to avoid/acquire two words?  e.g.  "single

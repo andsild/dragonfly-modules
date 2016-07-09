@@ -46,13 +46,6 @@ mapping = {
     'goto top': Key('g, g'),
     'goto bottom': Key('G'),
 }
-extras = [
-    IntegerRef('n', 1, 20),
-    Dictation('text'),
-]
-defaults = {
-    'n': 1,
-}
 
 class ChromeRule(MappingRule):
     mapping = mapping

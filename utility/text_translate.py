@@ -1,12 +1,12 @@
 import re
-from utility.lettermap import Letters, Letter_map
+from utility.lettermap import Shorttalk_Letters, Phonetic_Letter_map
 from subprocess import Popen, PIPE, STDOUT
 import os
+from dragonflymodules.config import default_install_dir
 
 
 subRepoName="TextToNumber"
-currentPath = os.getcwd()
-exeName = os.path.join(currentPath, subRepoName, "dist", "build",  subRepoName, subRepoName + ".exe")
+exeName = os.path.join(default_install_dir, subRepoName, "dist", "build",  subRepoName, subRepoName + ".exe")
 
 
 Symbol_map = {
@@ -38,15 +38,15 @@ windows_special_cases = {
     '_': 'underscore'
 }
 
-Symbol_map.update(Letters)
-Symbol_map.update(Letter_map)
+Symbol_map.update(Shorttalk_Letters)
+Symbol_map.update(Phonetic_Letter_map)
 Symbol_map.update(Symbol_map)
 IS_WINDOWS = True
 if IS_WINDOWS:
     Symbol_map.update(windows_special_cases)
 
 def range_insert_symbol_logic(text):
-    translated_text = translate_numbers(text)
+    translated_text = translate_numbers(str(text))
     input_text = str(translated_text).split()
     boolBig = "big" == input_text[0]
     if boolBig:
@@ -81,18 +81,6 @@ def range_insert_symbol_logic(text):
                 returnWord += ",space"
         returnWord += ','
     return returnWord[:-1]
-
-def range_insert_symbol(text):
-    dragonfly_parsable_text = range_insert_symbol_logic(text).split(',')
-    print dragonfly_parsable_text
-    for words in dragonfly_parsable_text:
-        if words in Symbol_map.itervalues():
-            Key(words).execute()
-        # special case for words like "colon" and "asterisk" that someone mysteriously modifies
-        elif len(words) > 1 and words[1] == "\\":
-            Key(words[2:]).execute()
-        else:
-            Key(','.join(words)).execute()
 
 def translate_numbers(text):
     p = Popen([exeName], stdout=PIPE, stdin=PIPE, stderr=STDOUT)    

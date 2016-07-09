@@ -9,26 +9,14 @@ It also adds a reload feature, so we can break out of errors from natlink
 
 The downside is that you can no longer (per default) reload grammar files simply by turning mic on and off (we do, however, have the voice command below)
 """
-from dragonfly import (Grammar, AppContext, MappingRule, Key, Text,
-                       Dictation, Integer, Function)
+from dragonfly import (Grammar, MappingRule, Function)
 import sys
 import reloader
+from dragonflymodules.config import GRAMMAR_IMPORTS
 
-
-import grammars
-
-# In order for the imports to work, it is important that they have a global variable "rules" variable in each file.
-# Or, as a TODO, you can modify it to become an array and a method in each file.
-GRAMMAR_IMPORTS = [ "grammars._chrome",
-		"grammars._programming",
-		"grammars._generic_edit",
-		"grammars._terminal",
-		"grammars._vim",
-		"grammars._visualStudio"]
 # pre-emptive import of the above modules for reload() extension to work the first time
 for import_name in GRAMMAR_IMPORTS:
 	getattr(__import__(import_name, fromlist=["rules"]), "rules")
-
 
 grammar = Grammar("to rule them all")
 

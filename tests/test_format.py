@@ -1,7 +1,4 @@
 import unittest2
-import logging
-import sys
-import os
 import sure
 
 from utility._format import format_text_logic, FormatTypes

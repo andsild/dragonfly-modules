@@ -11,7 +11,6 @@
 
 from natlink import setMicState
 from dragonfly import (
-    Grammar,
     MappingRule,
     Text,
     Key,
@@ -150,7 +149,7 @@ functionKeyMap = {
 }
 
 pressKeyMap = {}
-pressKeyMap.update(Letter_map)
+pressKeyMap.update(Phonetic_Letter_map)
 pressKeyMap.update(numberMap)
 pressKeyMap.update(controlKeyMap)
 pressKeyMap.update(functionKeyMap)
@@ -425,12 +424,6 @@ grammarItems = {
         # Ex: arguments -> args, parameters -> params.
         "short <short>": Text("%(short)s"),
         # Text corrections.
-
-        "(add|fix) missing space": Key("c-left/3, space, c-right/3"),
-        "(delete|remove) (double|extra) (space|whitespace)": Key("c-left/3, backspace, c-right/3"),  # @IgnorePep8
-        "(delete|remove) (double|extra) (type|char|character)": Key("c-left/3, del, c-right/3"),  # @IgnorePep8
-        # "(delete|remove) word": Key("shift:down/3, c-left/3, del, shift:up/3"),
-        "(delete|remove) word": Key("c-w"),
         "(delete|remove) rest": Key("s-end, del"),
         # Microphone sleep/cancel started dictation.
         "[<text>] (go to sleep|cancel and sleep) [<text2>]": Function(cancel_and_sleep),  # @IgnorePep8
@@ -439,7 +432,7 @@ grammarItems = {
 
 voiceLetters = {}
 
-for voice_command,key in Letters.iteritems():
+for voice_command,key in Shorttalk_Letters.iteritems():
     voiceLetters[voice_command] = Key(key)
 
 
@@ -462,10 +455,11 @@ class KeystrokeRule(MappingRule):
     mapping = grammarCfg.cmd.map
     extras = [
         IntegerRef("n", 1, 100),
+        IntegerRef("ntimes", 1, 100),
         Dictation("text"),
         Dictation("text2"),
         Choice("char", specialCharMap),
-        Choice("letters", Letter_map),
+        Choice("letters", Phonetic_Letter_map),
         Choice("modifier1", modifierMap),
         Choice("modifier2", modifierMap),
         Choice("modifierSingle", singleModifierMap),
@@ -476,6 +470,7 @@ class KeystrokeRule(MappingRule):
     ]
     defaults = {
         "n": 1,
+        "ntimes": 1,
     }
 
 
@@ -496,6 +491,7 @@ class RepeatRule(CompoundRule):
     ]
     defaults = {
         "n": 1,  # Default repeat count.
+        "ntimes": 1,  # Default repeat count.
     }
 
     def _process_recognition(self, node, extras):  # @UnusedVariable
