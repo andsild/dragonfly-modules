@@ -29,7 +29,7 @@ terminal_mapping = {
     'delete line':                  Key("c-u"),
     'editor':                       Text("$EDITOR "),
 
-    '(terminal|term) clear':        Text("clear") + Key("enter"),
+    '(terminal|term) clear':        Key("ctrl:down, l, ctrl:up"),
     '(terminal|term) (close|exit)': Key("c-c") + Key("enter"),
     '(terminal|term) (kill)':       Key("c-d") + Key("enter"),
 

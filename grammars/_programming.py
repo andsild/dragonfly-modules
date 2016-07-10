@@ -10,5 +10,7 @@ rules = MappingRule(
         'or': Text(' || '),
         'pass': Text('pass'),
         'is equal': Text('== '),
-        'equals': Text(' = '),
+        'equals': Text('='),
+        'left arrow': Text('<-'),
+        'right arrow': Text('->'),
     })

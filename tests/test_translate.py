@@ -17,14 +17,17 @@ class TranslatorTest(unittest2.TestCase):
     def test_translate_word_to_number(self):
         pass
 
-
     def test_range_insert_logic(self):
         def assert_input_equal_output(intext, outtext):
             res = range_insert_symbol_logic(intext)
-            if ':' in res:
-                res = res[0:res.index(':')] # remove ':' part (for repetitions)
-            outtext.should.be.equal(res)
+            try:
+                outtext.should.be.equal(res)
+            except Exception as e:
+                print e.message
+                print "For intext '%s' and result '%s' (expecting '%s')" % (intext, res, outtext)
+                raise
         assert_input_equal_output("pooch", "p") # phonetic
+        assert_input_equal_output("pooch hello", "p,hello") # phonetic
         assert_input_equal_output("hello", "hello") # word
         assert_input_equal_output("the main", "main") # trim "the"
         #FIXME: tricky scenario: how to avoid/acquire two words?  e.g.  "single

@@ -38,7 +38,6 @@ mapping = {
     'inspector': Key('cs-i'),
     'back [<n>]': Key('a-left:%(n)d'),
     'forward [<n>]': Key('a-right:%(n)d'),
-    'search <text>': Key('c-k/4') + Text('%(text)s'),
     'find next': Key('c-g'),
     'find pre': Key('cs-g'),
     'find <text>': Key('c-f') + Text('%(text)s\n'),

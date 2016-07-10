@@ -103,7 +103,6 @@ basics_mapping = {
     'open [in] split': Key("s"),
     'open [in] tab': Key(goto_normal_mode_keys + "semicolon, t"),
 
-    'visual [mode]': Key("v"),
     'visual block': Key("c-v"),
     'inner block': Key("i, b"),
     'paragraph': Key("a, p"),
@@ -140,6 +139,7 @@ basics_mapping = {
     '(rook|Brook|rock)': Key("right, colon, space"),
     'ghin front': Key(goto_normal_mode_keys + "zero, w"),
     'ghin back': Key(goto_normal_mode_keys + "dollar"),
+    'auto format': Key(goto_normal_mode_keys + "colon, a, u, enter"),
 
     'quick (prev|previous)': Key("lbracket, q"),
     'quick next': Key(goto_normal_mode_keys + "rbracket, q"),
@@ -172,7 +172,7 @@ basics_mapping = {
     'dart <n>': Key("x:%(n)d"),
     'replace letter': Key("r"),
     'replace mode': Key("R"),
-    'change case': Key(goto_normal_mode_keys + "right, s-backtick"),
+    'change case': Key(goto_normal_mode_keys + "s-backtick"),
 
     # Window movement
     'window': Key("c-w"),

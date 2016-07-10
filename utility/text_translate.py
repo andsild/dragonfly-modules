@@ -78,6 +78,9 @@ def range_insert_symbol_logic(text):
             if ind < lenInput-1:
                 returnWord += ",space"
         returnWord += ','
+
+    if ':%' in returnWord:
+        returnWord = re.sub(r':%\(\w+\)[dD]', '', returnWord)
     return returnWord[:-1]
 
 def translate_numbers(text):

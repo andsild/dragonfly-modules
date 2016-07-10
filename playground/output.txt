@@ -1,0 +1,3 @@
+[1 of 1] Compiling Main             ( test.hs, test.o )
+Linking test.exe ...
+"Return 1\n"
