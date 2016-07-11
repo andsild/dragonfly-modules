@@ -36,7 +36,6 @@ mapping = {
     'last tab': Key('c-9'),
     'bar': Key('c-l'),
     'inspector': Key('cs-i'),
-    'back [<n>]': Key('a-left:%(n)d'),
     'forward [<n>]': Key('a-right:%(n)d'),
     'find next': Key('c-g'),
     'find pre': Key('cs-g'),

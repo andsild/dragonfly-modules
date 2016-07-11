@@ -1,3 +1,5 @@
 [1 of 1] Compiling Main             ( test.hs, test.o )
-Linking test.exe ...
-"Return 1\n"
+
+test.hs:49:19: error:
+    parse error on input `<-'
+    Perhaps this statement should be within a 'do' block?

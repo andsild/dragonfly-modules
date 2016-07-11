@@ -139,7 +139,7 @@ basics_mapping = {
     '(rook|Brook|rock)': Key("right, colon, space"),
     'ghin front': Key(goto_normal_mode_keys + "zero, w"),
     'ghin back': Key(goto_normal_mode_keys + "dollar"),
-    'auto format': Key(goto_normal_mode_keys + "colon, a, u, enter"),
+    'auto format': Key(goto_normal_mode_keys + "colon, A, u, t, o, f, o, r, m, a, t, enter"),
 
     'quick (prev|previous)': Key("lbracket, q"),
     'quick next': Key(goto_normal_mode_keys + "rbracket, q"),
@@ -149,7 +149,7 @@ basics_mapping = {
 
     # Finding text
     #'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),
-    'jump <text>': Key("escape, slash, backslash, c") + Function(range_insert_symbol),
+    'jump <text>': Key("escape, slash") + Function(range_insert_symbol),
     'next': Key(goto_normal_mode_keys + "n"),
     'prev|previous': Key(goto_normal_mode_keys + "N"),
     'clear search': Key(goto_normal_mode_keys + "colon, n, o, h, enter"),
@@ -200,8 +200,8 @@ basics_mapping = {
     'yank <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines),
     'yank up <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines_up),
 
-    'select until <text>': Key(goto_normal_mode_keys + "v, t") + Function(range_insert_symbol),
-    'select including <text>': Key(goto_normal_mode_keys + "v, f") + Function(range_insert_symbol),
+    'select until <text>': Key(goto_normal_mode_keys + "v, t, slash") + Function(range_insert_symbol),
+    'select including <text>': Key(goto_normal_mode_keys + "v, f, slash") + Function(range_insert_symbol),
     'dell until <text>': Key(goto_normal_mode_keys + "d, t") + Function(range_insert_symbol),
     'dell including <text>': Key(goto_normal_mode_keys + "d, f") + Function(range_insert_symbol),
     '(see|sea) until <text>': Key(goto_normal_mode_keys + "c, t") + Function(range_insert_symbol),

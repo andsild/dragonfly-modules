@@ -21,12 +21,14 @@ Shorttalk_Letters = {
         "big (take|teak|teek) [<n>] ":       "T:%(n)d",
         "uni [<n>] ":            "u:%(n)d",
         "big uni [<n>] ":        "U:%(n)d",
+        "van [<n>] ":        "v:%(n)d",
+        "big van [<n>] ":        "v:%(n)d",
+        "war [<n>] ":            "w:%(n)d",
+        "big war [<n>] ":        "W:%(n)d",
         "trex [<n>] ":           "x:%(n)d",
         "big trex [<n>] ":       "X:%(n)d",
         "yaa [<n>] ":            "y:%(n)d",
         "big yaa [<n>] ":        "Y:%(n)d",
-        "war [<n>] ":            "w:%(n)d",
-        "big war [<n>] ":        "W:%(n)d",
 }
 
 Phonetic_Letter_map = {
