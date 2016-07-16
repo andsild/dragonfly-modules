@@ -1,24 +1,20 @@
 {-# LANGUAGE DeriveDataTypeable, RecordWildCards #-}
 module Main where
 
-import qualified Control.Applicative as CA
-import Data.Char
 import Data.Data
 import qualified Data.Map as DM
-import Data.List
-import Data.String.Utils
-import Data.Typeable
-import Data.Functor.Identity
 import Data.Maybe
+import Data.List (intercalate)
+import Data.Functor.Identity
 import Text.Parsec
 import Text.Parsec.String
 import Text.Parsec.Language
 import Text.Parsec.Token
-import System.IO 
-import System.Console.CmdArgs (cmdArgs) 
+import System.Console.CmdArgs (cmdArgs, (&=), summary, argPos) 
 
 al :: [(String, String)]
 al = [ ("If","if")
+      ,("Else", "else")
   ]
 mapFromAL :: DM.Map String String
 mapFromAL = DM.fromList al
@@ -45,28 +41,68 @@ stmtSemiSep    = semiSep lexer
 stmtWhitespace :: ParsecT String u Identity ()
 stmtWhitespace = whiteSpace lexer
 
+
 mainparser :: Parser Statement
-mainparser = stmtparser CA.<* eof
+mainparser = stmtparser 
   where
       stmtparser :: Parser Statement
       stmtparser = do { prespace <- many space
                       ; keyword <- stmtIdentifier
-                      ; rest <- manyTill anyChar (try newline)
+                      ; rest <- many anyChar
                         ; return (Keyword prespace keyword rest)
                     }
                     <|> return Nil
 
+fixLetterCase :: String -> String
+fixLetterCase s = fromMaybe s (DM.lookup s mapFromAL )
+
+alignSpace :: Int
+alignSpace = 4
+
+alignNumber :: Int -> Int -> Int
+alignNumber aligner i = aligner * (i `div` aligner)
+
+fixWhiteSpace :: String -> String
+fixWhiteSpace s = replicate (alignNumber alignSpace $ length s) ' '
+
+
+replaceC :: Char -> Char -> String -> String
+replaceC _ _ [] = []
+replaceC a b (x:xs)
+  | x == a    = b:replaceC a b xs
+  | otherwise = x:replaceC a b xs
+
+-- TODO: need to parse word by word
+replaceW :: String -> String -> String -> String
+replaceW a b s = intercalate "\n"  . map replaceW' $ lines s
+  where replaceW' x | x == a    = b
+                    | otherwise = x
+
+-- data Statement = Keyword String String String | Nil
+interpreter :: Statement -> String
+interpreter (Keyword whitespace command rest ) = alignedSpace ++ parsedCommand ++ rest 
+  where
+    alignedSpace = fixWhiteSpace whitespace
+    parsedCommand = fixLetterCase command  ++ " "
+interpreter Nil = ""
+
+parsein :: [FilePath] -> IO String
 parsein fs     = concat `fmap` mapM readFile fs
 
-data Options = Options {file :: String} deriving (Data, Typeable, Show)
+data Options = Options {file :: FilePath} deriving (Data, Typeable, Show)
 
-main :: IO()
+parseInput :: String -> IO ()
+parseInput inline = 
+  case parse mainparser " " inline of
+          Left e -> do putStrLn "Error parsing input:"
+                       print e
+          Right r -> putStrLn $  interpreter r
+
+main :: IO ()
 main = do
-  Options{..} <- cmdArgs $ Options { file = "teeest" } &= summary "test"
-  print "okay"
-  
-
+  Options{..} <- cmdArgs $ Options { file = "teeest" &= argPos 0 } 
+                &= summary "test"
+  input <- parsein [file]
+  mapM_ parseInput $ lines (replaceW "\\" "£" input)
 
 -- autocmd BufWritePost test.hs silent exe 'silent ! (ghc -o test %  && test input.txt) 1> output.txt 2>&1'
-
-
