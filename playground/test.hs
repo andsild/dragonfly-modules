@@ -3,9 +3,11 @@ module Main where
 
 import qualified Control.Applicative as CA
 import Data.Char
+import Data.Data
 import qualified Data.Map as DM
 import Data.List
 import Data.String.Utils
+import Data.Typeable
 import Data.Functor.Identity
 import Data.Maybe
 import Text.Parsec
@@ -13,7 +15,7 @@ import Text.Parsec.String
 import Text.Parsec.Language
 import Text.Parsec.Token
 import System.IO 
-import System.Console.CmdArg
+import System.Console.CmdArgs (cmdArgs) 
 
 al :: [(String, String)]
 al = [ ("If","if")
@@ -46,7 +48,6 @@ stmtWhitespace = whiteSpace lexer
 mainparser :: Parser Statement
 mainparser = stmtparser CA.<* eof
   where
-      CmdArgs{..} <- CmdArgs $  
       stmtparser :: Parser Statement
       stmtparser = do { prespace <- many space
                       ; keyword <- stmtIdentifier
@@ -57,11 +58,13 @@ mainparser = stmtparser CA.<* eof
 
 parsein fs     = concat `fmap` mapM readFile fs
 
-data CmdArgs = File String deriving (Show)
+data Options = Options {file :: String} deriving (Data, Typeable, Show)
+
 main :: IO()
 main = do
-  CmdArgs{..} <- cmdArgs $
+  Options{..} <- cmdArgs $ Options { file = "teeest" } &= summary "test"
   print "okay"
+  
 
 
 -- autocmd BufWritePost test.hs silent exe 'silent ! (ghc -o test %  && test input.txt) 1> output.txt 2>&1'

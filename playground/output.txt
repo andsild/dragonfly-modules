@@ -1,5 +1,14 @@
 [1 of 1] Compiling Main             ( test.hs, test.o )
 
-test.hs:49:19: error:
-    parse error on input `<-'
-    Perhaps this statement should be within a 'do' block?
+test.hs:65:56: error:
+    * Variable not in scope: (&=) :: IO Options -> t0 -> IO Options
+    * Perhaps you meant one of these:
+        `>=' (imported from Prelude), `==' (imported from Prelude),
+        `&&' (imported from Prelude)
+      Perhaps you want to add `&=' to the import list in the import of
+      `System.Console.CmdArgs' (test.hs:18:1-39).
+
+test.hs:65:59: error:
+    * Variable not in scope: summary :: [Char] -> t0
+    * Perhaps you want to add `summary' to the import list
+      in the import of `System.Console.CmdArgs' (test.hs:18:1-39).
