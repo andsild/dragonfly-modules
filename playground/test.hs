@@ -15,14 +15,15 @@ import System.Console.CmdArgs (cmdArgs, (&=), summary, argPos)
 al :: [(String, String)]
 al = [ ("If","if")
       ,("Else", "else")
+      ,("And", "and")
   ]
 mapFromAL :: DM.Map String String
 mapFromAL = DM.fromList al
 
-data Statement = Keyword String String String | Nil
+data Statement = Keyword String String String | GenericLine String | Nil
 def :: LanguageDef st
-def = emptyDef{ identStart =  anyChar
-              , identLetter = alphaNum <|> char '-'
+def = emptyDef{ identStart =  letter <|> char '_'
+              , identLetter = alphaNum <|> oneOf "_-.,"
               , reservedOpNames = ["and"]
               , reservedNames = []
               }
@@ -50,11 +51,17 @@ mainparser = stmtparser
                       ; keyword <- stmtIdentifier
                       ; rest <- many anyChar
                         ; return (Keyword prespace keyword rest)
+                    } 
+                    <|> do {
+                      rest <- many anyChar
+                      ; return (GenericLine rest)
                     }
-                    <|> return Nil
 
 fixLetterCase :: String -> String
-fixLetterCase s = fromMaybe s (DM.lookup s mapFromAL )
+fixLetterCase s = fromMaybe s valueFromList 
+  where
+    --isInSet = DM.member s mapFromAL
+    valueFromList = DM.lookup s mapFromAL
 
 alignSpace :: Int
 alignSpace = 4
@@ -83,7 +90,8 @@ interpreter :: Statement -> String
 interpreter (Keyword whitespace command rest ) = alignedSpace ++ parsedCommand ++ rest 
   where
     alignedSpace = fixWhiteSpace whitespace
-    parsedCommand = fixLetterCase command  ++ " "
+    parsedCommand = fixLetterCase command ++ " "
+interpreter (GenericLine s) = s
 interpreter Nil = ""
 
 parsein :: [FilePath] -> IO String
@@ -103,6 +111,6 @@ main = do
   Options{..} <- cmdArgs $ Options { file = "teeest" &= argPos 0 } 
                 &= summary "test"
   input <- parsein [file]
-  mapM_ parseInput $ lines (replaceW "\\" "£" input)
+  mapM_ parseInput $ lines input
 
 -- autocmd BufWritePost test.hs silent exe 'silent ! (ghc -o test %  && test input.txt) 1> output.txt 2>&1'
