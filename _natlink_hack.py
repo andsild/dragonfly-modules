@@ -43,6 +43,8 @@ def reload_grammars():
     print "reloaded all modules"
 
 def unload():
+    """ dawd
+    """
     global grammar
     grammar.unload()
     grammar = None

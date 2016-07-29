@@ -9,19 +9,17 @@ import Tokenizer
 import Parser
 import Interpreter
 
-
 parsein :: [FilePath] -> IO String
 parsein fs     = concat `fmap` mapM readFile fs
-
 
 data Options = Options {file :: FilePath} deriving (Data, Typeable, Show)
 
 parseInput :: String -> IO ()
 parseInput inline = 
   case parse mainparser " " inline of
-          Left e -> do putStrLn "Error parsing input:"
-                       print e
-          Right r -> putStrLn $  interpreter r
+    Left e -> do putStrLn "Error parsing input:"
+                 print e
+    Right r -> putStrLn $  interpreter r
 
 
 main :: IO ()
