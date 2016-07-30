@@ -17,6 +17,7 @@ basics_mapping = {
     'add a new file': Key("shift:down/3, c-a, shift:up/50, a-n"),
     'go [to] definition': Key("f12"),
     'find <text>': Key("c-f") + Function(range_insert_symbol),
+    'find project <text>': Key("cs-f") + Function(range_insert_symbol),
     'debug main': Key("f5"),
     'format': Key("ctrl:down, k, d, ctrl:up"),
     'run main': Key("ctrl:down/3, f5, ctrl:up/3"),

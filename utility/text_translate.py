@@ -29,6 +29,7 @@ Symbol_map = {
     'equals': 'equal',
     'space': 'space',
     "colon": "colon",
+    "underscore": "underscore",
 }
 
 # When running DNS in windows, DNS will automatically replace some symbols

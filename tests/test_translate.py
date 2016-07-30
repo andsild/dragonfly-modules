@@ -1,10 +1,6 @@
 import unittest2
-import logging
-import sys
-import os
 import sure
 
-from utility.substitute_phrase import range_insert_symbol
 from utility.text_translate import range_insert_symbol_logic, translate_numbers
 
 class TranslatorTest(unittest2.TestCase):

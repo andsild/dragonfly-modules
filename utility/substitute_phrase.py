@@ -21,22 +21,24 @@ def range_insert_symbol(text):
     # since we will be popping off words
     dragonfly_parsable_text = dragonfly_parsable_text[::-1]
 
+
     while dragonfly_parsable_text:
         words = dragonfly_parsable_text.pop()
         if words in Symbol_map.itervalues():
             Key(words).execute()
-            print "doing: ", words
+            print "doingA: ", words
         elif words in Symbol_to_dragonfly:
             # Symbols are for whatever reason followed by 'space' and \\<symbolname>.
             # pop those off..
             Key(Symbol_to_dragonfly[words]).execute()
-            print "doing: ", Symbol_to_dragonfly[words]
+            print "doingB: ", Symbol_to_dragonfly[words]
+
             dragonfly_parsable_text.pop() 
             dragonfly_parsable_text.pop()
-        # special case for words like "colon" and "asterisk" that someone mysteriously modifies
-        elif len(words) > 1 and words[1] == "\\":
-            print "doing: ", words[2:]
-            Key(words[2:]).execute()
+        # special case for words like "colon" and "asterisk" that dragonfly prepends with "\\"
+        elif len(words) > 1 and words[0] == '\\':
+            print "doingC: ", words[1:]
+            Key(words[1:]).execute()
         else:
-            print "doing: ", ','.join(words)
+            print "doingD: ", ','.join(words)
             Key(','.join(words)).execute()

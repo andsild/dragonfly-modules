@@ -42,25 +42,21 @@ goto_normal_mode_keys = key
 goto_normal_mode = Key(key)
 
 def goto_line_up(n):
-    Key('m, squote').execute()
-    for c in str(n):
-        Key(c).execute()
-    Key("k").execute()
+    just_goto_line(n,'minus', "enter")
+
+def goto_line(n):
+    just_goto_line(n,'plus', "enter")
 
 def goto_line_absolute(n):
     for c in str(n):
         Key(c).execute()
     Key("G").execute()
 
-
-def goto_line(n):
-    Key('m, squote').execute()
-    just_goto_line(n)
-
-def just_goto_line(n):
+def just_goto_line(n, dir, method):
+    Key('m, squote, colon, ' + dir).execute()
     for c in str(n):
         Key(c).execute()
-    Key("j").execute()
+    Key(method).execute()
 
 def lineJuggle(n1, n2, operation, linePrefix):
     goto_normal_mode.execute()
@@ -130,8 +126,8 @@ basics_mapping = {
     'scratch': Key(goto_normal_mode_keys + "u"),
     'escape': Key("escape"),
     'filename': Key(goto_normal_mode_keys + "c-g"),
-    'save': Key(goto_normal_mode_keys + "colon, w, enter"),
     'save and quit': Key(goto_normal_mode_keys + "colon, w, q, enter"),
+    'save': Key(goto_normal_mode_keys + "colon, w, enter"),
     'quit all': Key(goto_normal_mode_keys + "colon, q, a, enter"),
     'discard': Key(goto_normal_mode_keys + "colon, q, exclamation"),
     '(vim|vic) tab <n>': Key(goto_normal_mode_keys + "comma, %(n)d"),
@@ -156,9 +152,12 @@ basics_mapping = {
     'change [the] big word': Key(goto_normal_mode_keys + "c, a, W"),
     'change [the] word': Key(goto_normal_mode_keys + "c, a, w"),
     '(Sea|See) world': Key(goto_normal_mode_keys + "c, a, w"),
-    'change inner block': Key(goto_normal_mode_keys + "c, i, b"),
+    '(Sea|See) inner block': Key(goto_normal_mode_keys + "c, i, b"),
+    'dine inner block': Key(goto_normal_mode_keys + "d, i, b"),
+    'dine inner quote': Key(goto_normal_mode_keys + "d, i, quote"),
+    '(Sea|see) inner quote': Key(goto_normal_mode_keys + "c, i, quote"),
     'yank inner block': Key(goto_normal_mode_keys + "y, i, b"),
-    '(del|delete) inner block': Key(goto_normal_mode_keys + "d, i, b"),
+    'yank line': Key(goto_normal_mode_keys + "y, y"),
     '(pseudo|sudo|pseudo-) save': goto_normal_mode + Text(":w !sudo tee > /dev/null %%") + Key("enter"),
     'remove [the] word': Key(goto_normal_mode_keys + "d, a, w"),
     'remove [the] big word': Key(goto_normal_mode_keys + "d, a, W"),
@@ -202,10 +201,19 @@ basics_mapping = {
 
     'select until <text>': Key(goto_normal_mode_keys + "v, t, slash") + Function(range_insert_symbol),
     'select including <text>': Key(goto_normal_mode_keys + "v, f, slash") + Function(range_insert_symbol),
-    'dell until <text>': Key(goto_normal_mode_keys + "d, t") + Function(range_insert_symbol),
-    'dell including <text>': Key(goto_normal_mode_keys + "d, f") + Function(range_insert_symbol),
+    'dine until <text>': Key(goto_normal_mode_keys + "d, t") + Function(range_insert_symbol),
+    'dine including <text>': Key(goto_normal_mode_keys + "d, f") + Function(range_insert_symbol),
     '(see|sea) until <text>': Key(goto_normal_mode_keys + "c, t") + Function(range_insert_symbol),
     '(see|sea) including <text>': Key(goto_normal_mode_keys + "c, f") + Function(range_insert_symbol),
+
+    # The zs and ze denote pattern start and pattern end
+    # I use this to move the cursor right after the charachter we are looking for
+    # e.g. "next block" looks for a lparen, so I move to the character after it
+    'next block': goto_normal_mode + Text("?(\\zs[^ ]") + Key("enter, N, N"),
+    'pre block': goto_normal_mode + Text("?(\\zs[^ ]") + Key("enter"),
+    'next quote': goto_normal_mode + Text("?\\v('|\")\\zs.\\ze.{-\\}('|\")") + Key("enter, N, N"),
+    'pre quote': goto_normal_mode + Text("?\\v('|\")\\zs.\\ze.{-\\}('|\")") + Key("enter"),
+
 
 
     # Fancy operations

@@ -18,8 +18,6 @@ from _generic_edit import pressKeyMap
 
 mapping = {
     # Press escape to the blur focus on any input fields
-    "click": Key("c-b"),
-    "close tab [<n>]": Key("c-w:%(n)d"),
     "undo tab": Key("shift:down/3, c-t, shift:up/3"),
     'new window': Key('c-n'),
     "new tab": Key("c-t"),
@@ -39,7 +37,7 @@ mapping = {
     'forward [<n>]': Key('a-right:%(n)d'),
     'find next': Key('c-g'),
     'find pre': Key('cs-g'),
-    'find <text>': Key('c-f') + Text('%(text)s\n'),
+    #'find <text>': Key('c-f') + Text('%(text)s\n'),
     'copy url': Key('c-l, c-c'),
     'goto top': Key('g, g'),
     'goto bottom': Key('G'),

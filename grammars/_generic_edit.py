@@ -180,6 +180,7 @@ formatMap = {
     "dotify lowercase":            [ft.dotify, ft.lowerCase],
     "dotify uppercase":            [ft.dotify, ft.upperCase],
     "say":                         [ft.spokenForm],
+    "spay":                         [ft.spokenFormWithSpace],
     "environment variable":        [ft.snakeCase, ft.upperCase],
 }
 
@@ -231,6 +232,8 @@ abbreviationMap = {
     "number": "num",
     "object": "obj",
     "okay": "ok",
+    "option": "opt",
+    "I don't know": "idk",
     "package": "pkg",
     "parameter": "param",
     "parameters": "params",
@@ -256,7 +259,6 @@ abbreviationMap = {
     "standard out": "stdout",
     "string": "str",
     "(synchronize|synchronous)": "sync",
-    "I don't know": "idk",
     "system": "sys",
     "utility": "util",
     "utilities": "utils",
@@ -349,7 +351,6 @@ grammarItems = {
         "down <n> (page|pages)": Key("pgdown:%(n)d"),
         "left <n> (word|words)": Key("c-left/3:%(n)d/10"),
         "right <n> (word|words)": Key("c-right/3:%(n)d/10"),
-        "home": Key("home"),
         "(luke|look)": Key("lessthan"),
         "(ruke|rook)": Key("greaterthan"),
         "end": Key("end"),
@@ -385,6 +386,7 @@ grammarItems = {
         "release control": Key("ctrl:up"),
         "release [all]": release,
         "(sink|think)": Key("semicolon"),
+        "Sim": Key("colon"),
         # Closures.
         "angle brackets": Key("langle, rangle, left/3"),
         "brackets": Key("lbracket, rbracket, left/3"),
@@ -430,9 +432,20 @@ grammarItems = {
         # Text corrections.
         "(delete|remove) rest": Key("s-end, del"),
         # Microphone sleep/cancel started dictation.
-        "[<text>] (go to sleep|cancel and sleep) [<text2>]": Function(cancel_and_sleep),  # @IgnorePep8
+        "[<text>] (go to sleep|cancel and sleep) [<text2>]": Function(cancel_and_sleep),  
 
 }
+
+
+globalShortcuts = {
+    "next music" : Key("alt:down, pgdown, alt:up"), # I use streamkeys for this (and  play all my music in chrome)
+    "previous music" : Key("alt:down, pgup, alt:up"),# I use streamkeys for this (and  play all my music in chrome)
+    "pause music" : Key("alt:down, home, alt:up"), # I use streamkeys for this (and  play all my music in chrome)
+    "play music" : Key("alt:down, home, alt:up"), # I use streamkeys for this (and  play all my music in chrome)
+    }
+
+grammarItems.update(globalShortcuts)
+
 
 voiceLetters = {}
 
