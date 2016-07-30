@@ -29,19 +29,24 @@ terminal_mapping = {
     'delete line':                  Key("c-u"),
     'editor':                       Text("$EDITOR "),
 
-    '(terminal|term) clear':        Key("ctrl:down, l, ctrl:up"),
-    '(terminal|term) (close|exit)': Key("c-c") + Key("enter"),
-    '(terminal|term) (kill)':       Key("c-d") + Key("enter"),
+    'history': Key("ctrl:down, r, ctrl:up"),
 
-    'revision status':              Text("git status ") + Key("enter"),
-    'revision push':                Text("git push ") + Key("enter"),
-    'revision add all':             Text("git add -A ") + Key("enter"),
-    'revision commit':              Text("git commit -m "),
-    'revision fetch':               Text("git fetch ") + Key("tab"),
-    'revision merge':               Text("git merge ") + Key("tab"),
-    'revision difference':          Text("git diff "),
-    'revision log':                 Text("git log ") + Key("enter"),
-    'revision pull':                Text("git pull ") + Key("enter"),
+    'kill command': Key("ctrl:down, c, ctrl:up"),
+    'kill window': Key("ctrl:down, d, ctrl:up"),
+
+    '(terminal|term) clear':        Key("ctrl:down, l, ctrl:up"),
+
+    'jim':              Text("git "),
+    'jim status':              Text("git status ") + Key("enter"),
+    'jim push':                Text("git push ") + Key("enter"),
+    'jim add all':             Text("git add -A ") + Key("enter"),
+    'jim commit':              Text("git commit -m "),
+    'jim fetch':               Text("git fetch ") + Key("tab"),
+    'jim merge':               Text("git merge ") + Key("tab"),
+    'jim difference':          Text("git diff "),
+    'jim log':                 Text("git log ") + Key("enter"),
+    'jim pull':                Text("git pull ") + Key("enter"),
+    'jim diff':                Text("git diff ") + Key("enter"),
 
     # Common words
     '(pseudo|sudo|pseudo-)':        Text("sudo "),
