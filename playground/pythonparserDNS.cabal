@@ -20,6 +20,7 @@ executable pythonparserDNS
   -- other-modules:       
   -- other-extensions:    
   build-depends:       base >=4.9 && <4.10
+                       , ghc
                        , parsec
                        , containers
                        , cmdargs
