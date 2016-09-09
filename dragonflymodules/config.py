@@ -5,6 +5,7 @@ default_install_dir = 'C:\\Users\\andesil\\dragonfly-modules\\'
 GRAMMAR_IMPORTS = [ "grammars._chrome",
 		"grammars._programming",
 		"grammars._generic_edit",
+        "grammars._global_shortcut",
 		"grammars._terminal",
 		"grammars._personal_info",
 		"grammars._vim",

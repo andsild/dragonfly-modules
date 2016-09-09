@@ -234,7 +234,7 @@ basics_mapping = {
     'new tab': goto_normal_mode + Text(":tabe | FZFMru") + Key("enter"),
 
     # Plug-ins
-    'explorer': Key(goto_normal_mode_keys + "colon") + Text("VimFilerExplorer") + Key("enter"),
+    'file explorer': Key(goto_normal_mode_keys + "colon") + Text("VimFilerExplorer") + Key("enter"),
     }
 
 

@@ -7,12 +7,11 @@ def count_to_ten(count):
      if count >= 10:
          return 1
      return count_to_ten(count + 1)
-
  
 
 def fibonacci(count):
     if count < 2:
-        return Count
+        return count
 
     return fibonacci(count - 1) + fibonacci(count - 2)
 
