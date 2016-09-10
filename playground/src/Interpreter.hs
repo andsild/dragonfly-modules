@@ -45,24 +45,16 @@ replaceW a b s = intercalate "\n"  . map replaceW' $ lines s
 
 
 interpreter :: Statement -> String
-interpreter (Keyword whitespace command rest ) = alignedSpace ++ parsedCommand ++ rest 
-  where
-    alignedSpace = fixWhiteSpace whitespace
-    parsedCommand = fixLetterCase command ++ " "
-interpreter (GenericLine s) = s
-interpreter (Indented spaces stmt) = truncWhitespace spaces ++ interpreter stmt
-interpreter (If s) = "if " ++ interpreter s
+interpreter (Seq li) = unlines $ map interpreter li
+interpreter (Indented) = "\t"
+interpreter (If expression) = "if " ++ parseExpr expression ++ ":"
 interpreter (GivenExpr e) = parseExpr e
 interpreter (GivenComment s) = parseComment s
 
 parseComment :: Comment -> String
-parseComment (LineComment s) = "#" ++ s
-parseComment (MultiLineComment s) = "\"\"\"" ++ s
+parseComment (LineComment s) = "#" ++ s ++ "\n"
+parseComment (MultiLineComment s) = "\"\"\"" ++ s ++ "\"\"\""
 
-parseExpr :: Expr -> String
+parseExpr :: Expression -> String
 parseExpr Nil = ""
-parseExpr (Code s)  = "expr"
-
-truncWhitespace :: Whitespace -> String
-truncWhitespace (IndentBlock s) = " " ++ interpreter s
-truncWhitespace Statement = interpreter (GivenExpr Nil)
+parseExpr (Num c)  = show c

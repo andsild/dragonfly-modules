@@ -17,6 +17,7 @@ cabal-version:       >=1.10
 
 executable pythonparserDNS
   main-is:             Main.hs
+  ghc-options:         -fwarn-incomplete-patterns
   -- other-modules:       
   -- other-extensions:    
   build-depends:       base >=4.9 && <4.10
@@ -24,6 +25,7 @@ executable pythonparserDNS
                        , parsec
                        , containers
                        , cmdargs
+                       , MissingH
                        , mtl
   hs-source-dirs:      src
   default-language:    Haskell2010

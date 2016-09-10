@@ -1,16 +1,19 @@
+{-# LANGUAGE FlexibleContexts #-}
 module Tokenizer where
 
+import Control.Monad
 import Control.Monad.State
 import Data.Functor.Identity
 import Text.Parsec hiding (State)
 import Text.Parsec.Language
 import Text.Parsec.String
 import Text.Parsec.Token
+import Data.List (nub)
 
-data Whitespace = IndentBlock Statement | Statement
-data Expr = Code String | Nil
+data Expression = Num Integer | Nil
 data Comment = LineComment String | MultiLineComment String
-data Statement = Indented Whitespace Statement | Keyword String String String | GenericLine String | GivenExpr Expr | If Statement | GivenComment Comment
+data Statement = Indented | GivenExpr Expression | If Expression 
+                 | GivenComment Comment | Seq [Statement]
 
 stmtIdentifier :: ParsecT String u Identity String
 stmtIdentifier = identifier lexer
@@ -28,10 +31,17 @@ stmtReservedName = reserved lexer
 pythonKeywords :: [String]
 pythonKeywords = ["and", "if", "else", "elif", "pass", "return"]
 
+
+multiLineCommentString :: String
+multiLineCommentString = "\"\"\""
+
+-- We're not adding the commentStart,End,Line because we need to keep it
+-- If we add it to the languagedef, parsec will see it as whitespace
 def :: LanguageDef st
-def = emptyDef{ --commentStart = "#"
-              --, commentLine = "\"\"\""
-                identStart =  letter <|> char '_'
+def = emptyDef{ --commentStart = "\"\"\""
+              --, commentEnd = "\"\"\""
+              --, commentLine = "#"
+              identStart =  letter <|> char '_'
               , identLetter = alphaNum <|> oneOf "_-.,"
               , reservedOpNames = []
               , reservedNames = pythonKeywords
@@ -41,60 +51,61 @@ def = emptyDef{ --commentStart = "#"
 lexer :: GenTokenParser String u Identity
 lexer = makeTokenParser def
 
-
-indentParser :: Parser Whitespace
-indentParser = do {
-          preBlock <- char ' '
-          ; rest <- mainparser
-          ; return (IndentBlock rest)
-          } 
-          <|> return Statement
-
---do { prespace <- many space
---                      ; keyword <- stmtIdentifier
---                      ; rest <- many anyChar
---                        ; return (Keyword prespace keyword rest)
---                    } 
-
-sentenceParser :: Parser Statement
-sentenceParser = do
-  {
-    string <- stmtIdentifier
-    ; rest <- manyTill anyChar (try newline <* eof)
-    ; return (GenericLine string)
-  }
-
 ifexpr :: Parser Statement
 ifexpr = do
   {
     stmtReservedName "if"
-    ; rest <- mainparser
-    ; return (If rest)
-  }
+    ; skipMany space
+    ; content <- exprParser
+    ; char ':'
+    ; return (If content)
+  } <?> "an if expression"
 
 commentParser :: Parser Statement
 commentParser = do
   {
-    commentStart <- string "\"\"\""
-    ; comment <- manyTill anyChar (try (string "\"\"\""))
+    commentStart <- string multiLineCommentString
+    ; comment <- manyTill anyChar (try (string "\"\"\"")) 
     ; return  (GivenComment (MultiLineComment comment))
   }
   <|> do 
   {
     commentStart <- char '#'
-    ; comment <- manyTill anyChar (try newline)
+    ; comment <- manyTill anyChar newline
     ; return  (GivenComment (LineComment comment))
   }
 
-exprparser :: Parser Expr
-exprparser = return Nil
+exprParser :: Parser Expression
+exprParser = do
+  {
+     ; d <- stmtNatural
+     ; return (Num d)
+  }
 
+singleStatementParser = 
+  --commentParser 
+  -- <|>
+  ifexpr 
+        <|> do {
+          blankSpace <- skipMany1 space
+          ; return (Indented)
+        } -- <|> return (GivenExpr Nil)
+        <|> do {
+            skipMany space
+            ; newline
+            ; return (Indented)
+        }
+      -- <* (try (string "EOF"))
 
 mainparser :: Parser Statement
-mainparser = givenParser <* eof
+mainparser = stmtParser 
   where
-    givenParser = sentenceParser <|> ifexpr <|> commentParser
-       <|> do {
-          spaces <- indentParser
-          ; return (Indented spaces (GivenExpr Nil))
-        } <|> return (GivenExpr Nil)
+    stmtParser = do
+      list <- join <$> manyTill (sepEndBy singleStatementParser newline) eof
+      ; return (Seq list)
+      --; return $ if length list == 1 then head list else Seq list
+      <|> do 
+        {
+          eof
+          ; return Indented
+        }
