@@ -334,6 +334,12 @@ def paste_command():
 def translate_to_number(n):
     Text(str(n)).execute()
 
+def goto_page(n):
+    Key("ctrl:down, home").execute()
+    for _ in range(1, n):
+        Key("pgdown").execute()
+    Key("ctrl:up").execute()
+
 grammarItems = {
         "up [<n>]": Key("up:%(n)d"),
         "up [<n>] slow": Key("up/15:%(n)d"),
@@ -346,9 +352,10 @@ grammarItems = {
         "page up [<n>]": Key("pgup:%(n)d"),
         "north [<n>]": Key("pgup:%(n)d"),
         "page down [<n>]": Key("pgdown:%(n)d"),
+        "page next [<n>]": Key("ctrl:down, pgdown:%(n)d, ctrl:up"),
+        "page prev [<n>]": Key("ctrl:down, pgup:%(n)d, ctrl:up"),
+        "go page [<n>]": Function(goto_page),
         "south [<n>]": Key("pgdown:%(n)d"),
-        "up <n> (page|pages)": Key("pgup:%(n)d"),
-        "down <n> (page|pages)": Key("pgdown:%(n)d"),
         "left <n> (word|words)": Key("c-left/3:%(n)d/10"),
         "right <n> (word|words)": Key("c-right/3:%(n)d/10"),
         "(luke|look)": Key("lessthan"),
@@ -369,7 +376,7 @@ grammarItems = {
         "enter [<n>]": release + Key("enter:%(n)d"),
         "tab [<n>]": Key("tab:%(n)d"),
         "delete [<n>]": Key("del/3:%(n)d"),
-        "delete [this] line": Key("home, s-end, del"),  # @IgnorePep8
+        "delete [this] line": Key("home, s-end, del"),  
         "backspace [<n>]": release + Key("backspace:%(n)d"),
         "chook [<n>]": release + Key("backspace:%(n)d"),
         "application key": release + Key("apps/3"),
@@ -439,7 +446,7 @@ grammarItems = {
 
 globalShortcuts = {
     "next music" : Key("alt:down, pgdown, alt:up"), # I use streamkeys for this (and  play all my music in chrome)
-    "previous music" : Key("alt:down, pgup, alt:up"),# I use streamkeys for this (and  play all my music in chrome)
+    "prev music" : Key("alt:down, pgup, alt:up"),# I use streamkeys for this (and  play all my music in chrome)
     "pause music" : Key("alt:down, home, alt:up"), # I use streamkeys for this (and  play all my music in chrome)
     "play music" : Key("alt:down, home, alt:up"), # I use streamkeys for this (and  play all my music in chrome)
     }

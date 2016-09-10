@@ -12,6 +12,7 @@ from utility.substitute_phrase import range_insert_symbol
 #visual studio")
 #grammar = Grammar('visualstudio', context=visual_studio_context)
 basics_mapping = {
+    'solution Explorer': Key("c-w,s"),
     'fuzzy':   Key("ctrl:down/3, comma, ctrl:up/3"),
     'run tests': Key("ctrl:down/3, r, ctrl:up/3, t"),
     'add a new file': Key("shift:down/3, c-a, shift:up/50, a-n"),
@@ -25,6 +26,7 @@ basics_mapping = {
     'rename [this]': Key("ctrl:down/3, r, ctrl:up/3, r"),
     'complete [this]': Key("ctrl:down/3, space, ctrl:up/3"),
 }
+
 class Basics(MappingRule):
     mapping = basics_mapping
     extras = [Dictation('text'),
