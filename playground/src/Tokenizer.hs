@@ -83,10 +83,9 @@ exprParser = do
   }
 
 singleStatementParser = 
-  --commentParser 
-  -- <|>
-  ifexpr 
-        <|> do {
+  commentParser 
+  <|> ifexpr 
+  <|> do {
           blankSpace <- skipMany1 space
           ; return (Indented)
         } -- <|> return (GivenExpr Nil)
