@@ -12,9 +12,8 @@ import Text.Parsec.Token
 
 import Debug.Trace
 
-data Expression = Rhs String | Nil deriving Show
 data Comment = LineComment String | MultiLineComment String deriving Show
-data Statement = Indented Integer
+data Statement = Indented Integer Statement
   | Sentence String
   | IfExpr String
   | ElifExpr String
@@ -64,23 +63,11 @@ lexer = makeTokenParser def
 commentParser :: Parser Statement
 commentParser = do
   {
-    commentStart <- string multiLineCommentString
-    ; comment <- manyTill anyChar (string multiLineCommentString)
-    ; return  (GivenComment (MultiLineComment comment))
-  }
-  <|> do 
-  {
     commentStart <- char '#'
-    ; comment <- manyTill anyChar (lookAhead newline)
+    ; comment <- many anyToken
     ; return  (GivenComment (LineComment comment))
   }
 
-exprParser :: Parser Expression
-exprParser = do
-  {
-     ; d <- many alphaNum
-     ; return (Rhs d)
-  }
 
 alignSpace :: Integer
 alignSpace = 4
@@ -95,19 +82,21 @@ indentParser :: Parser Statement
 indentParser = do
   {
     numSpaces <- many1 space
-    ; return (Indented (toInteger $ alignNumber alignSpace $ toInteger $ length numSpaces))
+    ; statement <- singleStatementParser
+    ; return (Indented (toInteger $ alignNumber alignSpace $ toInteger $ length numSpaces) statement)
   }
 
 sentenceParser :: Parser Statement
 sentenceParser = do
   {
-    sentence <- manyTill (satisfy (\x -> not (x == '\n'))) newline
+    sentence <- untilNewline
     ; return (Sentence sentence)
   }
 
 
 untilNewline :: Stream s m Char => ParsecT s u m String
-untilNewline = manyTill (satisfy (\x -> not (x == '\n'))) newline
+--untilNewline = manyTill (satisfy (\x -> not (x == '\n'))) eobb
+untilNewline = many anyToken
 
 keywordParser :: Parser Statement
 keywordParser = do
@@ -141,11 +130,12 @@ keywordParser = do
   }
 
 
+singleStatementParser :: Parser Statement
 singleStatementParser = 
-  indentParser
-   <|> sentenceParser
+    indentParser 
    <|> keywordParser
    <|> commentParser 
+   <|> sentenceParser
       -- <* (try (string "EOF"))
 
 mainparser :: Parser Statement
@@ -153,8 +143,11 @@ mainparser = stmtParser
   where
     stmtParser = do
     {
-      list <- join <$> manyTill (sepEndBy singleStatementParser newline) eof
-      ; return $ trace (show list) $ if length list == 1 then  head list else Seq list
+      list <- singleStatementParser
+       ; return $ (list)
+      --; return $ trace (show list) $ (list)
+      -- list <- sepBy singleStatementParser newline
+      -- ; return $ trace (show list) $ if length list == 1 then  head list else Seq list
     }
       <|> do 
         {

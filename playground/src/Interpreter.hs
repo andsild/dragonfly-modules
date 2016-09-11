@@ -41,15 +41,15 @@ tab :: String
 tab = " "
 
 interpreter :: Statement -> String
-interpreter (Seq li) = intercalate "" $ map interpreter li
-interpreter (Indented level) = intercalate "" $ genericReplicate level tab
+interpreter (Seq li) = intercalate "\n" $ map interpreter li
+interpreter (Indented level statement) = (intercalate "" $ genericReplicate level tab) ++ interpreter statement
 interpreter (IfExpr expression) = "if " ++ expression 
 interpreter (ElifExpr expression) = "elif " ++ expression 
 interpreter (ElseExpr expression) = "else " ++ expression 
 interpreter (ReturnExpr expression) = "return " ++ expression 
 interpreter (PassExpr) = "pass"
 interpreter (GivenComment s) = parseComment s
-interpreter (Sentence s) = s ++ eol
+interpreter (Sentence s) = s 
 
 parseComment :: Comment -> String
 parseComment (LineComment s) = "#" ++ s ++ eol

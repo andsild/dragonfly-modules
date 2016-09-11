@@ -20,7 +20,7 @@ parseInput inline =
   case parse mainparser " " inline of
     Left e -> do putStrLn "Error parsing input:"
                  print e
-    Right r -> putStr $  interpreter r
+    Right r -> putStrLn $  interpreter r
 
 
 main :: IO ()
@@ -28,7 +28,7 @@ main = do
   Options{..} <- cmdArgs $ Options { file = "teeest" &= argPos 0 } 
                 &= summary "test"
   input <- parsein [file]
-  putStrLn $ rstrip input
-  parseInput input
+  -- putStrLn $ rstrip input
+  mapM_ parseInput $ lines input
 
 -- autocmd BufWritePost test.hs silent exe 'silent ! (ghc -o test %  && test input.txt) 1> output.txt 2>&1'
