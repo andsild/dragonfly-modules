@@ -4,20 +4,24 @@ module Tokenizer where
 import Control.Monad
 import Control.Monad.State
 import Data.Functor.Identity
+import Data.List (nub, genericReplicate)
 import Text.Parsec hiding (State)
 import Text.Parsec.Language
 import Text.Parsec.String
 import Text.Parsec.Token
-import Data.List (nub)
 
-data Expression = Num Integer | Nil
-data Comment = LineComment String | MultiLineComment String
-data Statement = Indented 
+import Debug.Trace
+
+data Expression = Rhs String | Nil deriving Show
+data Comment = LineComment String | MultiLineComment String deriving Show
+data Statement = Indented Integer
   | AssignmentStatement String Expression
   | GivenExpr Expression 
   | If Expression 
+  | IfOneline Expression Statement 
   | GivenComment Comment 
   | Seq [Statement]
+  deriving Show
 
 stmtIdentifier :: ParsecT String u Identity String
 stmtIdentifier = identifier lexer
@@ -27,8 +31,6 @@ stmtNatural :: ParsecT String u Identity Integer
 stmtNatural    = natural lexer
 stmtSemiSep :: ParsecT String u Identity a -> ParsecT String u Identity [a]
 stmtSemiSep    = semiSep lexer
-stmtWhitespace :: ParsecT String u Identity ()
-stmtWhitespace = whiteSpace lexer
 stmtReservedName :: String -> ParsecT String u0 Identity ()
 stmtReservedName = reserved lexer
 
@@ -48,7 +50,7 @@ def = emptyDef{ --commentStart = "\"\"\""
               --, commentEnd = "\"\"\""
               --, commentLine = "#"
               identStart =  letter <|> char '_'
-              , identLetter = alphaNum <|> oneOf "_-.,"
+              , identLetter = alphaNum <|> oneOf "_-."
               , reservedOpNames = stmtReservedOpNames
               , reservedNames = pythonKeywords
               , caseSensitive   = False
@@ -64,14 +66,17 @@ ifexpr = do
     ; skipMany space
     ; content <- exprParser
     ; char ':'
-    ; return (If content)
+    -- ; oneLiner <- try $ manyTill space newline <|> newline
+    -- ; oneLiner <- try (try assignmentStatementParser <|> try commentParser)
+    -- ; return $ if null oneLiner then (IfOneline content oneLiner) else (If content)
+    ; return $  (If content)
   } <?> "an if expression"
 
 commentParser :: Parser Statement
 commentParser = do
   {
     commentStart <- string multiLineCommentString
-    ; comment <- manyTill anyChar (try (string multiLineCommentString)) 
+    ; comment <- manyTill anyChar (string multiLineCommentString)
     ; return  (GivenComment (MultiLineComment comment))
   }
   <|> do 
@@ -84,8 +89,8 @@ commentParser = do
 exprParser :: Parser Expression
 exprParser = do
   {
-     ; d <- stmtNatural
-     ; return (Num d)
+     ; d <- many alphaNum
+     ; return (Rhs d)
   }
 
 assignmentStatementParser :: Parser Statement
@@ -97,29 +102,39 @@ assignmentStatementParser = do
     ; return (AssignmentStatement variable rhs)
   }
 
+alignSpace :: Integer
+alignSpace = 4
+
+alignNumber :: Integer -> Integer -> Integer
+alignNumber aligner i = aligner * (i `div` aligner)
+
+fixWhiteSpace :: String -> String
+fixWhiteSpace s = genericReplicate (alignNumber alignSpace $ toInteger $ length s) ' '
+
+indentParser :: Parser Statement
+indentParser = do
+  {
+    numSpaces <- many1 space
+    ; return (Indented (toInteger $ alignNumber alignSpace $ toInteger $ length numSpaces))
+  }
+
 singleStatementParser = 
-   commentParser 
+  indentParser
+   <|> commentParser 
    <|> assignmentStatementParser
    <|> ifexpr 
-   <|> do {
-           blankSpace <- skipMany1 space
-           ; return (Indented)
-    } <|> do {
-            skipMany space
-            ; lookAhead newline
-            ; return (Indented)
-    }
       -- <* (try (string "EOF"))
 
 mainparser :: Parser Statement
 mainparser = stmtParser 
   where
     stmtParser = do
+    {
       list <- join <$> manyTill (sepEndBy singleStatementParser newline) eof
-      ; return (Seq list)
-      --; return $ if length list == 1 then head list else Seq list
+      ; return $ trace (show list) $ if length list == 1 then  head list else Seq list
+    }
       <|> do 
         {
           eof
-          ; return Indented
+          ; return (GivenExpr Nil)
         }

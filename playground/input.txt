@@ -1,1 +1,3 @@
 if 2: poop = 1
+        poop = 2
+EOF = 1

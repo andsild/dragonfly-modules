@@ -2,7 +2,7 @@ module Interpreter where
 
 import qualified Data.Map as DM
 import Data.Maybe
-import Data.List (intercalate)
+import Data.List (intercalate, genericReplicate)
 import Tokenizer
 
 al :: [(String, String)]
@@ -19,15 +19,6 @@ fixLetterCase s = fromMaybe s valueFromList
     --isInSet = DM.member s mapFromAL
     valueFromList = DM.lookup s mapFromAL
 
-alignSpace :: Int
-alignSpace = 4
-
-alignNumber :: Int -> Int -> Int
-alignNumber aligner i = aligner * (i `div` aligner)
-
-fixWhiteSpace :: String -> String
-fixWhiteSpace s = replicate (alignNumber alignSpace $ length s) ' '
-
 
 replaceC :: Char -> Char -> String -> String
 replaceC _ _ [] = []
@@ -42,20 +33,25 @@ replaceW a b s = intercalate "\n"  . map replaceW' $ lines s
                     | otherwise = x
 
 -- data Statement = Keyword String String String | Nil
+--
+eol :: String
+eol = "\n"
 
+tab :: String
+tab = " "
 
 interpreter :: Statement -> String
-interpreter (Seq li) = unlines $ map interpreter li
-interpreter (Indented) = "\t"
-interpreter (AssignmentStatement variable value) = variable ++ " = " ++ parseExpr value
-interpreter (If expression) = "if " ++ parseExpr expression ++ ":"
+interpreter (Seq li) = intercalate "" $ map interpreter li
+interpreter (Indented level) = if level == 0 then "\b\b" else intercalate "" $ genericReplicate level tab
+interpreter (AssignmentStatement variable value) = variable ++ " = " ++ parseExpr value ++ eol
+interpreter (If expression) = "if " ++ parseExpr expression ++ ":" ++ eol
 interpreter (GivenExpr e) = parseExpr e
 interpreter (GivenComment s) = parseComment s
 
 parseComment :: Comment -> String
-parseComment (LineComment s) = "#" ++ s ++ "\n"
+parseComment (LineComment s) = "#" ++ s ++ eol
 parseComment (MultiLineComment s) = "\"\"\"" ++ s ++ "\"\"\""
 
 parseExpr :: Expression -> String
 parseExpr Nil = ""
-parseExpr (Num c)  = show c
+parseExpr (Rhs s)  = s

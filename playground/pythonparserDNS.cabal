@@ -15,11 +15,17 @@ build-type:          Simple
 extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
+Flag Debug
+  Description: Enable debug support
+  Default:     True
+  Manual:      True
+
 executable pythonparserDNS
   main-is:             Main.hs
   ghc-options:         -fwarn-incomplete-patterns
-  -- other-modules:       
-  -- other-extensions:    
+  if flag(debug)
+      CC-Options: "-DDEBUG"
+      CPP-Options: -DDEBUG
   build-depends:       base >=4.9 && <4.10
                        , ghc
                        , parsec
