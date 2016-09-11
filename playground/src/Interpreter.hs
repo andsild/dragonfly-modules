@@ -47,6 +47,7 @@ replaceW a b s = intercalate "\n"  . map replaceW' $ lines s
 interpreter :: Statement -> String
 interpreter (Seq li) = unlines $ map interpreter li
 interpreter (Indented) = "\t"
+interpreter (AssignmentStatement variable value) = variable ++ " = " ++ parseExpr value
 interpreter (If expression) = "if " ++ parseExpr expression ++ ":"
 interpreter (GivenExpr e) = parseExpr e
 interpreter (GivenComment s) = parseComment s

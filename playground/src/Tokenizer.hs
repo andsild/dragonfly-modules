@@ -12,8 +12,12 @@ import Data.List (nub)
 
 data Expression = Num Integer | Nil
 data Comment = LineComment String | MultiLineComment String
-data Statement = Indented | GivenExpr Expression | If Expression 
-                 | GivenComment Comment | Seq [Statement]
+data Statement = Indented 
+  | AssignmentStatement String Expression
+  | GivenExpr Expression 
+  | If Expression 
+  | GivenComment Comment 
+  | Seq [Statement]
 
 stmtIdentifier :: ParsecT String u Identity String
 stmtIdentifier = identifier lexer
@@ -31,9 +35,11 @@ stmtReservedName = reserved lexer
 pythonKeywords :: [String]
 pythonKeywords = ["and", "if", "else", "elif", "pass", "return"]
 
-
 multiLineCommentString :: String
 multiLineCommentString = "\"\"\""
+
+stmtReservedOpNames :: [String]
+stmtReservedOpNames = ["="]
 
 -- We're not adding the commentStart,End,Line because we need to keep it
 -- If we add it to the languagedef, parsec will see it as whitespace
@@ -43,7 +49,7 @@ def = emptyDef{ --commentStart = "\"\"\""
               --, commentLine = "#"
               identStart =  letter <|> char '_'
               , identLetter = alphaNum <|> oneOf "_-.,"
-              , reservedOpNames = []
+              , reservedOpNames = stmtReservedOpNames
               , reservedNames = pythonKeywords
               , caseSensitive   = False
               }
@@ -65,13 +71,13 @@ commentParser :: Parser Statement
 commentParser = do
   {
     commentStart <- string multiLineCommentString
-    ; comment <- manyTill anyChar (try (string "\"\"\"")) 
+    ; comment <- manyTill anyChar (try (string multiLineCommentString)) 
     ; return  (GivenComment (MultiLineComment comment))
   }
   <|> do 
   {
     commentStart <- char '#'
-    ; comment <- manyTill anyChar newline
+    ; comment <- manyTill anyChar (lookAhead newline)
     ; return  (GivenComment (LineComment comment))
   }
 
@@ -82,18 +88,27 @@ exprParser = do
      ; return (Num d)
   }
 
+assignmentStatementParser :: Parser Statement
+assignmentStatementParser = do
+  {
+    variable <- stmtIdentifier
+    ; stmtReservedOp "="
+    ; rhs <- exprParser
+    ; return (AssignmentStatement variable rhs)
+  }
+
 singleStatementParser = 
-  commentParser 
-  <|> ifexpr 
-  <|> do {
-          blankSpace <- skipMany1 space
-          ; return (Indented)
-        } -- <|> return (GivenExpr Nil)
-        <|> do {
+   commentParser 
+   <|> assignmentStatementParser
+   <|> ifexpr 
+   <|> do {
+           blankSpace <- skipMany1 space
+           ; return (Indented)
+    } <|> do {
             skipMany space
-            ; newline
+            ; lookAhead newline
             ; return (Indented)
-        }
+    }
       -- <* (try (string "EOF"))
 
 mainparser :: Parser Statement
