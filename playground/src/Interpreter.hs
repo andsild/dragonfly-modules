@@ -42,16 +42,15 @@ tab = " "
 
 interpreter :: Statement -> String
 interpreter (Seq li) = intercalate "" $ map interpreter li
-interpreter (Indented level) = if level == 0 then "\b\b" else intercalate "" $ genericReplicate level tab
-interpreter (AssignmentStatement variable value) = variable ++ " = " ++ parseExpr value ++ eol
-interpreter (If expression) = "if " ++ parseExpr expression ++ ":" ++ eol
-interpreter (GivenExpr e) = parseExpr e
+interpreter (Indented level) = intercalate "" $ genericReplicate level tab
+interpreter (IfExpr expression) = "if " ++ expression 
+interpreter (ElifExpr expression) = "elif " ++ expression 
+interpreter (ElseExpr expression) = "else " ++ expression 
+interpreter (ReturnExpr expression) = "return " ++ expression 
+interpreter (PassExpr) = "pass"
 interpreter (GivenComment s) = parseComment s
+interpreter (Sentence s) = s ++ eol
 
 parseComment :: Comment -> String
 parseComment (LineComment s) = "#" ++ s ++ eol
 parseComment (MultiLineComment s) = "\"\"\"" ++ s ++ "\"\"\""
-
-parseExpr :: Expression -> String
-parseExpr Nil = ""
-parseExpr (Rhs s)  = s

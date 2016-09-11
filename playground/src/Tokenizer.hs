@@ -15,10 +15,12 @@ import Debug.Trace
 data Expression = Rhs String | Nil deriving Show
 data Comment = LineComment String | MultiLineComment String deriving Show
 data Statement = Indented Integer
-  | AssignmentStatement String Expression
-  | GivenExpr Expression 
-  | If Expression 
-  | IfOneline Expression Statement 
+  | Sentence String
+  | IfExpr String
+  | ElifExpr String
+  | ElseExpr String
+  | PassExpr 
+  | ReturnExpr String
   | GivenComment Comment 
   | Seq [Statement]
   deriving Show
@@ -59,19 +61,6 @@ def = emptyDef{ --commentStart = "\"\"\""
 lexer :: GenTokenParser String u Identity
 lexer = makeTokenParser def
 
-ifexpr :: Parser Statement
-ifexpr = do
-  {
-    stmtReservedName "if"
-    ; skipMany space
-    ; content <- exprParser
-    ; char ':'
-    -- ; oneLiner <- try $ manyTill space newline <|> newline
-    -- ; oneLiner <- try (try assignmentStatementParser <|> try commentParser)
-    -- ; return $ if null oneLiner then (IfOneline content oneLiner) else (If content)
-    ; return $  (If content)
-  } <?> "an if expression"
-
 commentParser :: Parser Statement
 commentParser = do
   {
@@ -93,15 +82,6 @@ exprParser = do
      ; return (Rhs d)
   }
 
-assignmentStatementParser :: Parser Statement
-assignmentStatementParser = do
-  {
-    variable <- stmtIdentifier
-    ; stmtReservedOp "="
-    ; rhs <- exprParser
-    ; return (AssignmentStatement variable rhs)
-  }
-
 alignSpace :: Integer
 alignSpace = 4
 
@@ -118,11 +98,54 @@ indentParser = do
     ; return (Indented (toInteger $ alignNumber alignSpace $ toInteger $ length numSpaces))
   }
 
+sentenceParser :: Parser Statement
+sentenceParser = do
+  {
+    sentence <- manyTill (satisfy (\x -> not (x == '\n'))) newline
+    ; return (Sentence sentence)
+  }
+
+
+untilNewline :: Stream s m Char => ParsecT s u m String
+untilNewline = manyTill (satisfy (\x -> not (x == '\n'))) newline
+
+keywordParser :: Parser Statement
+keywordParser = do
+  {
+    stmtReservedOp "if"
+    ; rest <- untilNewline
+    ; return (IfExpr rest)
+  }
+  <|> do
+  {
+    stmtReservedOp "elif"
+    ; rest <- untilNewline
+    ; return (ElifExpr rest)
+  }
+  <|> do
+  {
+    stmtReservedOp "else"
+    ; rest <- untilNewline
+    ; return (ElseExpr rest)
+  }
+  <|> do
+  {
+    stmtReservedOp "pass"
+    ; return (PassExpr)
+  }
+  <|> do
+  {
+    stmtReservedOp "return" 
+    ; rest <- untilNewline
+    ; return (ReturnExpr rest)
+  }
+
+
 singleStatementParser = 
   indentParser
+   <|> sentenceParser
+   <|> keywordParser
    <|> commentParser 
-   <|> assignmentStatementParser
-   <|> ifexpr 
       -- <* (try (string "EOF"))
 
 mainparser :: Parser Statement
@@ -136,5 +159,5 @@ mainparser = stmtParser
       <|> do 
         {
           eof
-          ; return (GivenExpr Nil)
+          ; return (Sentence "")
         }
