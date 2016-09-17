@@ -18,7 +18,8 @@ Previously I used Linux and a Windows VM, however, the delay of the VM and [Aene
 
 ## Status
 I am making progress, but am still not a productive coder by voice. I.e. I can write simple programs but it takes a long time.
-I very much appreciate feedback whether its a bug, question, suggestion or anything else! Feel free to message me at `andsild@gmail.com`
+I very much appreciate feedback whether its a bug, question, suggestion or anything else!  
+Feel free to message me at `andsild@gmail.com`
 
 ## Usage:
 The jist of the _useful_ code is in the grammars repository.
