@@ -16,6 +16,10 @@ to install the needed dependencies (and also some pip packages, see dragonfly re
 
 Previously I used Linux and a Windows VM, however, the delay of the VM and [Aenea](https://github.com/dictation-toolbox/aenea) was inconvening.
 
+## Status
+I am making progress, but am still not a productive coder by voice. I.e. I can write simple programs but it takes a long time.
+I very much appreciate feedback whether its a bug, question, suggestion or anything else! Feel free to message me at `andsild@gmail.com`
+
 ## Usage:
 The jist of the _useful_ code is in the grammars repository.
 You can copy whatever commands you like to your own project. 
@@ -43,7 +47,3 @@ def unload():
 However, If you *do* like (or don't mind) my approach, I recommend cloning this directory to your PC, and pointing your Natlink "UserDirectory" to this repo (start menu -> Configure Natlink via GUI -> UserDirectory". The rest should work by itself, provided you `pip install requirements.txt`.
 
 My natlink_hack is not perfect (e.g. it doesn't allow for context switching), but it was written to take me further away from Natlinks' API which I find difficult to use (but still, I am grateful that it is written for DNS users).
-
-
-## this is a work in progress	
-feel free to message me or create an issue if you would like to.
