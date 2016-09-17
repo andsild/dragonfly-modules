@@ -24,8 +24,7 @@ terminal_mapping = {
     'deer into':                    Text("cdls "),
     'grep process':                 Text("pgrep "),
 
-    'emerge':                       Text("sudo dnf install "),
-    'scratch that':                 Key("c-w"),
+    #'scratch that':                 Key("c-w"),
     'delete line':                  Key("c-u"),
     'editor':                       Text("$EDITOR "),
 
@@ -33,6 +32,9 @@ terminal_mapping = {
 
     'kill command': Key("ctrl:down, c, ctrl:up"),
     'kill window': Key("ctrl:down, d, ctrl:up"),
+
+    'pip install': Text("pip install "), # pip is hard to recognize, so need custom command set
+    'pip search': Text("pip search "),
 
     '(terminal|term) clear':        Key("ctrl:down, l, ctrl:up"),
 

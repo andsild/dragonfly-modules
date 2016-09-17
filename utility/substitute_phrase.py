@@ -1,8 +1,5 @@
-""" Convenient to have in a separate file since it uses dragonfly import
-    (importing dragonfly causes a lot of commotion)
-"""
 from dragonfly import Key
-from utility.text_translate import range_insert_symbol_logic, Symbol_map
+from utility.text_translate import translate_spokenform_to_queryform_logic, Symbol_map
 
 Symbol_to_dragonfly = {
     '(': 'lparen',
@@ -14,8 +11,8 @@ Symbol_to_dragonfly = {
     '|': 'pipe',
 }
 
-def range_insert_symbol(text):
-    dragonfly_parsable_text = range_insert_symbol_logic(text).split(',')
+def translate_spokenform_to_queryform(text):
+    dragonfly_parsable_text = translate_spokenform_to_queryform_logic(text).split(',')
     print dragonfly_parsable_text
 
     # since we will be popping off words

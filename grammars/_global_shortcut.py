@@ -15,6 +15,12 @@ exename_programswitcher = os.path.join(default_install_dir, sub_repo_name, sub_r
 def launch_cmd():
     subprocess.Popen(["cmd", "/K", "cd %homedrive%%homepath%"])
 
+def launch_chrome():
+    subprocess.Popen(["C:\Program Files (x86)\Google\Chrome\Application\chrome.exe", ])
+
+def launch_visual_studio():
+    subprocess.Popen(["C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe", ])
+
 def flip_cmd():
     subprocess.Popen([exename_programswitcher, "cmd"]);
 
@@ -32,6 +38,9 @@ commands = {}
 #TODO: undo last spoken phrase
 programs_to_launch={
     'launch command prompt': Function(launch_cmd),
+    'launch chrome': Function(launch_chrome),
+    'launch studio': Function(launch_visual_studio),
+
     }
 
 program_to_switch_to ={

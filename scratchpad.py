@@ -4,9 +4,9 @@ def print_my_name():
 print "Lorem dolor sit et amet"
 
 def count_to_ten(count):
-     if count >= 10:
+    if count >= 10:
          return 1
-     return count_to_ten(count + 1)
+    return count_to_ten(count + 1)
  
 
 def fibonacci(count):
@@ -15,7 +15,10 @@ def fibonacci(count):
 
     return fibonacci(count - 1) + fibonacci(count - 2)
 
+import matplotlib.pyplot as plotter
 
+plotter.plot([1, 2, 3, 4])
+plotter.show()
 
 print count_to_ten(0)
 print_my_name()

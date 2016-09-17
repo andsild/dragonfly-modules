@@ -1,7 +1,7 @@
 import unittest2
 import sure
 
-from utility.text_translate import range_insert_symbol_logic, translate_numbers
+from utility.text_translate import translate_spokenform_to_queryform_logic, translate_numbers
 
 class TranslatorTest(unittest2.TestCase):
     def setUp(self):
@@ -15,7 +15,7 @@ class TranslatorTest(unittest2.TestCase):
 
     def test_range_insert_logic(self):
         def assert_input_equal_output(intext, outtext):
-            res = range_insert_symbol_logic(intext)
+            res = translate_spokenform_to_queryform_logic(intext)
             try:
                 outtext.should.be.equal(res)
             except Exception as e:

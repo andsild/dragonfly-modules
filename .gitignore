@@ -319,7 +319,6 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
-*.pyproj
 
 *.exe
 

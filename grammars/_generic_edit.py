@@ -29,7 +29,6 @@ from dragonfly import (
     AppContext,
 )
 
-
 from dragonfly.actions.keyboard import keyboard
 from dragonfly.actions.typeables import typeables
 if 'semicolon' not in typeables:
@@ -50,16 +49,7 @@ release = Key("shift:up, ctrl:up, alt:up")
 
 
 def cancel_and_sleep(text=None, text2=None):
-    """Used to cancel an ongoing dictation and puts microphone to sleep.
-
-    This method notifies the user that the dictation was in fact canceled,
-     a message in the Natlink feedback window.
-    Then the the microphone is put to sleep.
-    Example:
-    "'random mumbling go to sleep'" => Microphone sleep.
-
-    """
-    print("* Dictation canceled. Going to sleep. *")
+    print("Dictation canceled, going to sleep. Say \"wake up\" to restart")
     setMicState("sleeping")
 
 
@@ -158,7 +148,7 @@ pressKeyMap.update(functionKeyMap)
 formatMap = {
     "(sentence|sense|since) case": [ft.sentenceCase],
     "camel":                       [ft.camelCase],
-    "pass":                        [ft.pascalCase],
+    "pascal":                        [ft.pascalCase],
     "snake":                       [ft.snakeCase],
     "uppercase":                   [ft.upperCase],
     "dwarf":                   [ft.lowerCase],
@@ -182,90 +172,6 @@ formatMap = {
     "say":                         [ft.spokenForm],
     "spay":                         [ft.spokenFormWithSpace],
     "environment variable":        [ft.snakeCase, ft.upperCase],
-}
-
-
-abbreviationMap = {
-    "administrator": "admin",
-    "administrators": "admins",
-    "application": "app",
-    "applications": "apps",
-    "argument": "arg",
-    "arguments": "args",
-    "attribute": "attr",
-    "attributes": "attrs",
-    "(authenticate|authentication)": "auth",
-    "binary": "bin",
-    "button": "btn",
-    "class": "cls",
-    "command": "cmd",
-    "(config|configuration)": "cfg",
-    "context": "ctx",
-    "control": "ctrl",
-    "database": "db",
-    "(define|definition)": "def",
-    "description": "desc",
-    "(develop|development)": "dev",
-    "(dictionary|dictation)": "dict",
-    "(direction|directory)": "dir",
-    "dynamic": "dyn",
-    "example": "ex",
-    "execute": "exec",
-    "exception": "exc",
-    "expression": "exp",
-    "(extension|extend)": "ext",
-    "function": "func",
-    "framework": "fw",
-    "(initialize|initializer)": "init",
-    "instance": "inst",
-    "integer": "int",
-    "iterate": "iter",
-    "java archive": "jar",
-    "javascript": "js",
-    "keyword": "kw",
-    "keyword arguments": "kwargs",
-    "language": "lng",
-    "library": "lib",
-    "length": "len",
-    "maximum": "max",
-    "mininum": "min",
-    "number": "num",
-    "object": "obj",
-    "okay": "ok",
-    "option": "opt",
-    "I don't know": "idk",
-    "package": "pkg",
-    "parameter": "param",
-    "parameters": "params",
-    "pixel": "px",
-    "position": "pos",
-    "point": "pt",
-    "previous": "prev",
-    "property": "prop",
-    "python": "py",
-    "query string": "qs",
-    "reference": "ref",
-    "references": "refs",
-    "(represent|representation)": "repr",
-    "regular (expression|expressions)": "regex",
-    "request": "req",
-    "revision": "rev",
-    "ruby": "rb",
-    "session aidee": "sid",  # "session id" didn't work for some reason.
-    "source": "src",
-    "(special|specify|specific|specification)": "spec",
-    "standard": "std",
-    "standard in": "stdin",
-    "standard out": "stdout",
-    "string": "str",
-    "(synchronize|synchronous)": "sync",
-    "system": "sys",
-    "utility": "util",
-    "utilities": "utils",
-    "temporary": "tmp",
-    "text": "txt",
-    "value": "val",
-    "window": "win",
 }
 
 # For use with "say"-command. Words that are commands in the generic edit
@@ -294,7 +200,6 @@ reservedWord = {
     "say": "say",
     "select": "select",
     "select all": "select all",
-    "short": "abbreviate",
     "uppercase": "uppercase",
     "lowercase": "lowercase",
     "expand": "expand",
@@ -433,9 +338,6 @@ grammarItems = {
         # For writing words that would otherwise be characters or commands.
         # Ex: "period", tab", "left", "right", "home".
         "say <reservedWord>": Text("%(reservedWord)s"),
-        # Abbreviate words commonly used in programming.
-        # Ex: arguments -> args, parameters -> params.
-        "short <short>": Text("%(short)s"),
         # Text corrections.
         "(delete|remove) rest": Key("s-end, del"),
         # Microphone sleep/cancel started dictation.
@@ -473,7 +375,6 @@ grammarCfg.cmd.map = Item(
 )
 
 
-
 class KeystrokeRule(MappingRule):
     exported = False
     mapping = grammarCfg.cmd.map
@@ -488,7 +389,6 @@ class KeystrokeRule(MappingRule):
         Choice("modifierSingle", singleModifierMap),
         Choice("pressKey", pressKeyMap),
         Choice("format_type_list", formatMap),
-        Choice("short", abbreviationMap),
         Choice("reservedWord", reservedWord),
     ]
     defaults = {

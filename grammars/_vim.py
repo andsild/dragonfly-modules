@@ -21,7 +21,7 @@ from dragonfly import (
 )
 
 from _generic_edit import pressKeyMap
-from utility.substitute_phrase import range_insert_symbol
+from utility.substitute_phrase import translate_spokenform_to_queryform
 IS_WINDOWS = True
 
 #vim_context = AppContext(executable="devenv", title="Microsoft visual studio")
@@ -123,7 +123,6 @@ basics_mapping = {
     'insert above': Key(goto_normal_mode_keys + "O"),
     'regret': Key(goto_normal_mode_keys + "u"),
     'read': Key(goto_normal_mode_keys + "c-r"),
-    'scratch': Key(goto_normal_mode_keys + "u"),
     'escape': Key("escape"),
     'filename': Key(goto_normal_mode_keys + "c-g"),
     'save and quit': Key(goto_normal_mode_keys + "colon, w, q, enter"),
@@ -145,7 +144,7 @@ basics_mapping = {
 
     # Finding text
     #'find <text>': Key(goto_normal_mode_keys + "slash") + Text("%(text)s"),
-    'jump <text>': Key("escape, slash") + Function(range_insert_symbol),
+    'jump <text>': Key("escape, slash") + Function(translate_spokenform_to_queryform),
     'next': Key(goto_normal_mode_keys + "n"),
     'prev|previous': Key(goto_normal_mode_keys + "N"),
     'clear search': Key(goto_normal_mode_keys + "colon, n, o, h, enter"),
@@ -199,15 +198,15 @@ basics_mapping = {
     'yank <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines),
     'yank up <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines_up),
 
-    'select until <text>': Key(goto_normal_mode_keys + "v, t, slash") + Function(range_insert_symbol),
-    'select including <text>': Key(goto_normal_mode_keys + "v, f, slash") + Function(range_insert_symbol),
-    'dine until <text>': Key(goto_normal_mode_keys + "d, t") + Function(range_insert_symbol),
-    'dine including <text>': Key(goto_normal_mode_keys + "d, f") + Function(range_insert_symbol),
-    '(see|sea) until <text>': Key(goto_normal_mode_keys + "c, t") + Function(range_insert_symbol),
-    '(see|sea) including <text>': Key(goto_normal_mode_keys + "c, f") + Function(range_insert_symbol),
+    'select until <text>': Key(goto_normal_mode_keys + "v, t, slash") + Function(translate_spokenform_to_queryform),
+    'select including <text>': Key(goto_normal_mode_keys + "v, f, slash") + Function(translate_spokenform_to_queryform),
+    'dine until <text>': Key(goto_normal_mode_keys + "d, t") + Function(translate_spokenform_to_queryform),
+    'dine including <text>': Key(goto_normal_mode_keys + "d, f") + Function(translate_spokenform_to_queryform),
+    '(see|sea) until <text>': Key(goto_normal_mode_keys + "c, t") + Function(translate_spokenform_to_queryform),
+    '(see|sea) including <text>': Key(goto_normal_mode_keys + "c, f") + Function(translate_spokenform_to_queryform),
 
     # The zs and ze denote pattern start and pattern end
-    # I use this to move the cursor right after the charachter we are looking for
+    # I use this to move the cursor right after the character we are looking for
     # e.g. "next block" looks for a lparen, so I move to the character after it
     'next block': goto_normal_mode + Text("?(\\zs[^ ]") + Key("enter, N, N"),
     'pre block': goto_normal_mode + Text("?(\\zs[^ ]") + Key("enter"),

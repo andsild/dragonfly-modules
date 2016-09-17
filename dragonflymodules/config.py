@@ -9,7 +9,9 @@ GRAMMAR_IMPORTS = [ "grammars._chrome",
 		"grammars._terminal",
 		"grammars._personal_info",
 		"grammars._vim",
-		"grammars._visualStudio"]
+        "grammars._abbreviation",
+		"grammars._visualStudio",
+        ]
 
 My_name = "Anders"
 My_full_name = "Anders Sildnes"

@@ -44,7 +44,7 @@ IS_WINDOWS = True
 if IS_WINDOWS:
     Symbol_map.update(windows_special_cases)
 
-def range_insert_symbol_logic(text):
+def translate_spokenform_to_queryform_logic(text):
     translated_text = translate_numbers(str(text))
     input_text = str(translated_text).split()
     boolBig = "big" == input_text[0]
@@ -85,6 +85,9 @@ def range_insert_symbol_logic(text):
     return returnWord[:-1]
 
 def translate_numbers(text):
+    if not os.path.isfile(exeName):
+        print("[not important:] Tried to execute %s exeName, but it was not found, ignoring...")
+        return text
     p = Popen([exeName], stdout=PIPE, stdin=PIPE, stderr=STDOUT)    
     stdout = p.communicate(input=bytearray(text))[0]
     return str(stdout.decode().rstrip())
