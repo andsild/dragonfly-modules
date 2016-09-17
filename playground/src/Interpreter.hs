@@ -2,7 +2,7 @@ module Interpreter where
 
 import qualified Data.Map as DM
 import Data.Maybe
-import Data.List (intercalate)
+import Data.List (intercalate, genericReplicate)
 import Tokenizer
 
 al :: [(String, String)]
@@ -19,15 +19,6 @@ fixLetterCase s = fromMaybe s valueFromList
     --isInSet = DM.member s mapFromAL
     valueFromList = DM.lookup s mapFromAL
 
-alignSpace :: Int
-alignSpace = 4
-
-alignNumber :: Int -> Int -> Int
-alignNumber aligner i = aligner * (i `div` aligner)
-
-fixWhiteSpace :: String -> String
-fixWhiteSpace s = replicate (alignNumber alignSpace $ length s) ' '
-
 
 replaceC :: Char -> Char -> String -> String
 replaceC _ _ [] = []
@@ -42,27 +33,24 @@ replaceW a b s = intercalate "\n"  . map replaceW' $ lines s
                     | otherwise = x
 
 -- data Statement = Keyword String String String | Nil
+--
+eol :: String
+eol = "\n"
 
+tab :: String
+tab = " "
 
 interpreter :: Statement -> String
-interpreter (Keyword whitespace command rest ) = alignedSpace ++ parsedCommand ++ rest 
-  where
-    alignedSpace = fixWhiteSpace whitespace
-    parsedCommand = fixLetterCase command ++ " "
-interpreter (GenericLine s) = s
-interpreter (Indented spaces stmt) = truncWhitespace spaces ++ interpreter stmt
-interpreter (If s) = "if " ++ interpreter s
-interpreter (GivenExpr e) = parseExpr e
+interpreter (Seq li) = intercalate "\n" $ map interpreter li
+interpreter (Indented level statement) = (intercalate "" $ genericReplicate level tab) ++ interpreter statement
+interpreter (IfExpr expression) = "if " ++ expression 
+interpreter (ElifExpr expression) = "elif " ++ expression 
+interpreter (ElseExpr expression) = "else " ++ expression 
+interpreter (ReturnExpr expression) = "return " ++ expression 
+interpreter (PassExpr) = "pass"
 interpreter (GivenComment s) = parseComment s
+interpreter (Sentence s) = s 
 
 parseComment :: Comment -> String
-parseComment (LineComment s) = "#" ++ s
-parseComment (MultiLineComment s) = "\"\"\"" ++ s
-
-parseExpr :: Expr -> String
-parseExpr Nil = ""
-parseExpr (Code s)  = "expr"
-
-truncWhitespace :: Whitespace -> String
-truncWhitespace (IndentBlock s) = " " ++ interpreter s
-truncWhitespace Statement = interpreter (GivenExpr Nil)
+parseComment (LineComment s) = "#" ++ s ++ eol
+parseComment (MultiLineComment s) = "\"\"\"" ++ s ++ "\"\"\""

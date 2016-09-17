@@ -2,6 +2,7 @@
 module Main where
 
 import Data.Data
+import Data.String.Utils
 import Text.Parsec
 import System.Console.CmdArgs (cmdArgs, (&=), summary, argPos) 
 
@@ -27,6 +28,7 @@ main = do
   Options{..} <- cmdArgs $ Options { file = "teeest" &= argPos 0 } 
                 &= summary "test"
   input <- parsein [file]
+  -- putStrLn $ rstrip input
   mapM_ parseInput $ lines input
 
 -- autocmd BufWritePost test.hs silent exe 'silent ! (ghc -o test %  && test input.txt) 1> output.txt 2>&1'
