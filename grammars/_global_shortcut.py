@@ -15,6 +15,9 @@ exename_programswitcher = os.path.join(default_install_dir, sub_repo_name, sub_r
 def launch_cmd():
     subprocess.Popen(["cmd", "/K", "cd %homedrive%%homepath%"])
 
+def launch_git():
+    subprocess.Popen(["C:\Program Files\Git\git-bash", "--cd-to-home"])
+
 def launch_chrome():
     subprocess.Popen(["C:\Program Files (x86)\Google\Chrome\Application\chrome.exe", ])
 
@@ -38,6 +41,7 @@ commands = {}
 #TODO: undo last spoken phrase
 programs_to_launch={
     'launch command prompt': Function(launch_cmd),
+    'launch jim': Function(launch_git),
     'launch chrome': Function(launch_chrome),
     'launch studio': Function(launch_visual_studio),
 

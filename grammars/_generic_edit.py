@@ -76,6 +76,23 @@ specialCharMap = {
     "plus": "+",
     "space": " ",
     "tilde": "~",
+    "laip": "(",
+    "rye": ")",
+    "lace": "{",
+    "race": "}",
+    "lack": "[",
+    "rack": "]",
+    "colon": ":",
+    "sink": ";",
+    "think": ";",
+    "Sim": ":",
+    "sing": "'",
+    "quest": "?",
+    "bang": "!",
+    "luke": "<",
+    "look": "<",
+    "ruke": ">",
+    "rook": ">",
 }
 
 # Modifiers for the press-command.
@@ -174,9 +191,9 @@ formatMap = {
     "environment variable":        [ft.snakeCase, ft.upperCase],
 }
 
-# For use with "say"-command. Words that are commands in the generic edit
+# For use with "say"-command.  Words that are commands in the generic edit
 # grammar were treated as separate commands and could not be written with the
-# "say"-command. This overrides that behavior.
+# "say"-command.  This overrides that behavior.
 # Other words that won't work for one reason or another, can also be added to
 # this list.
 reservedWord = {
@@ -263,8 +280,6 @@ grammarItems = {
         "south [<n>]": Key("pgdown:%(n)d"),
         "left <n> (word|words)": Key("c-left/3:%(n)d/10"),
         "right <n> (word|words)": Key("c-right/3:%(n)d/10"),
-        "(luke|look)": Key("lessthan"),
-        "(ruke|rook)": Key("greaterthan"),
         "end": Key("end"),
         "doc home": Key("c-home/3"),
         "ghin buffer": Key("c-home/3"),
@@ -274,8 +289,6 @@ grammarItems = {
         "fly fly fly": Key("alt:down, tab, tab, alt:up"),
         "doc end": Key("c-end/3"),
         "ex buffer": Key("c-end/3"),
-        "quest": Key("question"),
-        "bang": Key("exclamation"),
         "space": release + Key("space"),
         "(space|ace) [<n>]": release + Key("space:%(n)d"),
         "enter [<n>]": release + Key("enter:%(n)d"),
@@ -297,40 +310,18 @@ grammarItems = {
         "[(hold|press)] control": Key("ctrl:down/3"),
         "release control": Key("ctrl:up"),
         "release [all]": release,
-        "(sink|think)": Key("semicolon"),
-        "Sim": Key("colon"),
-        # Closures.
-        "angle brackets": Key("langle, rangle, left/3"),
-        "brackets": Key("lbracket, rbracket, left/3"),
-        "braces": Key("lbrace, rbrace, left/3"),
-        "parens": Key("lparen, rparen, left/3"),
-        "laip": Key("lparen"),
-        "rye": Key("rparen"),
-        "lace [<n>]": Key("lbrace:%(n)d"),
-        "race [<n>]": Key("rbrace:%(n)d"),
-        "lack": Key("lbracket"),
-        "rack": Key("rbracket"),
-        "backticks": Key("backtick:2, left"),
-        "sing": Key("squote"),
         # Shorthand multiple characters.
         "double <char>": Text("%(char)s%(char)s"),
         "triple <char>": Text("%(char)s%(char)s%(char)s"),
         "double escape": Key("escape, escape"),  # Exiting menus.
         # Punctuation and separation characters, for quick editing.
-        "colon [<n>]": Key("colon/2:%(n)d"),
-        "Col. [<n>]": Key("colon/2:%(n)d"),
-        "semi-colon [<n>]": Key("semicolon/2:%(n)d"),
-        "comma [<n>]": Key("comma/2:%(n)d"),
         "cam ": Key("comma, space"),
         "sad smilie": Key("colon, lparen"),
         "slash smilie": Key("colon, slash"),
         "pee smilie": Key("colon, p"),
-        "(dot|period) [<n>]": Key("dot/2:%(n)d"),
-        "(dash|hyphen|minus) [<n>]": Key("hyphen/2:%(n)d"),
-        "underscore [<n>]": Key("underscore/2:%(n)d"),
         "<letters>": Text("%(letters)s"),
         "<char>": Text("%(char)s"),
-        # Format dictated words. See the formatMap for all available types.
+        # Format dictated words.  See the formatMap for all available types.
         # Ex: "camel case my new variable" -> "myNewVariable"
         # Ex: "snake case my new variable" -> "my_new_variable"
         # Ex: "uppercase squash my new hyphen variable" -> "MYNEW-VARIABLE"
@@ -347,9 +338,9 @@ grammarItems = {
 
 
 globalShortcuts = {
-    "next music" : Key("alt:down, pgdown, alt:up"), # I use streamkeys for this (and  play all my music in chrome)
-    "prev music" : Key("alt:down, pgup, alt:up"),# I use streamkeys for this (and  play all my music in chrome)
-    "pause music" : Key("alt:down, home, alt:up"), # I use streamkeys for this (and  play all my music in chrome)
+    "next music" : Key("alt:down, pgdown, alt:up"), # I use streamkeys for this (and play all my music in chrome)
+    "prev music" : Key("alt:down, pgup, alt:up"),# I use streamkeys for this (and play all my music in chrome)
+    "pause music" : Key("alt:down, home, alt:up"), # I use streamkeys for this (and play all my music in chrome)
     "play music" : Key("alt:down, home, alt:up"), # I use streamkeys for this (and  play all my music in chrome)
     }
 
@@ -366,20 +357,17 @@ grammarItems.update(voiceLetters)
 
 grammarCfg = Config("multi edit")
 grammarCfg.cmd = Section("Language section")
-grammarCfg.cmd.map = Item(
-    grammarItems,
+grammarCfg.cmd.map = Item(grammarItems,
     namespace={
         "Key": Key,
         "Text": Text,
-    }
-)
+    })
 
 
 class KeystrokeRule(MappingRule):
     exported = False
     mapping = grammarCfg.cmd.map
-    extras = [
-        IntegerRef("n", 1, 100),
+    extras = [IntegerRef("n", 1, 100),
         IntegerRef("ntimes", 1, 100),
         Dictation("text"),
         Dictation("text2"),
@@ -389,8 +377,7 @@ class KeystrokeRule(MappingRule):
         Choice("modifierSingle", singleModifierMap),
         Choice("pressKey", pressKeyMap),
         Choice("format_type_list", formatMap),
-        Choice("reservedWord", reservedWord),
-    ]
+        Choice("reservedWord", reservedWord),]
     defaults = {
         "n": 1,
         "ntimes": 1,
@@ -408,10 +395,8 @@ sequence = Repetition(single_action, min=1, max=16, name="sequence")
 class RepeatRule(CompoundRule):
     # Here we define this rule's spoken-form and special elements.
     spec = "<sequence> [[[and] repeat [that]] <n> times]"
-    extras = [
-        sequence,  
-        IntegerRef("n", 1, 1000), 
-    ]
+    extras = [sequence,  
+        IntegerRef("n", 1, 1000),]
     defaults = {
         "n": 1,  # Default repeat count.
         "ntimes": 1,  # Default repeat count.
