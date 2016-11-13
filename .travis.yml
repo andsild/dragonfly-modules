@@ -2,8 +2,17 @@ sudo: false
 
 language: 
   - python
+
+addons:
+  apt:
+    sources:
+      - hvr-ghc
+    packages:
+      - ghc-7.10.2
+
 python:
   - "2.7"
+
 before_install:
   - mkdir -p ~/.local/bin
   - export PATH=$HOME/.local/bin:$PATH
@@ -16,10 +25,4 @@ install:
 script: unit2
 cache:
   directories:
-  - $HOME/.stack
-addons:
-  apt:
-    sources:
-      - hvr-ghc
-    packages:
-      - ghc-7.10.2
+    - $HOME/.stack
