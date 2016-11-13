@@ -3,8 +3,7 @@ language:
 python:
   - "2.7"
 before_install:
-  - echo 'deb http://ftp.debian.org/debian/ jessie-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
-  - sudo apt-get update && apt-get -t jessie-backports install ghc cabal-install
+  - sudo apt-get install cabal-install ghc
   - cabal update
 install: 
   - ./installSubmodules.sh
