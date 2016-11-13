@@ -1,13 +1,25 @@
+sudo: false
+
 language: 
   - python
 python:
   - "2.7"
 before_install:
-  - sudo apt-get install cabal-install ghc 
-  - cabal update
-  - cabal install stack
+  - mkdir -p ~/.local/bin
+  - export PATH=$HOME/.local/bin:$PATH
+  - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+  - export PATH=/opt/ghc/7.10.2/bin:$PATH
 install: 
   - ./installSubmodules.sh
   - pip install -r requirements.txt
 # command to run tests
 script: unit2
+cache:
+  directories:
+  - $HOME/.stack
+addons:
+  apt:
+    sources:
+      - hvr-ghc
+    packages:
+      - ghc-7.10.2
