@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/andsild/dragonfly-modules.svg?branch=master)](https://travis-ci.org/andsild/dragonfly-modules)  
 # dragonfly scripts
 dragonfly scripts for controlling your Windows operating system by voice
 

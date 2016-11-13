@@ -25,6 +25,7 @@
     <Content Include="playground\input.txt" />
     <Content Include="playground\out.txt" />
     <Content Include="playground\output.txt" />
+    <Content Include="README.md" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
