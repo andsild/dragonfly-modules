@@ -3,6 +3,8 @@ sudo: false
 language: 
   - python
 
+# travis linter gives errors, even though there are none
+#https://github.com/travis-ci/travis-yaml/issues/58
 addons:
   apt:
     sources:
