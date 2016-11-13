@@ -3,7 +3,7 @@ language:
 python:
   - "2.7"
 before_install:
-  - sudo apt-get install cabal-install ghc
+  - sudo apt-get install cabal-install ghc haskell-stack
   - cabal update
 install: 
   - ./installSubmodules.sh

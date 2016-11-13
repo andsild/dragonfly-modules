@@ -20,7 +20,7 @@ fi
 if [ ! -e ./${subreponame}/dist/build/${subreponame}/${subreponame}.exe ]
 then
     cd ${subreponame} \
-    && cabal install \
+    && stack build \
     && cd ..
 fi
 
