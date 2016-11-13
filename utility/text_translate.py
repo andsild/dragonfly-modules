@@ -5,7 +5,6 @@ import os
 from dragonflymodules.config import default_install_dir
 
 subRepoName="TextToNumber"
-#TODO: fix this one
 exeName = os.path.join(os.getcwd(), subRepoName, "dist", "build",  subRepoName, subRepoName + ".exe")
 
 
@@ -87,7 +86,7 @@ def translate_spokenform_to_queryform_logic(text):
 
 def translate_numbers(text):
     if not os.path.isfile(exeName):
-        print("[not important:] Tried to execute %s, but it was not found, ignoring..." % exeName)
+        print("Tried to execute %s, but it was not found, ignoring..." % exeName)
         return text
     p = Popen([exeName], stdout=PIPE, stdin=PIPE, stderr=STDOUT)    
     stdout = p.communicate(input=bytearray(text))[0]

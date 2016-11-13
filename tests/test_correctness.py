@@ -19,8 +19,8 @@ class TestGrammarCorrectness(unittest2.TestCase):
     def test_GRAMMARIMPORTS_ensureCorrect(self):
         try:
             import  win32gui
-        except RuntimeError as re:
-            print("cannot import win32 libs, make sure to install win32 libraries for this test to work", file=sys.stderr)
+        except ImportError as ie:
+            print("cannot import win32 libs, make sure to install pywin32 libraries for this test to work", file=sys.stderr)
             return
 
         for import_name in GRAMMAR_IMPORTS:
