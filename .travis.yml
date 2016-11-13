@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 install: 
-	- ./install.sh
-	- pip install -r requirements.txt"
+  - ./install.sh
+  - pip install -r requirements.txt
 # command to run tests
 script: unit2

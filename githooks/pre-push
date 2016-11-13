@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+travis lint ./.travis.yml
 
 python -m unittest discover
 
