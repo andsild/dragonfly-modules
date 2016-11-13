@@ -41,6 +41,7 @@ terminal_mapping = {
     'jim':              Text("git "),
     'jim status':              Text("git status ") + Key("enter"),
     'jim push':                Text("git push ") + Key("enter"),
+    'jim add':             Text("git add "),
     'jim add all':             Text("git add -A ") + Key("enter"),
     'jim commit':              Text("git commit") + Key("enter"),
     'jim fetch':               Text("git fetch ") + Key("tab"),

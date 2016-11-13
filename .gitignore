@@ -343,3 +343,8 @@ cabal.sandbox.config
 .stack-work/
 cabal.project.local
 *.sln
+
+.cache/
+# nvim generates these, ugh
+$LOCALAPPDATA/
+*.swp
