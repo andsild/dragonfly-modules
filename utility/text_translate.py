@@ -1,3 +1,4 @@
+import sys
 import re
 from utility.lettermap import Shorttalk_Letters, Phonetic_Letter_map
 from subprocess import Popen, PIPE, STDOUT
@@ -5,8 +6,13 @@ import os
 from dragonflymodules.config import default_install_dir
 
 subRepoName="TextToNumber"
-exeName = os.path.join(os.getcwd(), subRepoName, subRepoName + ".exe")
 
+exeName = os.path.join(os.getcwd(), subRepoName, subRepoName)
+if hasattr(sys, 'getwindowsversion'):
+    exeName = exeName + ".exe"
+
+if not os.path.isfile(exeName):
+    print("warning: %s not found; some, few commands may not work")
 
 Symbol_map = {
     'dollar': 'dollar',
