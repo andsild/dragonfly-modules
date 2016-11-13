@@ -5,7 +5,8 @@ import os
 from dragonflymodules.config import default_install_dir
 
 subRepoName="TextToNumber"
-exeName = os.path.join(default_install_dir, subRepoName, "dist", "build",  subRepoName, subRepoName + ".exe")
+#TODO: fix this one
+exeName = os.path.join(os.getcwd(), subRepoName, "dist", "build",  subRepoName, subRepoName + ".exe")
 
 
 Symbol_map = {

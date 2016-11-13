@@ -10,7 +10,7 @@ import subprocess, os
 from dragonflymodules.config import default_install_dir
 
 sub_repo_name = "WindowsAPIGateway"
-exename_programswitcher = os.path.join(default_install_dir, sub_repo_name, sub_repo_name, "bin",  "Debug", sub_repo_name + ".exe")
+exename_programswitcher = os.path.join(os.getcwd(), sub_repo_name, sub_repo_name, "bin",  "Debug", sub_repo_name + ".exe")
 
 def launch_cmd():
     subprocess.Popen(["cmd", "/K", "cd %homedrive%%homepath%"])
