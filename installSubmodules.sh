@@ -24,4 +24,4 @@ then
     && cd ..
 fi
 
-test -e ./${subreponame}/dist/build/${subreponame}/${subreponame}.exe || die "Setup did not work. Try cloning submodule manually and run cabal install (see source code for script)"
+test -e ./${subreponame}/dist/build/${subreponame}/${subreponame}.exe || die 1 "Setup did not work. Try cloning submodule manually and run cabal install (see source code for script)"
