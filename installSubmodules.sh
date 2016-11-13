@@ -21,6 +21,7 @@ if [ ! -e ./${subreponame}/dist/build/${subreponame}/${subreponame}.exe ]
 then
     cd ${subreponame} \
     && stack build \
+    && stack install --local-bin-path . \
     && cd ..
 fi
 
