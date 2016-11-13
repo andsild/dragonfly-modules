@@ -10,9 +10,6 @@ class TranslatorTest(unittest2.TestCase):
     def tearDown(self):
         pass
 
-    def test_translate_word_to_number(self):
-        pass
-
     def test_range_insert_logic(self):
         def assert_input_equal_output(intext, outtext):
             res = translate_spokenform_to_queryform_logic(intext)

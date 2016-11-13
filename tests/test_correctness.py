@@ -1,4 +1,6 @@
+from __future__ import print_function
 import unittest2
+import sys
 
 from dragonflymodules.config import GRAMMAR_IMPORTS
 
@@ -15,6 +17,12 @@ class TestGrammarCorrectness(unittest2.TestCase):
         line 54 -> return True
         """
     def test_GRAMMARIMPORTS_ensureCorrect(self):
+        try:
+            import  win32gui
+        except RuntimeError as re:
+            print("cannot import win32 libs, make sure to install win32 libraries for this test to work", file=sys.stderr)
+            return
+
         for import_name in GRAMMAR_IMPORTS:
             try:
                 getattr(__import__(import_name, fromlist=["rules"]), "rules")

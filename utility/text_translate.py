@@ -86,7 +86,7 @@ def translate_spokenform_to_queryform_logic(text):
 
 def translate_numbers(text):
     if not os.path.isfile(exeName):
-        print("[not important:] Tried to execute %s exeName, but it was not found, ignoring...")
+        print("[not important:] Tried to execute %s, but it was not found, ignoring..." % exeName)
         return text
     p = Popen([exeName], stdout=PIPE, stdin=PIPE, stderr=STDOUT)    
     stdout = p.communicate(input=bytearray(text))[0]
