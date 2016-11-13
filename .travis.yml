@@ -3,9 +3,9 @@ language:
 python:
   - "2.7"
 before_install:
-  - lsb_release -a
-  - sudo apt-get install cabal-install ghc stack
+  - sudo apt-get install cabal-install ghc 
   - cabal update
+  - cabal install stack
 install: 
   - ./installSubmodules.sh
   - pip install -r requirements.txt
