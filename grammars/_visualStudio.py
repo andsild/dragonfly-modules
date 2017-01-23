@@ -25,6 +25,7 @@ basics_mapping = {
     'rename [this]': Key("ctrl:down/3, r, ctrl:up/3, r"),
     'complete [this]': Key("ctrl:down/3, space, ctrl:up/3"),
     'open solution': Key("shift:down, c-o, shift:up"),
+    'cursor back': Key("ctrl:down, hyphen, ctrl:up"),
 }
 
 class Basics(MappingRule):

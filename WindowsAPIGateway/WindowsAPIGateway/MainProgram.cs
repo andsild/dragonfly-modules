@@ -9,7 +9,6 @@ namespace WindowsAPIGateway
             string desiredProgram = String.Join(" ", args);
 
             SetCurrentProgram.ActivateApp(desiredProgram);
-
         }
     }
 }

@@ -5,6 +5,7 @@ rules = MappingRule(
     name = 'Programming rules',
     mapping = {
         'integer': Text('int '),
+        'struct': Text('class '),
         '(death|deaf)': Text('def '),
         'also': Text(' && '),
         'or': Text(' || '),
