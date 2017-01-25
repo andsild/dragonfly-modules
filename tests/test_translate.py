@@ -34,6 +34,7 @@ class TranslatorTest(unittest2.TestCase):
         assert_input_equal_output("big faye", "F") # capital
         assert_input_equal_output("tangible", "tangible") # word that is substring of phonetic key
 
+    @unittest2.skip("haskell dependency for now")
     def test_translate_numbers(self):
         res = translate_numbers("one bear against two hundred and fifty 6 tigers") 
         res.should.be.equal("1 bear against 256 tigers".rstrip().lstrip())
