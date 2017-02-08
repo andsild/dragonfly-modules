@@ -25,5 +25,5 @@ then
     && cd ..
 fi
 
-(test -e ./${subreponame}/${subreponame}.exe || test -e ./${subreponame}/${subreponame}) \
+(test -e ./optional_dependencies/${subreponame}/${subreponame}.exe || test -e ./optional_dependencies/${subreponame}/${subreponame}) \
     || die 1 "Setup did not work: could not find binary files after trying to installing them"
