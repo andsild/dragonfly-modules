@@ -1,4 +1,12 @@
-from dragonfly import PlaybackHistory, MappingRule
+# inspired/taken from https://github.com/t4ngo/dragonfly-modules/blob/master/command-modules/_cmdmemory.py
+from dragonfly import PlaybackHistory, MappingRule, DictList, DictListRef, Config, Section, Item, Function, IntegerRef, Dictation, Grammar
+
+config                       = Config("command memory")
+config.lang                  = Section("Language section")
+config.lang.playback_last    = Item("(playback | repeat) [last] [<n>] (commands | command | recognitions) [<count> times]")
+config.lang.recall           = Item("recall everything")
+config.lang.clear_command_history = Item("clear command history")
+config.load()
 
 # Dictionary for storing memories.
 memories     = DictList("memories")
@@ -9,15 +17,6 @@ try:
     playback_history.register()
 except Exception, e:
     print "Warning, failed to register playback_history: %s" % e
-
-record_history = PlaybackHistory()
-record_name = None
-
-config                       = Config("command memory")
-config.lang                  = Section("Language section")
-config.lang.playback_last    = Item("(playback | repeat) [last] [<n>] (commands | command | recognitions) [<count> times]")
-config.lang.recall           = Item("recall everything")
-config.load()
 
 def playback_last(n, count):
     # Retrieve playback-action from recognition observer.
@@ -38,16 +37,26 @@ def playback_last(n, count):
 def print_history():
     o = playback_history
     print ("(%s) %s: %s\n" % (id(o), "playback_history", "recall") + "\n".join(("    - %r" % (item,)) for item in o))
-    o =record_history
-    print ("(%s) %s: %s\n" % (id(o), "record_history", "recall") + "\n".join(("    - %r" % (item,)) for item in o))
+
+def clear_command_history():
+    while playback_history:
+        playback_history.pop()
 
 
 class PlaybackRule(MappingRule):
     mapping  = {  # Spoken form   ->  ->  ->  action
                 config.lang.playback_last:    Function(playback_last),
                 config.lang.recall:           Function(print_history),
+                config.lang.clear_command_history: Function(clear_command_history)
                }
     extras   = [
+                IntegerRef("n", 1, 100),      # *n* designates the number
+                                              #  of recent recognitions.
+                IntegerRef("count", 1, 100),  # *count* designates how
+                                              #  many times to repeat
+                                              #  playback.
+                Dictation("name"),            # *name* is used when
+                                              #   Naming new memories.
                 memories_ref,                 # This is the list of
                                               #  already-remembered
                                               #  memories; its name is
@@ -59,4 +68,13 @@ class PlaybackRule(MappingRule):
                 "count": 1,
                }
 
-rules = PlaybackRule()
+grammar = Grammar("command memory")     # Create this module's grammar.
+grammar.add_rule(PlaybackRule())        # Add the top-level rule.
+grammar.load()                          # Load the grammar.
+
+# Unload function which will be called at unload time.
+def unload():
+    playback_history.unregister()
+    global grammar
+    if grammar: grammar.unload()
+    grammar = None

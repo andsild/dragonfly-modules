@@ -35,7 +35,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="grammars\_chrome.py" />
-    <Compile Include="grammars\_cmdMemory.py">
+    <Compile Include="_cmdMemory.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="grammars\_generic_edit.py" />

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/andsild/dragonfly-modules.svg?branch=master)](https://travis-ci.org/andsild/dragonfly-modules)  
+[![Build Status](https://travis-ci.org/andsild/dragonfly-modules.svg?branch=master)](https://travis-ci.org/andsild/dragonfly-modules)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # dragonfly scripts
 dragonfly scripts for controlling your Windows operating system by voice
 
@@ -18,15 +18,14 @@ to install the needed dependencies (not all of them can be fetched via CLI).
 Previously I used Linux and a Windows VM, however, the delay of the VM and [Aenea](https://github.com/dictation-toolbox/aenea) was inconvening.
 
 ## Status
-I am making progress, but am still not a productive coder by voice. I.e. I can write simple programs but it takes a long time.
-I very much appreciate feedback whether its a bug, question, suggestion or anything else!  
-Feel free to message me at `andsild@gmail.com`
+I can write simple programs but it takes a long time.
+I very much appreciate feedback whether its a bug report, question, suggestion or anything else!  
 
 ## Usage:
 The jist of the _useful_ code is in the grammars repository.
 You can copy whatever commands you like to your own project. 
 
-I have deviated off the standard path with `_natlink_hack.py`. This file handles imports for me, rather than letting Natlink do it. 
+`_natlink_hack.py` handles imports for me, rather than letting Natlink do it. 
 The only difference is that my grammar files/rules per default will not install themselves as executable dragonfly grammars to DNS or Windows' speech engine.
 Thus, they have to be added explictly using natlink_hack.py or a solution of your own. 
 
