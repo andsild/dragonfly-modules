@@ -8,7 +8,7 @@
 #
 # Licensed under LGPL
 
-from dragonfly import Grammar, Key, Text, AppContext, MappingRule
+from dragonfly import Grammar, Key, Text, AppContext, MappingRule, IntegerRef
 
 #terminal_context = AppContext(executable="cmd")
 #grammar = Grammar('terminal', context=terminal_context)
@@ -44,6 +44,11 @@ terminal_mapping = {
     'jim add':             Text("git add "),
     'jim add all':             Text("git add -A ") + Key("enter"),
     'jim commit':              Text("git commit") + Key("enter"),
+    'jim change <n> commit':        Text("git rebase -i HEAD~[<n>]") + Key("enter"),
+    'jim change <n> commit':        Text("git rebase -i HEAD~[<n>]") + Key("enter"),
+    'jim rabbit continue':    Text("git rebase --continue") + Key("enter"),
+    'jim rabbit abort':    Text("git rebase --abort") + Key("enter"),
+    'jim amend':              Text("git commit --amend") + Key("enter"),
     'jim fetch':               Text("git fetch ") + Key("tab"),
     'jim merge':               Text("git merge ") + Key("tab"),
     'jim difference':          Text("git diff ") + Key("enter"),
@@ -69,6 +74,10 @@ terminal_mapping = {
 
 class Mapping(MappingRule):
     mapping = terminal_mapping
-    extras = []
+    extras = [  
+        IntegerRef("n", 1, 1000),]
+    defaults = {
+        "n": 1,
+    }
 
 rules = Mapping()

@@ -1,7 +1,7 @@
 import unittest2
 import sure
 
-from utility.cmdHistory import get_backspaces_for_commands
+from utility.cmdMemory import get_backspaces_for_commands
 
 class Test_test_cmdHistory(unittest2.TestCase):
     def setUp(self):

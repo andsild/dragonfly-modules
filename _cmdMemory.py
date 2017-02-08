@@ -1,7 +1,7 @@
 # inspired/taken from https://github.com/t4ngo/dragonfly-modules/blob/master/command-modules/_cmdmemory.py
 from dragonfly import PlaybackHistory, MappingRule, DictList, DictListRef, Config, Section, Item, Function, IntegerRef, Dictation, Grammar, Key
 
-from utility.cmdHistory import get_backspaces_for_commands
+from utility.cmdMemory import get_backspaces_for_commands
 
 config                       = Config("command memory")
 config.lang                  = Section("Language section")
@@ -45,8 +45,8 @@ def clear_command_history():
     while playback_history:
         playback_history.pop()
 
-def backspaces_for_commands():
-    for n in range(get_backspaces_for_commands(playback_history)):
+def backspaces_for_commands(n):
+    for n in range(get_backspaces_for_commands(list(x for (x,_) in playback_history), n)):
         Key("backspace").execute()
 
 
