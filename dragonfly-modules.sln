@@ -7,6 +7,11 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "dragonfly-modules", "dragon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsAPIGateway", "WindowsAPIGateway\WindowsAPIGateway\WindowsAPIGateway.csproj", "{D49A40C9-75AD-49DC-AF37-77C929A47A86}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{49ACB0EA-8665-4BA4-9A0B-7839680F12ED}"
+	ProjectSection(SolutionItems) = preProject
+		TODO.md = TODO.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

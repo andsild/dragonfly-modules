@@ -17,9 +17,9 @@ then
         && git submodule update
 fi
 
-if [ ! -e ./${subreponame}/dist/build/${subreponame}/${subreponame}.exe ]
+if [ ! -e ./optional_dependencies/${subreponame}/dist/build/${subreponame}/${subreponame}.exe ]
 then
-    cd ${subreponame} \
+    cd ./optional_dependencies/${subreponame} \
     && stack build \
     && stack install --local-bin-path . \
     && cd ..

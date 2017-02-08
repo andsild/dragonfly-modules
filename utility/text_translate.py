@@ -9,7 +9,7 @@ subRepoName="TextToNumber"
 
 full_path_for_this_file = os.path.realpath(__file__).split(os.sep)
 full_path_for_this_github_repository = full_path_for_this_file[0] + os.path.join(os.path.sep, *full_path_for_this_file[1:full_path_for_this_file.index('dragonfly-modules')+1])
-exeName = os.path.join(full_path_for_this_github_repository, subRepoName, subRepoName)
+exeName = os.path.join(full_path_for_this_github_repository, "optional_dependencies", subRepoName, subRepoName)
 if hasattr(sys, 'getwindowsversion'):
     exeName = exeName + ".exe"
 

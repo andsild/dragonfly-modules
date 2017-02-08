@@ -1,0 +1,3 @@
+packages:
+  - location: .
+resolver: lts-7.8
