@@ -1,30 +1,11 @@
 sudo: false
 
-language: 
-  - python
-
-# travis linter gives errors, even though there are none
-#https://github.com/travis-ci/travis-yaml/issues/58
-addons:
-  apt:
-    sources:
-      - hvr-ghc
-    packages:
-      - ghc-8.0.1
-
+language: python
 python:
-  - "2.7"
+    - "2.7"
 
-before_install:
-  - mkdir -p ~/.local/bin
-  - export PATH=$HOME/.local/bin:$PATH
-  - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
-  - export PATH=/opt/ghc/8.0.1/bin:$PATH
-install: 
-  - ./installSubmodules.sh
-  - pip install -r requirements.txt
-# command to run tests
-script: unit2
-cache:
-  directories:
-    - $HOME/.stack
+install:
+    - pip install -r requirements.txt
+
+script:
+    - unit2
