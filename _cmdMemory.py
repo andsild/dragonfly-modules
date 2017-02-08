@@ -1,11 +1,14 @@
 # inspired/taken from https://github.com/t4ngo/dragonfly-modules/blob/master/command-modules/_cmdmemory.py
-from dragonfly import PlaybackHistory, MappingRule, DictList, DictListRef, Config, Section, Item, Function, IntegerRef, Dictation, Grammar
+from dragonfly import PlaybackHistory, MappingRule, DictList, DictListRef, Config, Section, Item, Function, IntegerRef, Dictation, Grammar, Key
+
+from utility.cmdHistory import get_backspaces_for_commands
 
 config                       = Config("command memory")
 config.lang                  = Section("Language section")
 config.lang.playback_last    = Item("(playback | repeat) [last] [<n>] (commands | command | recognitions) [<count> times]")
 config.lang.recall           = Item("recall everything")
 config.lang.clear_command_history = Item("clear command history")
+config.lang.backspace_commands = Item("undo [<n>] command")
 config.load()
 
 # Dictionary for storing memories.
@@ -42,12 +45,17 @@ def clear_command_history():
     while playback_history:
         playback_history.pop()
 
+def backspaces_for_commands():
+    for n in range(get_backspaces_for_commands(playback_history)):
+        Key("backspace").execute()
+
 
 class PlaybackRule(MappingRule):
     mapping  = {  # Spoken form   ->  ->  ->  action
                 config.lang.playback_last:    Function(playback_last),
                 config.lang.recall:           Function(print_history),
-                config.lang.clear_command_history: Function(clear_command_history)
+                config.lang.clear_command_history: Function(clear_command_history),
+                config.lang.backspace_commands: Function(backspaces_for_commands),
                }
     extras   = [
                 IntegerRef("n", 1, 100),      # *n* designates the number

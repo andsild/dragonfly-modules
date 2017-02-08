@@ -10,31 +10,49 @@ class TranslatorTest(unittest2.TestCase):
     def tearDown(self):
         pass
 
-    def test_range_insert_logic(self):
-        def assert_input_equal_output(intext, outtext):
-            res = translate_spokenform_to_queryform_logic(intext)
-            try:
-                outtext.should.be.equal(res)
-            except Exception as e:
-                print e.message
-                print "For intext '%s' and result '%s' (expecting '%s')" % (intext, res, outtext)
-                raise
-        assert_input_equal_output("pooch", "p") # phonetic
-        assert_input_equal_output("pooch hello", "p,hello") # phonetic
-        assert_input_equal_output("hello", "hello") # word
-        assert_input_equal_output("the main", "main") # trim "the"
-        #FIXME: tricky scenario: how to avoid/acquire two words?  e.g.  "single
-                                           #quote"?
-        assert_input_equal_output("quote", "quote") 
-        assert_input_equal_output('(', '(')  # special symbols
-        assert_input_equal_output("_", "underscore") # windows DNS auto replace
-        assert_input_equal_output("alpha", "a") # phonetic
-        assert_input_equal_output("words in", "words,space,in") # phonetic
-        assert_input_equal_output("faye", "f") # shorttalk
-        assert_input_equal_output("big faye", "F") # capital
-        assert_input_equal_output("tangible", "tangible") # word that is substring of phonetic key
+    def test_range_insert_logic_phonetic(self):
+        res = translate_spokenform_to_queryform_logic("pooch")
+        res.should.be.equal("p")
 
-    @unittest2.skip("haskell dependency for now")
+    def test_range_insert_logic_phoneticAndWord(self):
+        res = translate_spokenform_to_queryform_logic("pooch hello")
+        res.should.be.equal("p,hello")
+
+    def test_range_insert_logic_word(self):
+        res = translate_spokenform_to_queryform_logic("hello")
+        res.should.be.equal("hello")
+
+    def test_range_insert_logic_thePrefixesWord(self):
+        res = translate_spokenform_to_queryform_logic("the hello")
+        res.should.be.equal("hello")
+
+
+    @unittest2.skip("TODO, dunno how to deal with advanced character names yet")
+    def test_range_insert_logic_twoWordCharacterName(self):
+        res = translate_spokenform_to_queryform_logic("quote")
+        res.should.be.equal("quote")
+
+    def test_range_insert_logic_SpecialCharachter(self):
+        res = translate_spokenform_to_queryform_logic("(")
+        res.should.be.equal("(")
+
+    def test_range_insert_logic_SpecialCharachterUsedByBothDNSAndDragonfly(self):
+        res = translate_spokenform_to_queryform_logic("_")
+        res.should.be.equal("underscore")
+
+    def test_range_insert_logic_MultiWord(self):
+        res = translate_spokenform_to_queryform_logic("words in")
+        res.should.be.equal("words,space,in")
+
+    def test_range_insert_logic_ShorttalkLetter(self):
+        res = translate_spokenform_to_queryform_logic("faye")
+        res.should.be.equal("f")
+
+    def test_range_insert_logic_ShorttalkCapsLetter(self):
+        res = translate_spokenform_to_queryform_logic("big faye")
+        res.should.be.equal("F")
+
+    @unittest2.skip("haskell dependency, optional")
     def test_translate_numbers(self):
         res = translate_numbers("one bear against two hundred and fifty 6 tigers") 
         res.should.be.equal("1 bear against 256 tigers".rstrip().lstrip())

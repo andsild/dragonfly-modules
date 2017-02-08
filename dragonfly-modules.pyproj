@@ -35,6 +35,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="grammars\_chrome.py" />
+    <Compile Include="tests\test_cmdHistory.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="utility\cmdHistory.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="_cmdMemory.py">
       <SubType>Code</SubType>
     </Compile>
@@ -74,14 +80,10 @@
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
-
   <Target Name="CoreCompile">
-  <ResolveEnvironment ContinueOnError="WarnAndContinue">
-    <Output TaskParameter="InterpreterPath" PropertyName="InterpreterPath" />
-  </ResolveEnvironment>
-  <Exec Condition="Exists($(InterpreterPath))"
-        Command="(set PYTHONPATH=$(SearchPath)) &amp; &quot;$(InterpreterPath)&quot; -m py.test"
-        WorkingDirectory="$(MSBuildProjectDirectory)"
-        IgnoreExitCode="true" />
+    <ResolveEnvironment ContinueOnError="WarnAndContinue">
+      <Output TaskParameter="InterpreterPath" PropertyName="InterpreterPath" />
+    </ResolveEnvironment>
+    <Exec Condition="Exists($(InterpreterPath))" Command="(set PYTHONPATH=$(SearchPath)) &amp; &quot;$(InterpreterPath)&quot; -m py.test" WorkingDirectory="$(MSBuildProjectDirectory)" IgnoreExitCode="true" />
   </Target>
 </Project>
