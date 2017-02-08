@@ -74,4 +74,14 @@
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+
+  <Target Name="CoreCompile">
+  <ResolveEnvironment ContinueOnError="WarnAndContinue">
+    <Output TaskParameter="InterpreterPath" PropertyName="InterpreterPath" />
+  </ResolveEnvironment>
+  <Exec Condition="Exists($(InterpreterPath))"
+        Command="(set PYTHONPATH=$(SearchPath)) &amp; &quot;$(InterpreterPath)&quot; -m py.test"
+        WorkingDirectory="$(MSBuildProjectDirectory)"
+        IgnoreExitCode="true" />
+  </Target>
 </Project>
