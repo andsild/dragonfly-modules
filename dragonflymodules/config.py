@@ -11,6 +11,7 @@ GRAMMAR_IMPORTS = [ "grammars._chrome",
 		"grammars._vim",
         "grammars._abbreviation",
 		"grammars._visualStudio",
+		"grammars._cmdMemory",
         ]
 
 My_name = "Anders"
