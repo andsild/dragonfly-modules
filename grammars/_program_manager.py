@@ -64,7 +64,7 @@ else:
     print "\tomitting \"flipcmd\" grammar"
 
 
-class GlobalShortcuts(MappingRule):
+class ProgramManager(MappingRule):
     mapping =  commands
     extras = [Dictation('text'),
         IntegerRef('n', 0, 999),]
@@ -72,4 +72,4 @@ class GlobalShortcuts(MappingRule):
         "n": 1,  # Default repeat count.
 }    
 
-rules = GlobalShortcuts()
+rules = ProgramManager()

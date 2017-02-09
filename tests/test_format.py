@@ -1,7 +1,7 @@
 import unittest2
 import sure
 
-from utility._format import format_text_logic, FormatTypes
+from utility.format import format_text_logic, FormatTypes
 
 class FormatTest(unittest2.TestCase):
     def setUp(self):

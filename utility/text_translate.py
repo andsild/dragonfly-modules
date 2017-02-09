@@ -52,6 +52,17 @@ IS_WINDOWS = True
 if IS_WINDOWS:
     Symbol_map.update(windows_special_cases)
 
+
+""" sometimes I need to forward text to my own functions.
+e.g. I might want to say "jump pooch hotel ork" to do a search (ctrl+f) for "pho"
+to avoid having to say "jump" first to launch the ctrl+f, and then do the letters,
+or to avoid hard-binding "jump" to beeing just ctrl+f.
+This function does internal "translation" that can immediately fetch the keys for e.g. letters and symbols
+without having to register this as multiple dragonfly commands.
+i.e. using this function I just need one voice command to do "jump pooch hotel ork"
+without this function, it would be four commands "jump", then "pooch", then "hotel", then "ork"
+"""
+#TODO: fix casings and formats
 def translate_spokenform_to_queryform_logic(text):
     translated_text = translate_numbers(str(text))
     input_text = str(translated_text).split()
@@ -59,7 +70,7 @@ def translate_spokenform_to_queryform_logic(text):
     if boolBig:
         input_text = input_text[1:]
     if input_text[0] == "the" and len(input_text) > 1: 
-        # DNS will often append "the" to words (because it is a linguistic model)
+        # DNS will often append "the" to words (because it uses a linguistic model)
         input_text = input_text[1:]
     if input_text[0] == "and" and input_text[1] == "the": 
         # DNS corner-case (searching for the word "the")

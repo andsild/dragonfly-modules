@@ -35,6 +35,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="grammars\_chrome.py" />
+    <Compile Include="grammars\_format.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="grammars\_global_shortcuts.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="grammars\_keyboard_keys.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="grammars\_natlink.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tests\test_cmdHistory.py">
       <SubType>Code</SubType>
     </Compile>
@@ -44,8 +56,8 @@
     <Compile Include="_cmdMemory.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="grammars\_generic_edit.py" />
-    <Compile Include="grammars\_global_shortcut.py">
+    <Compile Include="grammars\_general_macros.py" />
+    <Compile Include="grammars\_program_manager.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="grammars\_personal_info.py" />
@@ -64,7 +76,7 @@
     <Compile Include="utility\substitute_phrase.py" />
     <Compile Include="utility\text_translate.py" />
     <Compile Include="utility\vim_logic.py" />
-    <Compile Include="utility\_format.py" />
+    <Compile Include="utility\format.py" />
     <Compile Include="utility\__init__.py" />
     <Compile Include="_natlink_hack.py" />
   </ItemGroup>

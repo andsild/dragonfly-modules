@@ -51,7 +51,7 @@ class ChromeRule(MappingRule):
         IntegerRef('n2', 1, 999),
     ]
     defaults = {
-        "n": 1,  # Default repeat count.
+        "n": 1,
     }
 
 rules = ChromeRule()

@@ -219,8 +219,6 @@ basics_mapping = {
     'clay': Key(goto_normal_mode_keys + "c, i, b"),
 
     # Movement
-    'up <n> (lines|line)': Key("%(n)d, k"),
-    'down <n> (lines|line)': Key("%(n)d, j"),
     'go [down] [to] [line] <n>': goto_normal_mode + Function(goto_line),
     'go up [to] [line] <n>': goto_normal_mode + Function(goto_line_up),
     'go absolute to [line] <n>': goto_normal_mode + Function(goto_line_absolute),

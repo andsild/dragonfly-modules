@@ -4,19 +4,23 @@ import sys
 
 from dragonflymodules.config import GRAMMAR_IMPORTS
 
+
+
 class TestGrammarCorrectness(unittest2.TestCase):
     """
+       The only way to validate the content of grammars is to invoke it.
        Having to (re)start DNS to find an errormessage is tedious.
-       These tests show the errors even if DNS is not running  (or if it is, even).
+       These tests parse the grammars and show the errors without requiring DNS to run.
 
-        Dragonfly tries to initialize a speech engine when it is imported.
-        This often results in windows' speech engine starting when running this test.
-        To avoid this, I regrettably suggest modifying 
-        (assuming dragonfly version 0.6.5)
-        C:\Python27\lib\site-packages\dragonfly\dragonfly\engines\engine_natlink.py
-        line 54 -> return True
-        """
-    def test_GRAMMARIMPORTS_ensureCorrect(self):
+       You have to do a small fix:
+       Dragonfly tries to initialize a speech engine when it is imported.
+       This launches windows' speech engine when running this test (or annoying popup).
+       To amend this, I regrettably suggest modifying 
+       (assuming dragonfly version 0.6.5)
+       C:\Python27\lib\site-packages\dragonfly\dragonfly\engines\engine_natlink.py
+       line 54 -> return True
+    """
+    def test_GRAMMARIMPORTS_ParseGrammar(self):
         try:
             import  win32gui
         except ImportError as ie:
@@ -27,4 +31,5 @@ class TestGrammarCorrectness(unittest2.TestCase):
             try:
                 getattr(__import__(import_name, fromlist=["rules"]), "rules")
             except Exception as exception:
-                raise RuntimeError("Error when importing %s" % import_name, exception.message)
+                print("Error when importing %s" % import_name, file=sys.stderr)
+                raise
