@@ -16,7 +16,7 @@ class TestGrammarCorrectness(unittest2.TestCase):
        C:\Python27\lib\site-packages\dragonfly\dragonfly\engines\engine_natlink.py
        line 54 -> return True
     """
-    def setUp(self):
+    def test_GRAMMARIMPORTS_ParseGrammar(self):
         try:
             import  win32gui
         except ImportError as ie:
@@ -25,9 +25,8 @@ class TestGrammarCorrectness(unittest2.TestCase):
 
         # see also __init__.py in that grammars directory   : you need to define __all__
         from grammars import __all__ as grammarFiles
-        self.grammarFiles = map(lambda s: "grammars." + s, grammarFiles)
+        grammarFiles = map(lambda s: "grammars." + s, grammarFiles)
 
-    def test_GRAMMARIMPORTS_ParseGrammar(self):
-        for module_name in self.grammarFiles:
+        for module_name in grammarFiles:
             if module_name == "grammars.__init__": continue
             import_rule = getattr(__import__(module_name, fromlist=["rules"]), "rules")
