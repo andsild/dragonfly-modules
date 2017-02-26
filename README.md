@@ -1,5 +1,4 @@
 ![visual studio team](https://crutux.visualstudio.com/_apis/public/build/definitions/0ea1e959-5a94-47cf-ae98-129371e022bf/1/badge) [![Build Status](https://travis-ci.org/andsild/dragonfly-modules.svg?branch=master)](https://travis-ci.org/andsild/dragonfly-modules)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # dragonfly scripts
 dragonfly scripts for controlling your Windows operating system by voice
 
