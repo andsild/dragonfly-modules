@@ -10,6 +10,23 @@ namespace WindowsAPIGateway
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr GetWindow(IntPtr hWnd, GetWindow_Cmd uCmd);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        public enum GetWindow_Cmd : uint
+        {
+            GW_HWNDFIRST = 0,
+            GW_HWNDLAST = 1,
+            GW_HWNDNEXT = 2,
+            GW_HWNDPREV = 3,
+            GW_OWNER = 4,
+            GW_CHILD = 5,
+            GW_ENABLEDPOPUP = 6
+        }
+
         private static void printProcesses()
         {
             var processss = from proc in System.Diagnostics.Process.GetProcesses() orderby proc.ProcessName ascending select proc;
@@ -21,8 +38,21 @@ namespace WindowsAPIGateway
         {
             if(processName.Equals("chrome"))
             {
-                SetForegroundWindow(processes[4].MainWindowHandle);
+                IntPtr chromeWindow = FindWindow("Chrome_WidgetWin_1", null);
+                IntPtr chrome = GetWindow(chromeWindow, GetWindow_Cmd.GW_HWNDNEXT);
+
+                //Setting the window to the foreground (implies focus and activating)
+                SetForegroundWindow(chrome);
                 return true;
+            }
+            if (processName.Equals("AcroRd32"))
+            {
+                foreach(var proc in processes)
+                    if(proc.MainWindowTitle.Contains("Adobe Acrobat Reader"))
+                    {
+                        SetForegroundWindow(proc.MainWindowHandle);
+                        return true;
+                    }
             }
             return false;
         }
@@ -38,7 +68,6 @@ namespace WindowsAPIGateway
 
             if (ProgramIsSpecialCase(processName, p))
                 Environment.Exit(0);
-
 
             if (p.Count() > 1)
             {

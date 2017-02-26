@@ -5,3 +5,4 @@
 * ~~follow-up of item above: ability to "undo previous voice command" would be great. It can be simple, like just trying to undo text with backspace, e.g. "chook command"~~
 * Consider pylinting all of the code just to keep it smooth
 * Actually start using grammars.... lol
+* Fix context sensitive grammars

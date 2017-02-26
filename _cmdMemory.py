@@ -6,7 +6,7 @@ from utility.cmdMemory import get_backspaces_for_commands
 config                       = Config("command memory")
 config.lang                  = Section("Language section")
 config.lang.playback_last    = Item("(playback | repeat) [last] [<n>] (commands | command | recognitions) [<count> times]")
-config.lang.recall           = Item("recall everything")
+config.lang.recall           = Item("(recall everything | show history)")
 config.lang.clear_command_history = Item("clear command history")
 config.lang.backspace_commands = Item("undo [<n>] command")
 config.load()

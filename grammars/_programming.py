@@ -14,7 +14,4 @@ rules = MappingRule(
         'equals': Text('='),
         'left arrow': Text('<-'),
         'right arrow': Text('->'),
-
-        'graph' : Text('graph'), # (why is this word so hard for DNS? lol)
-        'node': Text('node'),
     })

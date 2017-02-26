@@ -26,6 +26,9 @@ def launch_chrome():
 def launch_visual_studio():
     subprocess.Popen(["C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe", ])
 
+def launch_doc():
+    subprocess.Popen(["C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"]);
+
 def flip_cmd():
     subprocess.Popen([exename_programswitcher, "cmd"]);
 
@@ -38,6 +41,12 @@ def flip_chrome():
 def flip_editor():
     subprocess.Popen([exename_programswitcher, "nvim-qt"]);
 
+def flip_git():
+    subprocess.Popen([exename_programswitcher, "mintty"]);
+
+def flip_doc():
+    subprocess.Popen([exename_programswitcher, "AcroRd32"]);
+
 commands = {}
 
 programs_to_launch={
@@ -45,14 +54,17 @@ programs_to_launch={
     'launch jim': Function(launch_git),
     'launch chrome': Function(launch_chrome),
     'launch studio': Function(launch_visual_studio),
+    'launch doc': Function(launch_doc),
 
     }
 
 program_to_switch_to ={
     'flip prompt': Function(flip_cmd),
+    'flip jim': Function(flip_git),
     'flip studio': Function(flip_visual_studio),
     'flip chrome': Function(flip_chrome),
     'flip editor': Function(flip_editor),
+    'flip doc': Function(flip_doc),
     }
 
 commands.update(programs_to_launch)

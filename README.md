@@ -6,9 +6,12 @@ dragonfly scripts for controlling your Windows operating system by voice
 I do all of this work on Windows 10 using DNS 14.0, Natlink 4.1 papa, dragonfly 0.6.5 and Python 2.7.6.
 
 Applications frequently used with voice:  
-  - Visual studio (with a [vim extension](https://visualstudiogallery.msdn.microsoft.com/59ca71b3-a4a3-46ca-8fe1-0e90e3f79329))  
+  - Visual studio
+  	-  using a [vim extension](https://visualstudiogallery.msdn.microsoft.com/59ca71b3-a4a3-46ca-8fe1-0e90e3f79329)
   - Neovim  
   - Chrome  
+  	- Copying stack-overflow answers: [stackover co-en](https://chrome.google.com/webstore/detail/stackoverflow-co-en/kcckkenmfeecdbgcjmjamadefkjmjlca)  
+    - Vim-bindings: [vimium](https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb?hl=en)
   - Adobe acrobat reader (for PDFs)  
 
 

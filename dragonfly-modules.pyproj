@@ -44,6 +44,9 @@
     <Compile Include="grammars\_natlink.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="grammars\_words.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tests\test_cmdHistory.py">
       <SubType>Code</SubType>
     </Compile>

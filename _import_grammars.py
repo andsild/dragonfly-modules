@@ -9,8 +9,7 @@ It also adds a reload feature, so we can break out of errors from natlink
   (example bug: natlink reloads a file but not the global variables, giving a lot of "None" errors)
 
 The downsides is that:
-    #1 you can no longer (per default) reload grammar files simply by turning mic on and off (we do, however, have the voice command below)
-    #2 We can no longer have context-specific grammars (e.g. grammars that are only enabled when chrome is)
+    We can no longer have context-specific grammars (e.g. grammars that are only enabled when chrome is)
         (I hope to fix #2 sometime in the future, although PRs are very welcome)
 """
 from dragonfly import (Grammar, MappingRule, Function)
