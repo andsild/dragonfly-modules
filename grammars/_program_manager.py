@@ -40,7 +40,6 @@ def flip_editor():
 
 commands = {}
 
-#TODO: undo last spoken phrase
 programs_to_launch={
     'launch command prompt': Function(launch_cmd),
     'launch jim': Function(launch_git),

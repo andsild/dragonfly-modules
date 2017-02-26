@@ -13,7 +13,6 @@ def lineJuggle_logic(n1, n2, operation, linePrefix):
     if n1 == n2:
         delete_to_mark = "0"
 
-
     delete_to_mark='+'+str(delete_to_mark)
     delete_from_mark=linePrefix+str(delete_from_mark)
 

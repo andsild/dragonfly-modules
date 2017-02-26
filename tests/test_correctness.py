@@ -2,10 +2,6 @@ from __future__ import print_function
 import unittest2
 import sys
 
-from dragonflymodules.config import GRAMMAR_IMPORTS
-
-
-
 class TestGrammarCorrectness(unittest2.TestCase):
     """
        The only way to validate the content of grammars is to invoke it.
@@ -20,16 +16,18 @@ class TestGrammarCorrectness(unittest2.TestCase):
        C:\Python27\lib\site-packages\dragonfly\dragonfly\engines\engine_natlink.py
        line 54 -> return True
     """
-    def test_GRAMMARIMPORTS_ParseGrammar(self):
+    def setUp(self):
         try:
             import  win32gui
         except ImportError as ie:
             print("cannot import win32 libs, make sure to install pywin32 libraries for this test to work", file=sys.stderr)
             return
 
-        for import_name in GRAMMAR_IMPORTS:
-            try:
-                getattr(__import__(import_name, fromlist=["rules"]), "rules")
-            except Exception as exception:
-                print("Error when importing %s" % import_name, file=sys.stderr)
-                raise
+        # see also __init__.py in that grammars directory   : you need to define __all__
+        from grammars import __all__ as grammarFiles
+        self.grammarFiles = map(lambda s: "grammars." + s, grammarFiles)
+
+    def test_GRAMMARIMPORTS_ParseGrammar(self):
+        for module_name in self.grammarFiles:
+            if module_name == "grammars.__init__": continue
+            import_rule = getattr(__import__(module_name, fromlist=["rules"]), "rules")

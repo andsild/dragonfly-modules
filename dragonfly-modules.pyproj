@@ -5,7 +5,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{cb15de73-2aa8-4704-806e-82bed6737945}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>scratchpad.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -22,9 +23,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt" />
-    <Content Include="playground\input.txt" />
-    <Content Include="playground\out.txt" />
-    <Content Include="playground\output.txt" />
     <Content Include="README.md" />
     <Content Include="requirements.txt" />
   </ItemGroup>
@@ -66,7 +64,6 @@
     <Compile Include="grammars\_vim.py" />
     <Compile Include="grammars\_visualStudio.py" />
     <Compile Include="grammars\__init__.py" />
-    <Compile Include="scratchpad.py" />
     <Compile Include="tests\test_correctness.py" />
     <Compile Include="tests\test_format.py" />
     <Compile Include="tests\test_translate.py" />
@@ -78,12 +75,11 @@
     <Compile Include="utility\vim_logic.py" />
     <Compile Include="utility\format.py" />
     <Compile Include="utility\__init__.py" />
-    <Compile Include="_natlink_hack.py" />
+    <Compile Include="_import_grammars.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dragonflymodules" />
     <Folder Include="grammars" />
-    <Folder Include="playground" />
     <Folder Include="tests" />
     <Folder Include="utility" />
   </ItemGroup>

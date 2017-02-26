@@ -20,12 +20,12 @@ from dragonfly import (
     AppContext,
 )
 
-from _generic_edit import pressKeyMap
 from utility.substitute_phrase import translate_spokenform_to_queryform
 IS_WINDOWS = True
 
 #vim_context = AppContext(executable="devenv", title="Microsoft visual studio")
-#grammar = Grammar('vim', context=vim_context)
+#grammar = Grammar('vim', conteimport __builtin__
+#context=vim_context)
 
 surroundCharsMap = {
     'quotes': '"',
@@ -93,11 +93,11 @@ basics_mapping = {
     'vim': Text("vim"),
 
     # Moving between splits
-    'split-side': Key(goto_normal_mode_keys + "semicolon, v"),
-    'split-down': Key(goto_normal_mode_keys + "semicolon, s"),
+#    'split-side': Key(goto_normal_mode_keys + "semicolon, v"),
+#    'split-down': Key(goto_normal_mode_keys + "semicolon, s"),
     'split-close': Key(goto_normal_mode_keys + "Z, Q"),
     'open [in] split': Key("s"),
-    'open [in] tab': Key(goto_normal_mode_keys + "semicolon, t"),
+#    'open [in] tab': Key(goto_normal_mode_keys + "semicolon, t"),
 
     'visual block': Key("c-v"),
     'inner block': Key("i, b"),
@@ -174,7 +174,7 @@ basics_mapping = {
 
     # Window movement
     'window': Key("c-w"),
-    'remove [the] buffer': Key(goto_normal_mode_keys + "semicolon, d"),
+    #'remove [the] buffer': Key(goto_normal_mode_keys + "semicolon, d"),
 
     # Word operations
     'sword <n>': Key(goto_normal_mode_keys + "%(n)d, w"),

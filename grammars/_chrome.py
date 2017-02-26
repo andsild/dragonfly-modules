@@ -12,8 +12,6 @@ to allow clicking of links via Telephony character names.
 
 from dragonfly import AppContext,Grammar, Dictation, IntegerRef, Text, Choice, Key, Function, MappingRule
 
-from _generic_edit import pressKeyMap
-
 #chrome_context = AppContext(executable="chrome")
 
 mapping = {

@@ -26,9 +26,9 @@ I very much appreciate feedback whether its a bug report, question, suggestion o
 The jist of the _useful_ code is in the grammars repository.
 You can copy whatever commands you like to your own project. 
 
-`_natlink_hack.py` handles imports for me, rather than letting Natlink do it. 
+`_import_grammars.py` handles imports for me, rather than letting Natlink do it. 
 The only difference is that my grammar files/rules per default will not install themselves as executable dragonfly grammars to DNS or Windows' speech engine.
-Thus, they have to be added explictly using natlink_hack.py or a solution of your own. 
+Thus, they have to be added explictly using import_grammars.py or a solution of your own. 
 
 
 If you *do not* like my approach, you can still use my grammars. Copy a file from this project's `grammars` folder into your Natlink-folder, and append the code below to the respective file. There will probably be some imports that fail, I recommend either fixing the imports or simply commenting them out.
@@ -48,4 +48,4 @@ def unload():
 
 However, If you *do* like (or don't mind) my approach, I recommend cloning this directory to your PC, and pointing your Natlink "UserDirectory" to this repo (start menu -> Configure Natlink via GUI -> UserDirectory"). The rest should work by itself, provided you `pip install requirements.txt`.
 
-My natlink_hack is not perfect (e.g. it doesn't allow for context switching), but it was written to take me further away from Natlinks' API which I find difficult to use (but still, I am grateful that it is written for DNS users).
+My `import_grammars` is not perfect (e.g. it doesn't allow for context switching), but it was written to take me further away from Natlinks' API which I find difficult to use (but still, I am grateful that it is written for DNS users).
