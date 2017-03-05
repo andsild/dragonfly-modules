@@ -54,6 +54,15 @@ namespace WindowsAPIGateway
                         return true;
                     }
             }
+
+            if (processName.Equals("cmd"))
+            {
+                if (processes.Length == 2)
+                {
+                    SetForegroundWindow(processes[0].MainWindowHandle);
+                    return true;
+                }
+            }
             return false;
         }
 

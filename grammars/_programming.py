@@ -14,4 +14,5 @@ rules = MappingRule(
         'equals': Text('='),
         'left arrow': Text('<-'),
         'right arrow': Text('->'),
+        'ion': Text('ipython'),
     })

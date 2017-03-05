@@ -1,13 +1,3 @@
-# Created for aenea using libraries from the Dictation Toolbox
-# https://github.com/dictation-toolbox/dragonfly-scripts
-#
-# Commands for interacting with terminal and desktop environment
-#
-# Author: Tony Grosinger
-# Modified by: Anders Sildnes
-#
-# Licensed under LGPL
-
 from dragonfly import Grammar, Key, Text, AppContext, MappingRule, IntegerRef
 
 #terminal_context = AppContext(executable="cmd")
@@ -25,18 +15,22 @@ terminal_mapping = {
     'grep process':                 Text("pgrep "),
 
     #'scratch that':                 Key("c-w"),
-    'delete line':                  Key("c-u"),
+    #'delete line':                  Key("c-u"),
+    'crude':                  Key("c-u"),
     'editor':                       Text("$EDITOR "),
 
     'history': Key("ctrl:down, r, ctrl:up"),
 
-    'kill command': Key("ctrl:down, c, ctrl:up"),
-    'kill window': Key("ctrl:down, d, ctrl:up"),
+    'kill command': Key("c-c"),
+    'kill window': Key("c-d"),
+    'interrupt': Key('c-c'),
+    '(term|terminal) exit': Key('c-d'),
+
 
     'pip install': Text("pip install "), # pip is hard to recognize, so need custom command set
     'pip search': Text("pip search "),
 
-    '(terminal|term) clear':        Key("ctrl:down, l, ctrl:up"),
+    '(terminal|term) clear':        Key("c-l"),
 
     'jim':              Text("git "),
     'jim status':              Text("git status") + Key("enter"),
@@ -63,13 +57,12 @@ terminal_mapping = {
     '(pseudo|sudo|pseudo-)':        Text("sudo "),
     '(pseudo|sudo|pseudo-) that':   Text("sudo !! ") + Key("enter"),
 
-    # I recommend installing fzf
     'history':                      Key("c-r"),
     'open':                         Text("xdg-open "),
     'last parameter':               Key("escape, dot"),
     'view top':                     Text("htop") + Key("enter"),
 
-    'redo last [command]':          Key("c-u, up, enter"),
+    'redo command':          Key("c-u, up, enter"),
 }
 
 

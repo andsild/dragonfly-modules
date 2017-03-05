@@ -53,6 +53,9 @@
     <Compile Include="utility\cmdMemory.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="utility\program_manager.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="_cmdMemory.py">
       <SubType>Code</SubType>
     </Compile>

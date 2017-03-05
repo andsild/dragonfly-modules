@@ -41,53 +41,23 @@ if not IS_WINDOWS:
 goto_normal_mode_keys = key
 goto_normal_mode = Key(key)
 
-def goto_line_up(n):
-    just_goto_line(n,'minus', "enter")
-
-def goto_line(n):
-    just_goto_line(n,'plus', "enter")
-
 def goto_line_absolute(n):
     for c in str(n):
         Key(c).execute()
     Key("G").execute()
 
-def just_goto_line(n, dir, method):
-    Key('m, squote, colon, ' + dir).execute()
+def just_goto_line(n, dir):
+    Key('m, squote').execute()
+    if n <= 0:
+        return
     for c in str(n):
         Key(c).execute()
-    Key(method).execute()
+    Key(dir).execute()
 
 def lineJuggle(n1, n2, operation, linePrefix):
     goto_normal_mode.execute()
     Text(lineJuggle_logic(n1, n2, operation, linePrefix)).execute()
     Key("enter").execute()
-
-def yank_lines(n, n2):
-    lineJuggle(n, n2, "y", "+")
-
-def yank_lines_up(n, n2):
-    lineJuggle(n, n2, "y", "-")
-
-def delete_lines(n, n2):
-    lineJuggle(n, n2, "d", "+")
-
-def delete_lines_up(n, n2):
-    lineJuggle(n, n2, "d", "-")
-
-def delete_line(n):
-    lineJuggle(n,n, "d", "+")
-def delete_line_zero():
-    lineJuggle(0,0, "d", "+")
-def delete_line_up(n):
-    lineJuggle(n,n, "d", "-")
-def yank_line(n):
-    lineJuggle(n,n, "y", "+")
-def yank_line_zero():
-    lineJuggle(0,0, "y", "+")
-def yank_line_up(n):
-    lineJuggle(n,n, "y", "-")
-
 
 basics_mapping = {
     'vim': Text("vim"),
@@ -115,8 +85,10 @@ basics_mapping = {
     'screen bottom': Key(goto_normal_mode_keys + "z, b"),
 
     # Append to line
-    'noop <n>': goto_normal_mode + Function(goto_line) + Key("o"),
-    'nope <n>': goto_normal_mode + Function(goto_line) + Key("A"),
+    'noop [<n0>]': goto_normal_mode + Function(lambda n0: just_goto_line(n0, 'j')) + Key("o"),
+    'nope [<n0>]': goto_normal_mode + Function(lambda n0: just_goto_line(n0, 'j')) + Key("A"),
+    'noop up [<n0>]': goto_normal_mode + Function(lambda n0: just_goto_line(n0, 'k')) + Key("o"),
+    'nope up [<n0>]': goto_normal_mode + Function(lambda n0: just_goto_line(n0, 'k')) + Key("A"),
 
     'prepend': Key(goto_normal_mode_keys + "I"),
     'insert below': Key(goto_normal_mode_keys + "o"),
@@ -152,8 +124,11 @@ basics_mapping = {
     'change [the] word': Key(goto_normal_mode_keys + "c, a, w"),
     '(Sea|See) world': Key(goto_normal_mode_keys + "c, a, w"),
     '(Sea|See) inner block': Key(goto_normal_mode_keys + "c, i, b"),
+    '(Sea|See) inner quote': Key(goto_normal_mode_keys + "c, i, quote"),
+    '(Sea|See) inner sing': Key(goto_normal_mode_keys + "c, i, squote"),
     'dine inner block': Key(goto_normal_mode_keys + "d, i, b"),
     'dine inner quote': Key(goto_normal_mode_keys + "d, i, quote"),
+    'dine inner sing': Key(goto_normal_mode_keys + "d, i, squote"),
     '(Sea|see) inner quote': Key(goto_normal_mode_keys + "c, i, quote"),
     'yank inner block': Key(goto_normal_mode_keys + "y, i, b"),
     'yank line': Key(goto_normal_mode_keys + "y, y"),
@@ -187,16 +162,16 @@ basics_mapping = {
     'command mode': goto_normal_mode + Key("colon"),
 
     # Line operations
-    'dine': goto_normal_mode + Function(delete_line_zero),
-    'dine <n>': goto_normal_mode + Function(delete_line),
-    'dine up <n>': goto_normal_mode + Function(delete_line_up),
-    'dine <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines),
-    'dine up <n> (thru|through|to) <n2>': goto_normal_mode + Function(delete_lines_up),
-    'yank ': goto_normal_mode + Function(yank_line_zero),
-    'yank [down] <n>': goto_normal_mode + Function(yank_line),
-    'yank up <n>': goto_normal_mode + Function(yank_line_up),
-    'yank <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines),
-    'yank up <n> (thru|through|to) <n2>': goto_normal_mode + Function(yank_lines_up),
+    'dine': goto_normal_mode + Function(lambda: lineJuggle(0,0,"d", "+")),
+    'dine <n>': goto_normal_mode + Function(lambda n: lineJuggle(n,n,"d","+")),
+    'dine up <n>': goto_normal_mode + Function(lambda n: lineJuggle(n, n, "d", "-")),
+    'dine <n> (thru|through|to) <n2>': goto_normal_mode + Function(lambda n1,n2: lineJuggle(n1,n2,"d","+")),
+    'dine up <n> (thru|through|to) <n2>': goto_normal_mode + Function(lambda n1,n2: lineJuggle(n1,n2,"d","-")),
+    'yank ': goto_normal_mode + Function(lambda: lineJuggle(0,0,"y", "+")),
+    'yank [down] <n>': goto_normal_mode + Function(lambda n: lineJuggle(n,n,"d","+")),
+    'yank up <n>': goto_normal_mode + Function(lambda n: lineJuggle(n,n,"d","-")),
+    'yank <n> (thru|through|to) <n2>': goto_normal_mode + Function(lambda n1,n2: lineJuggle(n,n2,"y","+")),
+    'yank up <n> (thru|through|to) <n2>': goto_normal_mode + Function(lambda n1,n2: lineJuggle(n,n2,"y","-")),
 
     'select until <text>': Key(goto_normal_mode_keys + "v, t, slash") + Function(translate_spokenform_to_queryform),
     'select including <text>': Key(goto_normal_mode_keys + "v, f, slash") + Function(translate_spokenform_to_queryform),
@@ -219,8 +194,8 @@ basics_mapping = {
     'clay': Key(goto_normal_mode_keys + "c, i, b"),
 
     # Movement
-    'go [down] [to] [line] <n>': goto_normal_mode + Function(goto_line),
-    'go up [to] [line] <n>': goto_normal_mode + Function(goto_line_up),
+    'go [down] [to] [line] <n>': goto_normal_mode + Function(lambda n: just_goto_line(n, 'j')),
+    'go up [to] [line] <n>': goto_normal_mode + Function(lambda n: just_goto_line(n, 'k')),
     'go absolute to [line] <n>': goto_normal_mode + Function(goto_line_absolute),
     'matching': Key(goto_normal_mode_keys + "percent"),
     'rash': Key(goto_normal_mode_keys + "down, s-a"),
@@ -239,11 +214,13 @@ class VimRule(MappingRule):
     mapping = basics_mapping
     extras = [
         Dictation('text'),
+        IntegerRef('n0', 0, 999),
         IntegerRef('n', 0, 999),
         IntegerRef('n2', 0, 999),
         Choice("surroundChar", surroundCharsMap),
     ]
     defaults = {
+        "n0": 0,  # Default repeat count.
         "n": 1,  # Default repeat count.
     }
 

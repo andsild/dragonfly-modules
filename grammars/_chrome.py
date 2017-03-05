@@ -14,6 +14,8 @@ from dragonfly import AppContext,Grammar, Dictation, IntegerRef, Text, Choice, K
 
 #chrome_context = AppContext(executable="chrome")
 
+from utility.program_manager import goto_chrome
+
 mapping = {
     # Press escape to the blur focus on any input fields
     "undo tab": Key("shift:down/3, c-t, shift:up/3"),
@@ -39,6 +41,9 @@ mapping = {
     'copy url': Key('c-l, c-c'),
     'goto top': Key('g, g'),
     'goto bottom': Key('G'),
+    'reload page': Key('c-r'),
+
+    'search youtube': Function(lambda: goto_chrome("youtube.com")),
 }
 
 class ChromeRule(MappingRule):

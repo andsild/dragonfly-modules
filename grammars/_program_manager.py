@@ -1,78 +1,26 @@
 from dragonfly import (
     Dictation,
-    Key,
     MappingRule,
     Function,
     IntegerRef,
 )
-import subprocess, os
 
-from dragonflymodules.config import default_install_dir
+from utility.program_manager import *
 
-sub_repo_name = "WindowsAPIGateway"
-full_path_for_this_file = os.path.realpath(__file__).split(os.sep)
-full_path_for_this_github_repository = full_path_for_this_file[0] + os.path.join(os.path.sep, *full_path_for_this_file[1:full_path_for_this_file.index('dragonfly-modules')+1])
-exename_programswitcher = os.path.join(full_path_for_this_github_repository, sub_repo_name, sub_repo_name, "bin",  "Debug", sub_repo_name + ".exe")
+commands={
+    'launch [command] prompt': Function(lambda: launch_program(["cmd", "/K", "cd %homedrive%%homepath%"])),
+    'launch jim': Function(lambda: launch_program(["C:\Program Files\Git\git-bash", "--cd-to-home"])),
+    'launch chrome': Function(lambda: launch_program(["C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"])),
+    'launch studio': Function(lambda: launch_program(["C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe"])),
+    'launch doc': Function(lambda: launch_program(["C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"])),
 
-def launch_cmd():
-    subprocess.Popen(["cmd", "/K", "cd %homedrive%%homepath%"])
-
-def launch_git():
-    subprocess.Popen(["C:\Program Files\Git\git-bash", "--cd-to-home"])
-
-def launch_chrome():
-    subprocess.Popen(["C:\Program Files (x86)\Google\Chrome\Application\chrome.exe", ])
-
-def launch_visual_studio():
-    subprocess.Popen(["C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe", ])
-
-def launch_doc():
-    subprocess.Popen(["C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"]);
-
-def flip_cmd():
-    subprocess.Popen([exename_programswitcher, "cmd"]);
-
-def flip_visual_studio():
-    subprocess.Popen([exename_programswitcher, "devenv"]);
-
-def flip_chrome():
-    subprocess.Popen([exename_programswitcher, "chrome"]);
-
-def flip_editor():
-    subprocess.Popen([exename_programswitcher, "nvim-qt"]);
-
-def flip_git():
-    subprocess.Popen([exename_programswitcher, "mintty"]);
-
-def flip_doc():
-    subprocess.Popen([exename_programswitcher, "AcroRd32"]);
-
-commands = {}
-
-programs_to_launch={
-    'launch command prompt': Function(launch_cmd),
-    'launch jim': Function(launch_git),
-    'launch chrome': Function(launch_chrome),
-    'launch studio': Function(launch_visual_studio),
-    'launch doc': Function(launch_doc),
-
-    }
-
-program_to_switch_to ={
-    'flip prompt': Function(flip_cmd),
-    'flip jim': Function(flip_git),
-    'flip studio': Function(flip_visual_studio),
-    'flip chrome': Function(flip_chrome),
-    'flip editor': Function(flip_editor),
-    'flip doc': Function(flip_doc),
-    }
-
-commands.update(programs_to_launch)
-if os.path.isfile(exename_programswitcher):
-    commands.update(program_to_switch_to)
-else:
-    print "Could not find program used to switch programs (have you built %s, which should produce the file '%s'?)" % (sub_repo_name, exename_programswitcher)
-    print "\tomitting \"flipcmd\" grammar"
+    'flip [command] prompt': Function(lambda: flip_program("cmd")),
+    'flip jim': Function(lambda: flip_program("mintty")),
+    'flip studio': Function(lambda: flip_program("devenv")),
+    'flip chrome': Function(lambda: flip_program("chrome")),
+    'flip editor': Function(lambda: flip_program("nvim-qt")),
+    'flip doc': Function(lambda: flip_program("AcroRd32")),
+}
 
 
 class ProgramManager(MappingRule):
